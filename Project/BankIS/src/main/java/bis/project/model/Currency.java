@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Currency {
 	
@@ -23,6 +25,7 @@ public class Currency {
 	private String name;
 	
 	@OneToMany(mappedBy="currency")
+	@JsonIgnore
 	private Set<BankAccount> accounts;
 	
 	public Currency() {}
