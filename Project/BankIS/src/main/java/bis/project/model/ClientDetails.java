@@ -13,6 +13,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
@@ -44,6 +46,7 @@ public class ClientDetails {
 	protected String phoneNumber;
 	
 	@OneToMany(mappedBy="client")
+	@JsonIgnore
 	protected Set<BankAccount> accounts;
 	
 	public ClientDetails() {}

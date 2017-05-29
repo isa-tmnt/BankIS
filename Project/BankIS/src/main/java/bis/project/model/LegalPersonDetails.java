@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue("LEGAL_PERSON")
 public class LegalPersonDetails extends ClientDetails {
 	
-	@Column(nullable=false, unique=true, length=9)
+	@Column(unique=true, length=9)
 	private String pib;
 	
 	@Column(length=30)
