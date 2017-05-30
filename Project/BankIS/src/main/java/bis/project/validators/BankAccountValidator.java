@@ -5,24 +5,17 @@ import bis.project.model.BankAccount;
 public class BankAccountValidator {
 	
 	public static void Validate(BankAccount bankAccount) throws ValidationException{
-		if(bankAccount.getAccountNumber() == null)
-			throw new ValidationException("Account number cannot be empty");	
-		if(bankAccount.getAccountNumber().length() > 18)
-			throw new ValidationException("Account number is max 50 characters");
 		
-		if(bankAccount.getStatus() == null)
-			throw new ValidationException("Status cannot be empty ");		
-		if(bankAccount.getStatus().length() != 1)
-			throw new ValidationException("Status can be: A - active, D - deactivated");
+		ValidationException.ThrowIfNullOrEmpty(bankAccount.getAccountNumber(),"Account Number");
+		ValidationException.ThrowIfNullOrEmpty(bankAccount.getStatus(),"Status");
+		ValidationException.ThrowIfNullOrEmpty(bankAccount.getStartDate(),"Start date");	
 		
-		if(bankAccount.getStartDate() == null)
-			throw new ValidationException("Start date cannot be empty");
-	
-		if(bankAccount.getBank() == null)
-			throw new ValidationException("Bank cannot be empty");
-		if(bankAccount.getCurrency() == null)
-			throw new ValidationException("Currency cannot be empty");
-		if(bankAccount.getClient() == null)
-			throw new ValidationException("Client cannot be empty");
-		}
+		ValidationException.ThrowIfNullOrEmpty(bankAccount.getBank(),"Bank");
+		ValidationException.ThrowIfNullOrEmpty(bankAccount.getCurrency(),"Currency");
+		ValidationException.ThrowIfNullOrEmpty(bankAccount.getClient(),"Client");
+		
+		
+		ValidationException.ThrowIfLengthGratherThan(18, bankAccount.getAccountNumber(), "Account Number");
+		ValidationException.ThrowIfLengthGratherThan(1, bankAccount.getStatus(), "Status");
+	}
 }

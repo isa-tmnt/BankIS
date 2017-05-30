@@ -6,20 +6,18 @@ public class BankValidator {
 	
 	
 	public static void Validate(Bank bank) throws ValidationException{
-		if(bank.getBankCode() > 999)
-			throw new ValidationException("Bank code is max 3 digits");
-		if(bank.getName() == null)
-			throw new ValidationException("Bank name cannot be empty");	
-		if(bank.getName().length() > 50)
-			throw new ValidationException("Bank name is max 50 characters");
-		if(bank.getSwiftCode() == null)
-			throw new ValidationException("Swift code cannot be empty ");		
-		if(bank.getSwiftCode().length() > 8)
-			throw new ValidationException("Swift code is max 8 characters");
-		if(bank.getBillingAccount() == null)
-			throw new ValidationException("Billing account cannot be empty");		
-		if(bank.getBillingAccount().length() > 18)
-			throw new ValidationException("Billing account is max 18 characters");
+	
+		ValidationException.ThrowIfNullOrEmpty(bank.getBankCode(), "Bank Code");
+		ValidationException.ThrowIfNullOrEmpty(bank.getName(), "Name");	
+		ValidationException.ThrowIfNullOrEmpty(bank.getSwiftCode(), "Swift Code");
+		ValidationException.ThrowIfNullOrEmpty(bank.getBillingAccount(), "Billing account");
+		
+		ValidationException.ThrowIfLengthGratherThan(3, bank.getBankCode(), "Bank Code");
+		ValidationException.ThrowIfLengthGratherThan(50,bank.getName(), "Name");	
+		ValidationException.ThrowIfLengthGratherThan(8,bank.getSwiftCode(), "Swift Code");
+		ValidationException.ThrowIfLengthGratherThan(18,bank.getBillingAccount(), "Billing account");
+		
 	}
+	
 	
 }
