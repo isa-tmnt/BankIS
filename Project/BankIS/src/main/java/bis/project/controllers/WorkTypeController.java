@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.model.WorkType;
 import bis.project.services.WorkTypeServices;
+import bis.project.validators.ValidationException;
+import bis.project.validators.WorkTypeValidator;
 
 @RestController
 public class WorkTypeController {
@@ -33,13 +35,15 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes", 
 					method = RequestMethod.POST)
-	public WorkType addWorkType(@RequestBody WorkType workType) {
+	public WorkType addWorkType(@RequestBody WorkType workType)  throws ValidationException{
+		WorkTypeValidator.Validate(workType);
 		return services.addWorkType(workType);
 	}
 	
 	@RequestMapping(value = "/api/worktypes/{id}", 
 					method = RequestMethod.PUT)
-	public WorkType updateWorkType(@PathVariable("id") Integer id, @RequestBody WorkType workType) {
+	public WorkType updateWorkType(@PathVariable("id") Integer id, @RequestBody WorkType workType)  throws ValidationException{
+		WorkTypeValidator.Validate(workType);
 		workType.setId(id);
 		return services.updateWorkType(workType);
 	}

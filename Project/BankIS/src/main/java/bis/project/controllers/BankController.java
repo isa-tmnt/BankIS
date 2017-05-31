@@ -44,7 +44,8 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.PUT)
-	public Bank updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank) {
+	public Bank updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank)  throws ValidationException {
+		BankValidator.Validate(bank);
 		bank.setId(id);
 		return bankServices.updateBank(bank);
 	}

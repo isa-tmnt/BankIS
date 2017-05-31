@@ -14,7 +14,7 @@ import bis.project.validators.ValidationFailedReport;
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
  
 	@ExceptionHandler(value = { ValidationException.class })
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationFailedReport unknownException(Exception ex, WebRequest req) {
         return new ValidationFailedReport(ex.getMessage());
     }

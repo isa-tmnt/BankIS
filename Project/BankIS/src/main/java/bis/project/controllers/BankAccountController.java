@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.model.BankAccount;
 import bis.project.services.BankAccountServices;
+import bis.project.validators.BankAccountValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class BankAccountController {
@@ -33,13 +35,15 @@ public class BankAccountController {
 	
 	@RequestMapping(value = "/api/accounts", 
 					method = RequestMethod.POST)
-	public BankAccount addBankAccount(@RequestBody BankAccount account) {
+	public BankAccount addBankAccount(@RequestBody BankAccount account) throws ValidationException {
+		BankAccountValidator.Validate(account);
 		return services.addBankAccount(account);
 	}
 	
 	@RequestMapping(value = "/api/accounts/{id}", 
 					method = RequestMethod.PUT)
-	public BankAccount updateBankAccount(@PathVariable("id") Integer id, @RequestBody BankAccount account) {
+	public BankAccount updateBankAccount(@PathVariable("id") Integer id, @RequestBody BankAccount account) throws ValidationException  {
+		BankAccountValidator.Validate(account);
 		account.setId(id);
 		return services.updateBankAccount(account);
 	}

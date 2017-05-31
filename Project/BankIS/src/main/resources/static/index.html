@@ -1,0 +1,51 @@
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Banka</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/toastr/toastr.min.css">
+    <link rel="stylesheet" href="app/app.css">
+
+
+</head>
+
+<body>
+    <our-header></our-header>
+
+    <div class="container">
+        <div ng-view></div>
+    </div>
+
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/toastr/toastr.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+
+    
+
+    <script src="app/app.js"></script>
+    <script src="app/filters/ifDateFormatFilter.js"></script>
+
+
+    <script src="app/header/header.js"></script>
+    <script src="app/otvaranjeRacuna/otvaranjeRacuna.js"></script>
+    <script src="app/tables/closingAccounts.js"></script>
+    <script src="app/tables/bankAccounts.js"></script>
+    <script src="app/tables/currensies.js"></script>
+    <script src="app/welcomePage/welcomePage.js"></script>
+    <script src="app/tables/bankMessages.js"></script>
+    <script src="app/tables/clientDetails.js"></script>
+    <script src="app/tables/banks.js"></script>
+    <script src="app/tables/interbankTransfers.js"></script>
+    <script src="app/tables/transferItems.js"></script>
+    <script src="app/tables/bankOrders.js"></script>
+    <script src="app/tables/dailyAccountBalances.js"></script>
+    <script src="app/tables/workTypes.js"></script>
+    <script src="app/login/login.js"></script>
+
+</body>
+
+</html>

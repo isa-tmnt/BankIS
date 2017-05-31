@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.model.Currency;
 import bis.project.services.CurrencyServices;
+import bis.project.validators.CurrencyValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class CurrencyController {
@@ -33,13 +35,15 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies", 
 					method = RequestMethod.POST)
-	public Currency addCurrency(@RequestBody Currency currency) {
+	public Currency addCurrency(@RequestBody Currency currency)  throws ValidationException {
+		CurrencyValidator.Validate(currency);
 		return currencyServices.addCurrency(currency);
 	}
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.PUT)
-	public Currency updateCurrency(@PathVariable("id") Integer id, @RequestBody Currency currency) {
+	public Currency updateCurrency(@PathVariable("id") Integer id, @RequestBody Currency currency)   throws ValidationException{
+		CurrencyValidator.Validate(currency);
 		currency.setId(id);
 		return currencyServices.updateCurrency(currency);
 	}
