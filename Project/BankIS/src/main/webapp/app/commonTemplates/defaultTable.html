@@ -13,8 +13,12 @@
             <tbody>
                 <tr ng-class="row == selected? 'selectedRow' : ''" ng-click="setSelected(row)" ng-if="showRow(row) && $index >= minShow && $index < maxShow"
                     ng-repeat="row in rows  | orderBy:('-' + ordering) track by $index">
-                    <td ng-repeat="head in header">{{row[head.code] | ifDateFormatFilter}}
+                    <td ng-repeat="head in header"></span>
+                         <span ng-if="!head.isReference">
+                             {{row[head.code] | ifDateFormatFilter}}
+                         </span>
                         <span ng-if="head.isReference">
+                            {{row[head.code].id | ifDateFormatFilter}}
                             <button ng-click="zoomSingleLine(head.code,row)" class="btn btn-sm btn-success">..</button>
                         </span>
                     </td>
@@ -29,7 +33,8 @@
     <div style="margin-top:10px;" class="col-md-12">
         <div ng-repeat="head in header" class="col-md-3">
             <label for="{{head.code}}">{{head.label}}:</label>
-            <input type="{{head.type}}" class="form-control" ng-model="editing[head.code]" id="{{head.code}}">
+            <input ng-if="!head.isReference" type="{{head.type}}" class="form-control" ng-model="editing[head.code]" id="{{head.code}}">
+            <input ng-if="head.isReference" type="{{head.type}}" class="form-control" ng-model="editing[head.code].id" id="{{head.code}}">
             <span ng-if="head.isReference"><button ng-click="filterId = null; head.openDialog()" class="btn">..</button></span>
         </div>
     </div>

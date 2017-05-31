@@ -31,20 +31,23 @@ app.component('clientDetails', {
 
         $http.get(appConfig.apiUrl + 'legclients').then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
-            response.data.filter(a => a.workType != null).forEach(d => d.workType = d.workType.id);
             $scope.rows = response.data;
         });
-
+        console.log("222")
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
+            console.log("add click")
             var data = $.extend({}, $scope.editing);
-            data.workType = $scope.workTypeSelected;
-            console.log(data)
+            console.log(data);
             $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
                 var row = response.data;
+                console.log(row);
+                console.log("printing rows")
+                console.log($scope.rows);
                 if (row) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                     $scope.rows.push(row);
+             
                     toastr.success('Added successfuly.')
                 }
             }, function err(e) {
