@@ -1,45 +1,47 @@
 'use strict';
 
-app.component('bankAccounts', {
+app.component('legalPersonDetails', {
     templateUrl: 'app/commonTemplates/defaultTable.html',
-    controller: ['$scope', '$http', '$attrs', '$timeout', '$rootScope', '$element', '$compile', function BankAccoutnsCtrl($scope, $http, $attrs, $timeout, $rootScope, $element, $compile) {
-        var ctrl = this;
+    controller: ['$scope', '$http', '$attrs', '$rootScope', '$compile', '$element', function ClientDetailsCtrl($scope, $http, $attrs, $rootScope, $compile, $element) {
+
         $scope.rows = [];
         $scope.selected = {};
         $scope.editing = {};
         $scope.setSelected = function (row) {
             if ($attrs.iamdialog)
-                $rootScope.$broadcast('BANK_ACCOUNT_SELECTED', row);
+                $rootScope.$broadcast('LEGAL_PERSON_DETAILS_SELECTED', row);
             $scope.selected = row;
             $scope.editing = $.extend({}, row);
         }
 
-
         $scope.header = [
-            { label: "Id", code: "id", type: "text" },
-            { label: "Account Number", code: "accountNumber", type: "text" },
-            { label: "Status", code: "status", type: "text" },
-            { label: "Start Date", code: "startDate", type: "date" },
-            { label: "End  Date", code: "endDate", type: "date" },
-            { label: "Bank", code: "bank", type: "text", isReference: true, openDialog: () => $scope.openDialog('banks') },
-            { label: "Currency", code: "currency", type: "text", isReference: true, openDialog: () => $scope.openDialog('currensies') },
-            { label: "Client Details", code: "client", type: "text", isReference: true, openDialog: () => $scope.openDialog('client-details') },
+            { label: "Id", code: "id", manatory: false, type: "number" },
+            { label: "JMBG", code: "jmbg", manatory: false, type: "text" },
+            { label: "First name", code: "firstName", manatory: false, type: "text" },
+            { label: "Last name", code: "lastName", manatory: false, type: "text" },
+            { label: "Address", code: "address", manatory: false, type: "text" },
+            { label: "Email", code: "email", manatory: false, type: "text" },
+            { label: "Phone number", code: "phoneNumber", manatory: false, type: "text" },
+            { label: "PIB", code: "pib", manatory: false, type: "text" },
+            { label: "Fax", code: "fax", manatory: false, type: "text" },
+            { label: "Web page", code: "webPage", manatory: false, type: "text" },
+            { label: "Work type", code: "workType", manatory: false, type: "number", isReference: true, openDialog: () => { $scope.openDialog('work-types'); } },
+
         ];
 
-        $http.get(appConfig.apiUrl + 'accounts').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'legclients').then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
-        }, function err(e) {
-            console.log(e);
         });
-
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
-            $http.post(appConfig.apiUrl + 'accounts', $scope.editing).then(function successCallback(response) {
+            var data = $.extend({}, $scope.editing);
+            $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
                 var row = response.data;
                 if (row) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                     $scope.rows.push(row);
+             
                     toastr.success('Added successfuly.')
                 }
             }, function err(e) {
@@ -53,9 +55,10 @@ app.component('bankAccounts', {
 
         $scope.doEdit = function () {
             if ($scope.selected.id) {
-                $http.post(appConfig.apiUrl + 'accounts', $scope.editing).then(function successCallback(response) {
+                var data = $.extend({}, $scope.editing);
+                $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
                     var row = response.data;
-                    if (row) {
+                    if (row) {                      
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
                         $scope.rows.push(row);
@@ -76,7 +79,7 @@ app.component('bankAccounts', {
 
         $scope.doRemove = function () {
             if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'accounts/' + $scope.selected.id).then(function successCallback(response) {
+                $http.delete(appConfig.apiUrl + 'legclients/' + $scope.selected.id).then(function successCallback(response) {
 
                     $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
                     toastr.success('Removed successfuly.')
@@ -89,10 +92,10 @@ app.component('bankAccounts', {
             }
         }
 
+
         $scope.iamdialog = $attrs.iamdialog == 'true';
 
         //-------------------------------------> zoom <--------------------------------------------------------------------------
-
 
         $scope.openDialog = function (tagName, id) {
             if (id) {
@@ -109,34 +112,17 @@ app.component('bankAccounts', {
         }
 
         $scope.zoomSingleLine = function (code, row) {
-            if (code == 'currency') {
-                $scope.openDialog('currensies', row[code].id);
-            }
-            if (code == 'client') {
-                $scope.openDialog('client-details', row[code].id);
-            } if (code == 'bank') {
-                $scope.openDialog('banks', row[code].id);
+            if (code == 'workType') {
+                $scope.openDialog('work-types', row[code].id);
             }
         };
 
-        $rootScope.$on('BANK_SELECTED', function (event, row) {
-            if (row['id'])
-                $scope.editing['bank'] = row;
+        $rootScope.$on('WORK_TYPE_SELECTED', function (event, row) {
+            if (row['id']) {
+                $scope.editing['workType'] = row
+            }
             if ($scope.dialog) $scope.dialog.remove();
         });
-
-        $rootScope.$on('CURRENSY_SELECTED', function (event, row) {
-            if (row['id'])
-                $scope.editing['currency'] = row;
-            if ($scope.dialog) $scope.dialog.remove();
-        });
-
-        $rootScope.$on('CLIENT_DETAILS_SELECTED', function (event, row) {
-            if (row['id'])
-                $scope.editing['client'] = row;
-            if ($scope.dialog) $scope.dialog.remove();
-        });
-
 
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 
@@ -172,5 +158,6 @@ app.component('bankAccounts', {
             $scope.minShow = $index * $scope.pageRows;
             $scope.maxShow = ($index + 1) * $scope.pageRows;
         }
+
     }]
 });

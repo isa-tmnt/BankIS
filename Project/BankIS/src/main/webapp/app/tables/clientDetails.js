@@ -22,28 +22,17 @@ app.component('clientDetails', {
             { label: "Address", code: "address", manatory: false, type: "text" },
             { label: "Email", code: "email", manatory: false, type: "text" },
             { label: "Phone number", code: "phoneNumber", manatory: false, type: "text" },
-            { label: "PIB", code: "pib", manatory: false, type: "text" },
-            { label: "Fax", code: "fax", manatory: false, type: "text" },
-            { label: "Web page", code: "webPage", manatory: false, type: "text" },
-            { label: "Work type", code: "workType", manatory: false, type: "number", isReference: true, openDialog: () => { $scope.openDialog('work-types'); } },
-
         ];
 
-        $http.get(appConfig.apiUrl + 'legclients').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'clients').then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
-        console.log("222")
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
-            console.log("add click")
             var data = $.extend({}, $scope.editing);
-            console.log(data);
-            $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
+            $http.post(appConfig.apiUrl + 'clients', data).then(function successCallback(response) {
                 var row = response.data;
-                console.log(row);
-                console.log("printing rows")
-                console.log($scope.rows);
                 if (row) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                     $scope.rows.push(row);
@@ -62,13 +51,9 @@ app.component('clientDetails', {
         $scope.doEdit = function () {
             if ($scope.selected.id) {
                 var data = $.extend({}, $scope.editing);
-                data.workType = $scope.workTypeSelected;
-                //data.workType = null;
-                $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
+                $http.post(appConfig.apiUrl + 'clients', data).then(function successCallback(response) {
                     var row = response.data;
-                    if (row) {
-                        if(row.workType)
-                            row.workType = row.workType.id;
+                    if (row) {                      
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
                         $scope.rows.push(row);
@@ -89,7 +74,7 @@ app.component('clientDetails', {
 
         $scope.doRemove = function () {
             if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'legclients/' + $scope.selected.id).then(function successCallback(response) {
+                $http.delete(appConfig.apiUrl + 'clients/' + $scope.selected.id).then(function successCallback(response) {
 
                     $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
                     toastr.success('Removed successfuly.')
@@ -104,37 +89,6 @@ app.component('clientDetails', {
 
 
         $scope.iamdialog = $attrs.iamdialog == 'true';
-
-        //-------------------------------------> zoom <--------------------------------------------------------------------------
-
-        $scope.openDialog = function (tagName, id) {
-            if (id) {
-                $scope.dialog = $compile(
-                    "<" + tagName + ' ' + "filterid='" + id + "'  iamdialog='true'></" + tagName + ">"
-                )($scope);
-            } else {
-                $scope.dialog = $compile(
-                    "<" + tagName + " iamdialog='true'></" + tagName + ">"
-                )($scope);
-            }
-
-            $element.append($scope.dialog);
-        }
-
-        $scope.zoomSingleLine = function (code, row) {
-            if (code == 'workType') {
-                $scope.openDialog('work-types', row[code]);
-            }
-        };
-
-        $scope.workTypeSelected = {};
-        $rootScope.$on('WORK_TYPE_SELECTED', function (event, row) {
-            if (row['id']) {
-                $scope.workTypeSelected = row
-                $scope.editing['workType'] = row['id']
-            }
-            if ($scope.dialog) $scope.dialog.remove();
-        });
 
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 

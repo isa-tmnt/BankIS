@@ -20,6 +20,8 @@ var app = angular.module('myApp', [
             template: "<bank-messages></bank-messages>",
         }).when("/clientDetails", {
             template: "<client-details></client-details>",
+        }).when("/legalPersonDetails", {
+            template: "<legal-person-details></legal-person-details>",
         }).when("/banks", {
             template: "<banks></banks>",
         }).when("/interbankTransfers", {
