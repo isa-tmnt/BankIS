@@ -14,6 +14,8 @@ import bis.project.services.CredentialsServices;
 @RestController
 public class CredentialsController {
 	//@RequestHeader(value="Authorization") String basicAuth
+	//'Authorization': 'Basic ' + sessionStorage.getItem('basicAuth')
+	//'Authorization': 'Basic ' + btoa(email + ':' + password)
 	@Autowired
 	private CredentialsServices services;
 	
