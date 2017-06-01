@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.model.LegalPersonDetails;
 import bis.project.services.LegalPersonDetailsServices;
-import bis.project.validators.LegalPersonDetailsValidator;
-import bis.project.validators.ValidationException;
 
 @RestController
 public class LegalPersonDetailsController {
@@ -35,15 +33,13 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients", 
 					method = RequestMethod.POST)
-	public LegalPersonDetails addClient(@RequestBody LegalPersonDetails client)   throws ValidationException{
-		LegalPersonDetailsValidator.Validate(client);
+	public LegalPersonDetails addClient(@RequestBody LegalPersonDetails client) {
 		return services.addClient(client);
 	}
 	
 	@RequestMapping(value = "/api/legclients/{id}", 
 					method = RequestMethod.PUT)
-	public LegalPersonDetails updateClient(@PathVariable("id") Integer id, @RequestBody LegalPersonDetails client)   throws ValidationException{
-		LegalPersonDetailsValidator.Validate(client);
+	public LegalPersonDetails updateClient(@PathVariable("id") Integer id, @RequestBody LegalPersonDetails client) {
 		client.setId(id);
 		return services.updateClient(client);
 	}

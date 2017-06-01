@@ -2,8 +2,6 @@ package bis.project.controllers;
 
 import java.util.Set;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.model.Bank;
 import bis.project.services.BankServices;
-import bis.project.validators.BankValidator;
-import bis.project.validators.ValidationException;
 
 @RestController
 public class BankController {
@@ -37,15 +33,13 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks", 
 					method = RequestMethod.POST)
-	public Bank addBank(@Valid @RequestBody Bank bank) throws ValidationException {
-		BankValidator.Validate(bank);
+	public Bank addBank(@RequestBody Bank bank) {
 		return bankServices.addBank(bank);
 	}
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.PUT)
-	public Bank updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank)  throws ValidationException {
-		BankValidator.Validate(bank);
+	public Bank updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank) {
 		bank.setId(id);
 		return bankServices.updateBank(bank);
 	}

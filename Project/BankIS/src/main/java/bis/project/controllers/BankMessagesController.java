@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.model.BankMessages;
 import bis.project.services.BankMessagesServices;
-import bis.project.validators.BankMessagesValidator;
-import bis.project.validators.ValidationException;
 
 @RestController
 public class BankMessagesController {
@@ -35,15 +33,13 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages", 
 					method = RequestMethod.POST)
-	public BankMessages addBankMessage(@RequestBody BankMessages message)  throws ValidationException {
-		BankMessagesValidator.Validate(message);
+	public BankMessages addBankMessage(@RequestBody BankMessages message) {
 		return services.addBankMessage(message);
 	}
 	
 	@RequestMapping(value = "/api/messages/{id}", 
 					method = RequestMethod.PUT)
-	public BankMessages updateBankMessage(@PathVariable("id") Integer id, @RequestBody BankMessages message)  throws ValidationException {
-		BankMessagesValidator.Validate(message);
+	public BankMessages updateBankMessage(@PathVariable("id") Integer id, @RequestBody BankMessages message) {
 		message.setId(id);
 		return services.updateBankMessage(message);
 	}
