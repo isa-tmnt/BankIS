@@ -2,8 +2,7 @@ app.factory('authService', ['$http', function ($http) {
 
 
     var logedUser = null;
-    if (localStorage.getItem('basicAuth') != "null"){ //note that null is in "", because localStorage saves only stirngs i guess, idk, but its string "null" if no user pre-authenticated
-        console.log("in")
+    if (localStorage.getItem('basicAuth') != "null" && localStorage.getItem('basicAuth') != null){ //note that null is in "", because localStorage saves only stirngs i guess, idk, but its string "null" if no user pre-authenticated
         logedUser = {
             email: localStorage.getItem("basicAuthEmail")
         }
