@@ -34,8 +34,14 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.GET)
-	public Bank getBank(@PathVariable("id") Integer id) {
-		return bankServices.getBank(id);
+	public ResponseEntity<Bank> getBank(@PathVariable("id") Integer id) {
+		Bank bank = bankServices.getBank(id);
+		
+		if(bank == null) {
+			return new ResponseEntity<Bank>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Bank>(bank, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/api/banks", 
@@ -53,14 +59,28 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.PUT)
-	public Bank updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank) {
-		bank.setId(id);
-		return bankServices.updateBank(bank);
+	public ResponseEntity<Bank> updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateBank");
+		
+		if(isAuthorized) {
+			bank.setId(id);
+			Bank b = bankServices.updateBank(bank);
+			return new ResponseEntity<Bank>(b, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Bank>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.DELETE)
-	public void deleteBank(@PathVariable("id") Integer id) {
-		bankServices.deleteBank(id);
+	public ResponseEntity<Bank> deleteBank(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteBank");
+		
+		if(isAuthorized) {
+			bankServices.deleteBank(id);
+			return new ResponseEntity<Bank>(HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Bank>(HttpStatus.UNAUTHORIZED);
 	}
 }
