@@ -40,6 +40,11 @@ public class CredentialsServicesImpl implements CredentialsServices {
 		authToken = authToken.replaceFirst(AUTHORIZATION_HEADER_PREFIX, "");
 		String decodedString = Base64.decodeAsString(authToken);
 		StringTokenizer tokenizer = new StringTokenizer(decodedString, ":");
+		
+		if(tokenizer.countTokens() <= 1) {
+			return false;
+		}
+		
 		String email = tokenizer.nextToken();
 		String password = tokenizer.nextToken();
 		
