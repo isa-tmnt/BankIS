@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import bis.project.model.Bank;
 import bis.project.services.BankServices;
 import bis.project.services.CredentialsServices;
+import bis.project.validators.BankValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class BankController {
@@ -46,23 +48,27 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks", 
 					method = RequestMethod.POST)
-	public ResponseEntity<Bank> addBank(@RequestBody Bank bank, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<Bank> addBank(@RequestBody Bank bank, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = services.isAuthorized(basicAuth, "AddBank");
 		
 		if(isAuthorized) {
+			BankValidator.Validate(bank);
 			Bank b = bankServices.addBank(bank);
 			return new ResponseEntity<Bank>(b, HttpStatus.OK);
 		}
+		
+		
 		
 		return new ResponseEntity<Bank>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<Bank> updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<Bank> updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateBank");
 		
 		if(isAuthorized) {
+			BankValidator.Validate(bank);
 			bank.setId(id);
 			Bank b = bankServices.updateBank(bank);
 			return new ResponseEntity<Bank>(b, HttpStatus.OK);

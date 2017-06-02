@@ -12,16 +12,19 @@ var app = angular.module('myApp', [
                     return request;
                 },
 
-                'responseError': function (response) {
-                    if (response.status >= 400 && response.status < 500){ //unauthorized
-                      //  location.href = "/#!/login";
+                'responseError': function (response,b) {
+                    if (response.status == 403 || response.status == 401) { //forbiden or unauthorized
+                        //  location.href = "/#!/login";
                         toastr.info("No permission for this action, TODO for developers, user shouldnt see this action available");
                     }
-                   if(response.status >= 500){
-                       toastr.error("Server error, status 500");
-                       console.log(response);
-                   }
-
+                    if (response.status == 400) {
+                        if(response.data.cause)
+                            toastr.info(response.data.cause);
+                    }
+                    if (response.status >= 500) {
+                        toastr.error("Server error, status 500");
+                        console.log(response);
+                    }
                     return response;
                 }
             };
@@ -65,17 +68,17 @@ var app = angular.module('myApp', [
 
 
 app.run(function ($http) {
-   /* $http.interceptors.push(function ($q, dependency1, dependency2) {
-        return {
-            'request': function (config) {
-                console.log("req");
-            },
-
-            'response': function (response) {
-                console.log("resp");
-            }
-        };
-    });*/
+    /* $http.interceptors.push(function ($q, dependency1, dependency2) {
+         return {
+             'request': function (config) {
+                 console.log("req");
+             },
+ 
+             'response': function (response) {
+                 console.log("resp");
+             }
+         };
+     });*/
 });
 
 

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import bis.project.model.BankMessages;
 import bis.project.services.BankMessagesServices;
 import bis.project.services.CredentialsServices;
+import bis.project.validators.BankMessagesValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class BankMessagesController {
@@ -46,10 +48,11 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages", 
 					method = RequestMethod.POST)
-	public ResponseEntity<BankMessages> addBankMessage(@RequestBody BankMessages message, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<BankMessages> addBankMessage(@RequestBody BankMessages message, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "AddBankMessage");
 		
 		if(isAuthorized) {
+			BankMessagesValidator.Validate(message);
 			BankMessages m = services.addBankMessage(message);
 			return new ResponseEntity<BankMessages>(m, HttpStatus.OK);
 		}
@@ -60,10 +63,11 @@ public class BankMessagesController {
 	//need to add check for this id
 	@RequestMapping(value = "/api/messages/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<BankMessages> updateBankMessage(@PathVariable("id") Integer id, @RequestBody BankMessages message, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<BankMessages> updateBankMessage(@PathVariable("id") Integer id, @RequestBody BankMessages message, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "UpdateBankMessage");
 		
 		if(isAuthorized) {
+			BankMessagesValidator.Validate(message);
 			message.setId(id);
 			BankMessages m = services.updateBankMessage(message);
 			return new ResponseEntity<BankMessages>(m, HttpStatus.OK);

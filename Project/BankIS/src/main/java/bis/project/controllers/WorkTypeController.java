@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import bis.project.model.WorkType;
 import bis.project.services.CredentialsServices;
 import bis.project.services.WorkTypeServices;
+import bis.project.validators.ValidationException;
+import bis.project.validators.WorkTypeValidator;
 
 @RestController
 public class WorkTypeController {
@@ -46,10 +48,11 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes", 
 					method = RequestMethod.POST)
-	public ResponseEntity<WorkType> addWorkType(@RequestBody WorkType workType, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<WorkType> addWorkType(@RequestBody WorkType workType, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "addWorkType");
 		
 		if(isAuthorized) {
+			WorkTypeValidator.Validate(workType);
 			WorkType wt = services.addWorkType(workType);
 			return new ResponseEntity<WorkType>(wt, HttpStatus.OK);
 		}
@@ -59,10 +62,11 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<WorkType> updateWorkType(@PathVariable("id") Integer id, @RequestBody WorkType workType, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<WorkType> updateWorkType(@PathVariable("id") Integer id, @RequestBody WorkType workType, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateWorkType");
 		
 		if(isAuthorized) {
+			WorkTypeValidator.Validate(workType);
 			workType.setId(id);
 			WorkType wt = services.updateWorkType(workType);
 			return new ResponseEntity<WorkType>(wt, HttpStatus.OK);

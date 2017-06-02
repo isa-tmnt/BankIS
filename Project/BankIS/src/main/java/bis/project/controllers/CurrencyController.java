@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import bis.project.model.Currency;
 import bis.project.services.CredentialsServices;
 import bis.project.services.CurrencyServices;
+import bis.project.validators.CurrencyValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class CurrencyController {
@@ -46,10 +48,11 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies", 
 					method = RequestMethod.POST)
-	public ResponseEntity<Currency> addCurrency(@RequestBody Currency currency, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<Currency> addCurrency(@RequestBody Currency currency, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = services.isAuthorized(basicAuth, "AddCurrency");
 		
 		if(isAuthorized) {
+			CurrencyValidator.Validate(currency);
 			Currency c = currencyServices.addCurrency(currency);
 			return new ResponseEntity<Currency>(c, HttpStatus.OK);
 		}
@@ -59,10 +62,11 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") Integer id, @RequestBody Currency currency, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") Integer id, @RequestBody Currency currency, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException{
 		boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateCurrency");
 		
 		if(isAuthorized) {
+			CurrencyValidator.Validate(currency);
 			currency.setId(id);
 			Currency c = currencyServices.updateCurrency(currency);
 			return new ResponseEntity<Currency>(c, HttpStatus.OK);

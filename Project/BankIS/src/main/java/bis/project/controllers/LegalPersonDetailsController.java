@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import bis.project.model.LegalPersonDetails;
 import bis.project.services.CredentialsServices;
 import bis.project.services.LegalPersonDetailsServices;
+import bis.project.validators.LegalPersonDetailsValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class LegalPersonDetailsController {
@@ -46,10 +48,11 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients", 
 					method = RequestMethod.POST)
-	public ResponseEntity<LegalPersonDetails> addClient(@RequestBody LegalPersonDetails client, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<LegalPersonDetails> addClient(@RequestBody LegalPersonDetails client, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "addClient");
 		
 		if(isAuthorized) {
+			LegalPersonDetailsValidator.Validate(client);
 			LegalPersonDetails c = services.addClient(client);
 			return new ResponseEntity<LegalPersonDetails>(c, HttpStatus.OK);
 		}
@@ -59,10 +62,11 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<LegalPersonDetails> updateClient(@PathVariable("id") Integer id, @RequestBody LegalPersonDetails client, @RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<LegalPersonDetails> updateClient(@PathVariable("id") Integer id, @RequestBody LegalPersonDetails client, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateClient");
 		
 		if(isAuthorized) {
+			LegalPersonDetailsValidator.Validate(client);
 			client.setId(id);
 			LegalPersonDetails c = services.updateClient(client);
 			return new ResponseEntity<LegalPersonDetails>(c, HttpStatus.OK);
