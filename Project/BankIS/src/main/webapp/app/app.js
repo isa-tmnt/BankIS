@@ -4,7 +4,25 @@
 var app = angular.module('myApp', [
     'ngRoute',
 ]).
-    config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+    config(['$locationProvider', '$routeProvider', '$httpProvider', function ($locationProvider, $routeProvider, $httpProvider) {
+
+        $httpProvider.interceptors.push(function () {
+            return {
+                'request': function (request) {
+                    return request;
+                },
+
+                'responseError': function (response) {
+                    if(response.status == 401){ //unauthorized
+                      //  location.href = "/#!/login";
+                        toastr.info("No permission for this action, TODO for developers, user shouldnt see this action available");
+                    }
+                   
+                    return response;
+                }
+            };
+        });
+
         $locationProvider.hashPrefix('!');
         $routeProvider.when("/login", {
             template: "<login></login>",
@@ -39,6 +57,27 @@ var app = angular.module('myApp', [
         });
         $routeProvider.otherwise({ redirectTo: '/' });
     }]);
+
+
+
+app.run(function ($http) {
+   /* $http.interceptors.push(function ($q, dependency1, dependency2) {
+        return {
+            'request': function (config) {
+                console.log("req");
+            },
+
+            'response': function (response) {
+                console.log("resp");
+            }
+        };
+    });*/
+});
+
+
+
+
+
 
 var appConfig = {
     apiUrl: "http://localhost:10011/api/"

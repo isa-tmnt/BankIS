@@ -84,6 +84,16 @@ app.component('currensies', {
 
         $scope.iamdialog = $attrs.iamdialog == 'true';
 
+
+        //-------------------------------------> next mechanism <---------------------------------------------------------------
+
+
+        $scope.nexts = [
+            {}
+        ];
+
+
+
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 
         $scope.filters = {};
