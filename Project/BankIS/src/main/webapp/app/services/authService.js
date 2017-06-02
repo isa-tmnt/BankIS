@@ -32,9 +32,12 @@ app.factory('authService', ['$http', function ($http) {
 
     return {
         doLogin: function (email, password) {
-            console.log("logging in")
             $http.post(appConfig.apiUrl + 'login', { email: email, password: password }).then(
                 function successCallback(response) {
+                    if(response.status == 404){
+                        toastr.error('Invalid email/password.')
+                        return;
+                    }
                     toastr.success('You are logged in.')
                     var btoaED = btoa(email + ":" + password);
                     localStorage.setItem("basicAuth", btoaED)
