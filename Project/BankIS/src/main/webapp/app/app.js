@@ -13,11 +13,15 @@ var app = angular.module('myApp', [
                 },
 
                 'responseError': function (response) {
-                    if(response.status == 401){ //unauthorized
+                    if (response.status >= 400 && response.status < 500){ //unauthorized
                       //  location.href = "/#!/login";
                         toastr.info("No permission for this action, TODO for developers, user shouldnt see this action available");
                     }
-                   
+                   if(response.status >= 500){
+                       toastr.error("Server error, status 500");
+                       console.log(response);
+                   }
+
                     return response;
                 }
             };

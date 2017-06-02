@@ -4,16 +4,16 @@
         <table class="table table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th ng-click="setOrdering(head.code);" ng-repeat="head in header">{{head.label}} <span class="glyphicon glyphicon-chevron-right"></span></th>
+                    <th ng-show="head.code != 'id'" ng-click="setOrdering(head.code);" ng-repeat="head in header">{{head.label}} <span class="glyphicon glyphicon-chevron-right"></span></th>
                 </tr>
                 <tr>
-                    <th ng-if="!filterId" ng-repeat="head in header;"><input class="form-control" type="text" ng-model="filters[head.code]" placeholder="search {{head.label}}"></th>
+                    <th ng-show="head.code != 'id'" ng-if="!filterId" ng-repeat="head in header;"><input class="form-control" type="text" ng-model="filters[head.code]" placeholder="search {{head.label}}"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-class="row == selected? 'selectedRow' : ''" ng-click="setSelected(row)" ng-if="showRow(row) && $index >= minShow && $index < maxShow"
                     ng-repeat="row in rows  | orderBy:('-' + ordering) track by $index">
-                    <td ng-repeat="head in header"></span>
+                    <td ng-show="head.code != 'id'" ng-repeat="head in header"></span>
                          <span ng-if="!head.isReference">
                              {{row[head.code] | ifDateFormatFilter}}
                          </span>
@@ -31,7 +31,7 @@
 
 <div class="row" ng-if="iamdialog != true">
     <div style="margin-top:10px;" class="col-md-12">
-        <div ng-repeat="head in header" class="col-md-3">
+        <div ng-show="head.code != 'id'" ng-repeat="head in header" class="col-md-3">
             <label for="{{head.code}}">{{head.label}}:</label>
             <input ng-if="!head.isReference" type="{{head.type}}" class="form-control" ng-model="editing[head.code]" id="{{head.code}}">
             <input ng-if="head.isReference" type="{{head.type}}" class="form-control" ng-model="editing[head.code].id" id="{{head.code}}">

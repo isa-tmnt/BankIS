@@ -27,6 +27,7 @@ app.component('transferItems', {
 
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
+            if ($scope.editing.id) $scope.editing.id = null;
             $scope.rows.push(JSON.parse(JSON.stringify($scope.editing)));
         }
 

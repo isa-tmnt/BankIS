@@ -29,9 +29,11 @@ app.component('banks', {
 
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
+            if ($scope.editing.id) $scope.editing.id = null;
             $http.post(appConfig.apiUrl + 'banks', $scope.editing).then(function successCallback(response) {
+                console.log(response)
                 var row = response.data;
-                if (row) {
+                if (row && response.status < 300) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                     $scope.rows.push(row);
                     toastr.success('Added successfuly.')
@@ -49,7 +51,7 @@ app.component('banks', {
             if ($scope.selected.id) {
                 $http.post(appConfig.apiUrl + 'banks', $scope.editing).then(function successCallback(response) {
                     var row = response.data;
-                    if (row) {
+                    if (row && response.status < 300) {
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
                         $scope.rows.push(row);
@@ -72,8 +74,10 @@ app.component('banks', {
             if ($scope.selected.id) {
                 $http.delete(appConfig.apiUrl + 'banks/' + $scope.selected.id).then(function successCallback(response) {
 
-                    $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-                    toastr.success('Removed successfuly.')
+                    if (response.status < 300) {
+                        $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
+                        toastr.success('Removed successfuly.')
+                    }
 
                 }, function err(e) {
                     toastr.error("Can't remove sorry.")

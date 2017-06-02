@@ -34,7 +34,7 @@ app.factory('authService', ['$http', function ($http) {
         doLogin: function (email, password) {
             $http.post(appConfig.apiUrl + 'login', { email: email, password: password }).then(
                 function successCallback(response) {
-                    if(response.status == 404){
+                    if (response.status >= 400 && response.status < 500){
                         toastr.error('Invalid email/password.')
                         return;
                     }
