@@ -22,3 +22,8 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+
+### Banka otpad ###
+
+ourBankLog4JLogs.log

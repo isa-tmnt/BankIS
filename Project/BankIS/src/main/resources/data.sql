@@ -57,3 +57,11 @@ insert into ROLES_PERMISSIONS(role_id, permission_id) values (1, 15)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 16)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 17)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 18)
+
+
+
+-- neznam kako da proradi :/ INSERT INTO WORK_TYPES (code, name) VALUES (111, 'WT 1')
+
+
+--INSERT INTO CLIENT_DETAILS (`client_type`, `address`, `email`, `first_name`, `jmbg`, `last_name`, `phone_number`, `fax`, `pib`, `web_page`, `work_type_id`) VALUES ('LEGAL_PERSON', '123', '123', '123', '132', 'asd', '54', '43', '54', '23', '1');
+
