@@ -34,7 +34,7 @@ app.component('bankOrders', {
             { label: "Daily account balance", code: "dailyAccountBalance", manatory: false, type: "number", isReference: true, openDialog: () =>$scope.openDialog('daily-account-balances') },
         ];
 
-        $http.get('/api/bankOrders.json').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'bankOrders').then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
@@ -42,17 +42,64 @@ app.component('bankOrders', {
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
-            $scope.rows.push(JSON.parse(JSON.stringify($scope.editing)));
+            $http.post(appConfig.apiUrl + 'bankOrders', $scope.editing).then(function successCallback(response) {
+                console.log(response)
+                var row = response.data;
+                if (row && response.status < 300) {
+                    $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
+                    $scope.rows.push(row);
+                    toastr.success('Added successfuly.')
+                }
+            }, function err(e) {
+                console.log(e);
+                if (e && e.data && e.data.cause)
+                    toastr.error(e.data.cause)
+                else
+                    toastr.error("Can't add sorry.")
+            });
         }
 
         $scope.doEdit = function () {
-            $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-            $scope.rows.push($scope.editing);
+            if ($scope.selected.id) {
+                $http.post(appConfig.apiUrl + 'bankOrders', $scope.editing).then(function successCallback(response) {
+                    var row = response.data;
+                    if (row && response.status < 300) {
+                        $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
+                        $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
+                        $scope.rows.push(row);
+                        toastr.success('Edited successfuly.')
+                    }
+                }, function err(e) {
+                    console.log(e);
+                    if (e && e.data && e.data.cause)
+                        toastr.error(e.data.cause)
+                    else
+                        toastr.error("Can't edit sorry.")
+                });
+            } else {
+                toastr.info('Select row first.')
+            }
+
         }
 
         $scope.doRemove = function () {
-            $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
+            if ($scope.selected.id) {
+                $http.delete(appConfig.apiUrl + 'bankOrders/' + $scope.selected.id).then(function successCallback(response) {
+
+                    if (response.status < 300) {
+                        $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
+                        toastr.success('Removed successfuly.')
+                    }
+
+                }, function err(e) {
+                    toastr.error("Can't remove sorry.")
+
+                });
+            } else {
+                toastr.info('Select row first.')
+            }
         }
+
 
 
         $scope.iamdialog = $attrs.iamdialog == 'true';

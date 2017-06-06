@@ -39,9 +39,11 @@ public class Bank {
 	private Set<BankAccount> accounts;
 	
 	@OneToMany(mappedBy="senderBank")
+	@JsonIgnore
 	private Set<InterbankTransfer> sentTransfers;
 	
 	@OneToMany(mappedBy="recipientBank")
+	@JsonIgnore
 	private Set<InterbankTransfer> receivedTransfers;
 	
 	public Bank() {}

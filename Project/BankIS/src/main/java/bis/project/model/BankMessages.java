@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class BankMessages {
 	
@@ -23,6 +25,7 @@ public class BankMessages {
 	private String description;
 	
 	@OneToMany(mappedBy="bankMessage")
+	@JsonIgnore
 	private Set<InterbankTransfer> transfers;
 	
 	public BankMessages() {}

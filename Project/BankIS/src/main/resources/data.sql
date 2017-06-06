@@ -58,10 +58,31 @@ insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 16)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 17)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 18)
 
+INSERT INTO bank(`bank_code`, `billing_account`, `name`, `swift_code`) VALUES (432, 442, 'fdd', 'ghfgf')
 
 
--- neznam kako da proradi :/ INSERT INTO WORK_TYPES (code, name) VALUES (111, 'WT 1')
 
 
---INSERT INTO CLIENT_DETAILS (`client_type`, `address`, `email`, `first_name`, `jmbg`, `last_name`, `phone_number`, `fax`, `pib`, `web_page`, `work_type_id`) VALUES ('LEGAL_PERSON', '123', '123', '123', '132', 'asd', '54', '43', '54', '23', '1');
+INSERT INTO currency(`currency_code`, `name`) VALUES ('123', 'EURO')
+INSERT INTO currency(`currency_code`, `name`) VALUES ('123', 'DOLLAR')
+
+
+
+
+INSERT INTO `bisdb`.`work_type` (`code`, `name`) VALUES ( '213', 'sdfsadf')
+
+
+INSERT INTO `bisdb`.`client_details` (`client_type`, `address`, `email`, `first_name`, `jmbg`, `last_name`, `phone_number`, `fax`, `pib`, `web_page`, `work_type_id`) VALUES ('LEGAL_PERSON', 'sdfa', 'sadf', 'sf', '545', 'asdf', '654', '56', '54', '543', '1')
+
+
+INSERT INTO `bisdb`.`currency` (`currency_code`, `name`) VALUES ('432', 'fdgdg')
+
+
+INSERT INTO `bisdb`.`bank_account` (`account_number`, `end_date`, `start_date`, `status`, `bank_id`, `client_id`, `currency_id`) VALUES ('43243', '2000-08-08', '2000-08-08', '1', '1', '1', '1')
+
+
+INSERT INTO `bisdb`.`daily_account_balance` (`id`, `amount_charged`, `amount_in_favor`, `date`, `new_state`, `previous_state`, `account_id`) VALUES ('1', '435', '543', '2010-10-10', '5465', '543', '1')
+
+
+INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('123', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', 'as', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', 'gf', '123', b'00000000', '1')
 

@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class BankAccount {
 	
@@ -43,9 +45,11 @@ public class BankAccount {
 	private ClientDetails client;
 	
 	@OneToMany(mappedBy="account")
+	@JsonIgnore
 	private Set<ClosingAccount> closingAccounts;
 	
 	@OneToMany(mappedBy="account")
+	@JsonIgnore
 	private Set<DailyAccountBalance> dailyBalances;
 	
 	public BankAccount() {}
