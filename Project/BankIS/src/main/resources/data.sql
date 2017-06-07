@@ -58,15 +58,14 @@ insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 16)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 17)
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (3, 18)
 
+
+
 INSERT INTO bank(`bank_code`, `billing_account`, `name`, `swift_code`) VALUES (432, 442, 'fdd', 'ghfgf')
-
-
+INSERT INTO `bisdb`.`bank` (`bank_code`, `billing_account`, `name`, `swift_code`) VALUES ('321', '543', 'jhg', 'jghgh')
 
 
 INSERT INTO currency(`currency_code`, `name`) VALUES ('123', 'EURO')
 INSERT INTO currency(`currency_code`, `name`) VALUES ('123', 'DOLLAR')
-
-
 
 
 INSERT INTO `bisdb`.`work_type` (`code`, `name`) VALUES ( '213', 'sdfsadf')
@@ -85,4 +84,16 @@ INSERT INTO `bisdb`.`daily_account_balance` (`id`, `amount_charged`, `amount_in_
 
 
 INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('123', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', 'as', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', 'gf', '123', b'00000000', '1')
+INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('655', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', 'as', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', 'gf', '123', b'00000000', '1')
+INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('879', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', 'as', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', 'gf', '123', b'00000000', '1')
+
+INSERT INTO `bisdb`.`bank_messages` (`description`, `message_code`) VALUES ('fdg', '123')
+
+
+INSERT INTO `bisdb`.`interbank_transfer` (`amount`, `transfer_date`, `bank_message_id`, `recipient_bank_id`, `sender_bank_id`) VALUES ('700', '2010-10-10', '1', '1', '2')
+
+
+INSERT INTO `bisdb`.`transfer_item` (`bank_order_id`, `transfer_id`) VALUES ('1', '1')
+INSERT INTO `bisdb`.`transfer_item` (`bank_order_id`, `transfer_id`) VALUES ('2', '1')
+
 
