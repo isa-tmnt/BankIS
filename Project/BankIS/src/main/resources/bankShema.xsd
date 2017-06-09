@@ -59,5 +59,37 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    
+    
+    <xs:element name="importNalogZaPlacanjeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:double" name="amount"/>
+        		<xs:element type="xs:date" name="bankOrderDate"/>
+        		<xs:element type="xs:date" name="currensyDate"/>
+        		<xs:element type="xs:string" name="debtor"/>
+        		<xs:element type="xs:string" name="direction"/>
+        		<xs:element type="xs:string" name="firstAccount"/>
+        		<xs:element type="xs:string" name="firstModel"/>
+        		<xs:element type="xs:string" name="firstNumber"/>
+        		<xs:element type="xs:short" name="id"/>
+        		<xs:element type="xs:date" name="orderDate"/>
+        		<xs:element type="xs:string" name="purposeOfPayment"/>
+        		<xs:element type="xs:string" name="recipient"/>
+       		 	<xs:element type="xs:string" name="secondAccount"/>
+        		<xs:element type="xs:string" name="secondModel"/>
+        		<xs:element type="xs:string" name="secondNumber"/>
+        		<xs:element type="xs:boolean" name="urgently"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="importNalogZaPlacanjeResponse">
+        <xs:complexType>
+            <xs:sequence>
+            	<xs:element type="xs:int" name="CreatedBankOrderId"/>                            
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>
