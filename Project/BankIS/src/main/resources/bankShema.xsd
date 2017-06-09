@@ -61,6 +61,7 @@
     </xs:element>
     
     
+    
     <xs:element name="importNalogZaPlacanjeRequest">
         <xs:complexType>
             <xs:sequence>

@@ -27,4 +27,3 @@ nbdist/
 ### Banka otpad ###
 
 ourBankLog4JLogs.log
-src/main/java/io/spring/guides/**
