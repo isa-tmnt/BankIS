@@ -60,8 +60,6 @@ public class BankOrderController {
 			return new ResponseEntity<BankOrder>(b, HttpStatus.OK);
 		}
 		
-		
-		
 		return new ResponseEntity<BankOrder>(HttpStatus.UNAUTHORIZED);
 	}
 	

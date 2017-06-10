@@ -29,21 +29,33 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks", 
 					method = RequestMethod.GET)
-	public Set<Bank> getAllBanks() {
-		Set<Bank> banks = bankServices.getAllBanks();
-		return banks;
+	public ResponseEntity<Set<Bank>> getAllBanks(@RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllBanks");
+		
+		if(isAuthorized) {
+			Set<Bank> banks = bankServices.getAllBanks();
+			return new ResponseEntity<Set<Bank>>(banks, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Set<Bank>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Bank> getBank(@PathVariable("id") Integer id) {
-		Bank bank = bankServices.getBank(id);
+	public ResponseEntity<Bank> getBank(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = services.isAuthorized(basicAuth, "GetBank");
 		
-		if(bank == null) {
-			return new ResponseEntity<Bank>(HttpStatus.NOT_FOUND);
+		if(isAuthorized) {
+			Bank bank = bankServices.getBank(id);
+			
+			if(bank == null) {
+				return new ResponseEntity<Bank>(HttpStatus.NOT_FOUND);
+			}
+			
+			return new ResponseEntity<Bank>(bank, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<Bank>(bank, HttpStatus.OK);
+		return new ResponseEntity<Bank>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/banks", 
@@ -56,8 +68,6 @@ public class BankController {
 			Bank b = bankServices.addBank(bank);
 			return new ResponseEntity<Bank>(b, HttpStatus.OK);
 		}
-		
-		
 		
 		return new ResponseEntity<Bank>(HttpStatus.UNAUTHORIZED);
 	}

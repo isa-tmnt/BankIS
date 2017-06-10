@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+import bis.project.model.Bank;
 
 @Entity
 public class User {
@@ -27,8 +30,14 @@ public class User {
 	@Column(nullable=false, unique=true, length=120)
     private String email;
 	
-	@Column(nullable=false, length=20)
+	@Column(nullable=false, length=255)
     private String password;
+	
+	@Column(nullable=false, length=255)
+	private String salt; 
+	
+	@ManyToOne(optional=false)
+	private Bank bank;
 	
     //private boolean enabled;
     
@@ -85,11 +94,27 @@ public class User {
 		this.password = password;
 	}
 
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Bank getBank() {
+		return bank;
+	}
+
+	public void setBank(Bank bank) {
+		this.bank = bank;
 	}
 }

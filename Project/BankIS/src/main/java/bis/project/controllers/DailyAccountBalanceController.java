@@ -23,22 +23,22 @@ import bis.project.validators.ValidationException;
 @RestController
 public class DailyAccountBalanceController {
 	@Autowired
-	private DailyAccountBalanceServices currencyServices;
+	private DailyAccountBalanceServices dabServices;
 	
 	@Autowired
 	private CredentialsServices services;
 	
 	@RequestMapping(value = "/api/dailyAccountBalances", 
 					method = RequestMethod.GET)
-	public Set<DailyAccountBalance> getAllCurrencies() {
-		Set<DailyAccountBalance> dds = currencyServices.getAllDailyAccountBalances();
+	public Set<DailyAccountBalance> getAllDailyAccountBalances() {
+		Set<DailyAccountBalance> dds = dabServices.getAllDailyAccountBalances();
 		return dds;
 	}
 	
 	@RequestMapping(value = "/api/dailyAccountBalances/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<DailyAccountBalance> getCurrency(@PathVariable("id") Integer id) {
-		DailyAccountBalance ddd = currencyServices.getDailyAccountBalance(id);
+	public ResponseEntity<DailyAccountBalance> getDailyAccountBalance(@PathVariable("id") Integer id) {
+		DailyAccountBalance ddd = dabServices.getDailyAccountBalance(id);
 		
 		if(ddd != null) {
 			return new ResponseEntity<DailyAccountBalance>(ddd, HttpStatus.OK);

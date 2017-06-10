@@ -29,21 +29,33 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies", 
 					method = RequestMethod.GET)
-	public Set<Currency> getAllCurrencies() {
-		Set<Currency> currencies = currencyServices.getAllCurrency();
-		return currencies;
+	public ResponseEntity<Set<Currency>> getAllCurrencies(@RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllCurrencies");
+		
+		if(isAuthorized) {
+			Set<Currency> currencies = currencyServices.getAllCurrency();
+			return new ResponseEntity<Set<Currency>>(currencies, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Set<Currency>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Currency> getCurrency(@PathVariable("id") Integer id) {
-		Currency currency = currencyServices.getCurrency(id);
+	public ResponseEntity<Currency> getCurrency(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = services.isAuthorized(basicAuth, "getCurrency");
 		
-		if(currency != null) {
-			return new ResponseEntity<Currency>(currency, HttpStatus.OK);
+		if(isAuthorized) {
+			Currency currency = currencyServices.getCurrency(id);
+			
+			if(currency != null) {
+				return new ResponseEntity<Currency>(currency, HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<Currency>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Currency>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Currency>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/currencies", 

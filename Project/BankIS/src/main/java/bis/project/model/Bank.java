@@ -9,14 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import bis.project.security.User;
 
 @Entity
 public class Bank {
-	
-	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -45,6 +43,10 @@ public class Bank {
 	@OneToMany(mappedBy="recipientBank")
 	@JsonIgnore
 	private Set<InterbankTransfer> receivedTransfers;
+	
+	@OneToMany(mappedBy="bank")
+	@JsonIgnore
+	private Set<User> users;
 	
 	public Bank() {}
 
@@ -110,5 +112,13 @@ public class Bank {
 
 	public void setReceivedTransfers(Set<InterbankTransfer> receivedTransfers) {
 		this.receivedTransfers = receivedTransfers;
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 }
