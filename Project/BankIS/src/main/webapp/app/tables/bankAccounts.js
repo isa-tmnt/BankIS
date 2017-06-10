@@ -145,6 +145,7 @@ app.component('bankAccounts', {
 
         $scope.filters = {};
         $scope.filterId = $attrs.filterid;
+        console.log($scope.filterId)
 
         $scope.showRow = function (row) {
             if ($scope.filterId && $scope.filterId.toString() != row['id'].toString())  //if zoom on one entity

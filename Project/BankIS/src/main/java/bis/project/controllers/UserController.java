@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.security.User;
 import bis.project.services.UserServices;
+import bis.project.validators.ClientDetailsValidator;
+import bis.project.validators.UserValidator;
+import bis.project.validators.ValidationException;
 
 @RestController
 public class UserController {
@@ -40,14 +43,18 @@ public class UserController {
 	
 	@RequestMapping(value = "/api/users", 
 					method = RequestMethod.POST)
-	public User addUser(@RequestBody User user) {
+	public User addUser(@RequestBody User user) throws ValidationException {
+		UserValidator.Validate(user);
 		return services.addUser(user);
 	}
 	
 	@RequestMapping(value = "/api/users/{id}", 
 					method = RequestMethod.PUT)
-	public User updateUser(@PathVariable("id") Integer id, @RequestBody User user) {
+	public User updateUser(@PathVariable("id") Integer id, @RequestBody User user) throws ValidationException {
 		user.setId(id);
+		
+		UserValidator.Validate(user);
+		
 		return services.updateUser(user);
 	}
 	

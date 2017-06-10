@@ -19,30 +19,19 @@ app.component('dailyAccountBalances', {
             { label: "Date", code: "date", manatory: false, type: "date" },
             { label: "Previous state", code: "previousState", manatory: false, type: "number" },
             { label: "Amount charged", code: "amountCharged", manatory: false, type: "number" },
-            { label: "Amount in favour", code: "amountInFavour", manatory: false, type: "number" },
+            { label: "Amount in favour", code: "amountInFavor", manatory: false, type: "number" },
             { label: "New State", code: "newState", manatory: false, type: "number" },
-            { label: "Bank Account", code: "bankAccount", manatory: false, type: "text", isReference: true, openDialog: () => $scope.openDialog('bank-accounts') },
+            { label: "Bank Account", code: "account", manatory: false, type: "text", isReference: true, openDialog: () => $scope.openDialog('bank-accounts') },
         ];
 
-        $http.get('/api/dailyAccountBalances.json').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'dailyAccountBalances').then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
 
-        $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
-        $scope.doAdd = function () {
-            if ($scope.editing.id) $scope.editing.id = null;
-            $scope.rows.push(JSON.parse(JSON.stringify($scope.editing)));
-        }
 
-        $scope.doEdit = function () {
-            $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-            $scope.rows.push($scope.editing);
-        }
-
-        $scope.doRemove = function () {
-            $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-        }
+        $scope.allowAdd = false; $scope.allowEdit = false; $scope.allowRemove = false;
+        
 
 
         $scope.iamdialog = $attrs.iamdialog == 'true';
@@ -64,13 +53,13 @@ app.component('dailyAccountBalances', {
         }
 
         $scope.zoomSingleLine = function (code, row) {
-            if (code == 'bankAccount') {
-               $scope.openDialog('bank-accounts',row[code]);
+            if (code == 'account') {
+               $scope.openDialog('bank-accounts',row[code].id);
             }
         };
 
         $rootScope.$on('BANK_ACCOUNT_SELECTED', function (event, row) {
-            if (row['id']) $scope.editing['bankAccount'] = row['id']
+            if (row['id']) $scope.editing['account'] = row['id']
             if($scope.dialog) $scope.dialog.remove();
         });
 
