@@ -59,6 +59,8 @@ var app = angular.module('myApp', [
             template: "<daily-account-balances></daily-account-balances>",
         }).when("/workTypes", {
             template: "<work-types></work-types>",
+        }).when("/users", {
+            template: "<users></users>",
         }).when("/", {
             template: "<welcome-page></welcome-page>",
         });
