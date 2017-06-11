@@ -42,6 +42,7 @@ app.component('bankOrders', {
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
+            console.log($scope.editing);
             $http.post(appConfig.apiUrl + 'bankOrders', $scope.editing).then(function successCallback(response) {
                 console.log(response)
                 var row = response.data;

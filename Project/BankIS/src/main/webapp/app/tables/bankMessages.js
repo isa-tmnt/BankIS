@@ -35,6 +35,7 @@ app.component('bankMessages', {
                     $scope.rows.push(row);
                     toastr.success('Added successfuly.')
                 }
+                console.log(response)
             }, function err(e) {
                 console.log(e);
                 if (e && e.data && e.data.cause)

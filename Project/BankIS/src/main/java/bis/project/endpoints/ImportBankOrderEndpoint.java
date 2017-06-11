@@ -12,8 +12,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import bis.project.model.BankOrder;
 import bis.project.model.DailyAccountBalance;
-import bis.project.repositories.BankOrderRepository;
 import bis.project.repositories.DailyAccountBalanceRepository;
+import bis.project.services.BankOrderServices;
 import io.spring.guides.gs_producing_web_service.ImportNalogZaPlacanjeRequest;
 import io.spring.guides.gs_producing_web_service.ImportNalogZaPlacanjeResponse;
 
@@ -24,7 +24,7 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 	private static int idPoruke;
 	
 	@Autowired
-	private BankOrderRepository orderRepo;
+	private BankOrderServices orderService;
 	
 	@Autowired
 	private DailyAccountBalanceRepository dailyRepo;
@@ -54,7 +54,7 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		order.setSecondNumber(request.getSecondNumber());
 		order.setUrgently(request.isUrgently());
 		
-		BankOrder savedOrder = orderRepo.save(order);
+		BankOrder savedOrder = orderService.addBankOrder(order);
 		
 		ImportNalogZaPlacanjeResponse response = new ImportNalogZaPlacanjeResponse();
 		response.setCreatedBankOrderId(savedOrder.getId());
