@@ -29,21 +29,33 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients", 
 					method = RequestMethod.GET)
-	public Set<LegalPersonDetails> getAllClients() {
-		Set<LegalPersonDetails> clients = services.getAllClients();
-		return clients;
+	public ResponseEntity<Set<LegalPersonDetails>> getAllClients(@RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllClients");
+		
+		if(isAuthorized) {
+			Set<LegalPersonDetails> clients = services.getAllClients();
+			return new ResponseEntity<Set<LegalPersonDetails>>(clients, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Set<LegalPersonDetails>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/legclients/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<LegalPersonDetails> getClient(@PathVariable("id") Integer id) {
-		LegalPersonDetails client = services.getClient(id);
+	public ResponseEntity<LegalPersonDetails> getClient(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getClient");
 		
-		if(client != null) {
-			return new ResponseEntity<LegalPersonDetails>(client, HttpStatus.OK);
+		if(isAuthorized) {
+			LegalPersonDetails client = services.getClient(id);
+			
+			if(client != null) {
+				return new ResponseEntity<LegalPersonDetails>(client, HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<LegalPersonDetails>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<LegalPersonDetails>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<LegalPersonDetails>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/legclients", 

@@ -29,21 +29,33 @@ public class BankAccountController {
 	
 	@RequestMapping(value = "/api/accounts", 
 					method = RequestMethod.GET)
-	public Set<BankAccount> getAllBankAccounts() {
-		Set<BankAccount> accounts = services.getAllBankAccounts();
-		return accounts;
+	public ResponseEntity<Set<BankAccount>> getAllBankAccounts(@RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetAllBankAccounts");
+		
+		if(isAuthorized) {
+			Set<BankAccount> accounts = services.getAllBankAccounts();
+			return new ResponseEntity<Set<BankAccount>>(accounts, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Set<BankAccount>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/accounts/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<BankAccount> getBankAccount(@PathVariable("id") Integer id) {
-		BankAccount account = services.getBankAccount(id);
+	public ResponseEntity<BankAccount> getBankAccount(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetBankAccount");
 		
-		if(account != null) {
-			return new ResponseEntity<BankAccount>(account, HttpStatus.OK);
+		if(isAuthorized) {
+			BankAccount account = services.getBankAccount(id);
+			
+			if(account != null) {
+				return new ResponseEntity<BankAccount>(account, HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<BankAccount>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<BankAccount>(HttpStatus.NOT_FOUND); 
+		return new ResponseEntity<BankAccount>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/accounts", 

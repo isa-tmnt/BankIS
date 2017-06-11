@@ -29,21 +29,33 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes", 
 					method = RequestMethod.GET)
-	public Set<WorkType> getAllWorkTypes() {
-		Set<WorkType> workTypes = services.getAllWorkTypes();
-		return workTypes;
+	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");
+		
+		if(isAuthorized) {
+			Set<WorkType> workTypes = services.getAllWorkTypes();
+			return new ResponseEntity<Set<WorkType>>(workTypes, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Set<WorkType>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/worktypes/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<WorkType> getWorkType(@PathVariable("id") Integer id) {
-		WorkType workType = services.getWorkType(id);
+	public ResponseEntity<WorkType> getWorkType(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getWorkType");
 		
-		if(workType != null) {
-			return new ResponseEntity<WorkType>(workType, HttpStatus.OK);
+		if(isAuthorized) {
+			WorkType workType = services.getWorkType(id);
+			
+			if(workType != null) {
+				return new ResponseEntity<WorkType>(workType, HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<WorkType>(HttpStatus.NOT_FOUND); 
 		}
 		
-		return new ResponseEntity<WorkType>(HttpStatus.NOT_FOUND); 
+		return new ResponseEntity<WorkType>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/worktypes", 

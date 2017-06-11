@@ -29,21 +29,33 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages", 
 					method = RequestMethod.GET)
-	public Set<BankMessages> getAllBankMessages() {
-		Set<BankMessages> messages = services.getBankMessages();
-		return messages;
+	public ResponseEntity<Set<BankMessages>> getAllBankMessages(@RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetAllBankMessages");
+		
+		if(isAuthorized) {
+			Set<BankMessages> messages = services.getBankMessages();
+			return new ResponseEntity<Set<BankMessages>>(messages, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Set<BankMessages>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/messages/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<BankMessages> getBankMessage(@PathVariable("id") Integer id) {
-		BankMessages message =  services.getBankMessage(id);
+	public ResponseEntity<BankMessages> getBankMessage(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
+		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetBankMessage");
 		
-		if(message != null) {
-			return new ResponseEntity<BankMessages>(message, HttpStatus.OK);
+		if(isAuthorized) {
+			BankMessages message =  services.getBankMessage(id);
+			
+			if(message != null) {
+				return new ResponseEntity<BankMessages>(message, HttpStatus.OK);
+			}
+			
+			return new ResponseEntity<BankMessages>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<BankMessages>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<BankMessages>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/messages", 
