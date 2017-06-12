@@ -1,6 +1,8 @@
 package bis.project.controllers;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +25,13 @@ public class CredentialsController {
 					method = RequestMethod.POST)
 	public ResponseEntity<Credentials> login(@RequestBody Credentials credentials) {
 		Credentials c = services.login(credentials);
+		//@CookieValue("cookie") String cookie
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set(HttpHeaders.SET_COOKIE, "cookie=cookieValue; HttpOnly");
+		responseHeaders.set("CSRF-TOKEN", UUID.randomUUID().toString());
 		
 		if(c != null) {
-			return new ResponseEntity<Credentials>(c, HttpStatus.OK);
+			return new ResponseEntity<Credentials>(c, responseHeaders, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<Credentials>(HttpStatus.NOT_FOUND);
