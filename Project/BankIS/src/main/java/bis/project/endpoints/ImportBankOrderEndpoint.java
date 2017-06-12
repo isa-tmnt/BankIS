@@ -39,7 +39,7 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		
 		order.setAmount(new BigDecimal(request.getAmount()));
 		order.setBankOrderDate(new Date());
-		order.setCurrencyDate(request.getCurrensyDate().toGregorianCalendar().getTime());
+	//	order.setCurrencyDate(request.getCurrensyDate().toGregorianCalendar().getTime());
 		order.setDailyAccountBalance(getLastElement(dailties)); 
 		order.setDebtor(request.getDebtor());
 		order.setDirection(request.getDirection());
@@ -53,6 +53,8 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		order.setSecondModel(request.getSecondModel());
 		order.setSecondNumber(request.getSecondNumber());
 		order.setUrgently(request.isUrgently());
+		
+		order.setId(null);
 		
 		BankOrder savedOrder = orderService.addBankOrder(order);
 		
