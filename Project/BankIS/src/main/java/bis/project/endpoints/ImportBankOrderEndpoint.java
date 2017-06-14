@@ -59,7 +59,7 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		BankOrder savedOrder = orderService.addBankOrder(order);
 		
 		ImportNalogZaPlacanjeResponse response = new ImportNalogZaPlacanjeResponse();
-		response.setCreatedBankOrderId(savedOrder.getId());
+		response.setCreatedBankOrderId("asdf");
 		
 		return response;
 	}

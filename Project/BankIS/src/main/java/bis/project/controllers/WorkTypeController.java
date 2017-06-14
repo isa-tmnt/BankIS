@@ -3,6 +3,7 @@ package bis.project.controllers;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import bis.project.M103Client;
+import bis.project.IAmWsClientConfig;
 import bis.project.model.WorkType;
 import bis.project.services.CredentialsServices;
 import bis.project.services.WorkTypeServices;
 import bis.project.validators.ValidationException;
 import bis.project.validators.WorkTypeValidator;
+import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
+import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeResponse;
 
 @RestController
 public class WorkTypeController {
@@ -30,6 +35,18 @@ public class WorkTypeController {
 	@RequestMapping(value = "/api/worktypes", 
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="Authorization") String basicAuth) {
+		
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+	     M103Client wsclient = /*new BankOrderClient();*/ context.getBean(M103Client.class);
+	    wsclient.setDefaultUri("http://localhost:7779/ws");
+	    GetMOneZeroThreeRequest request = new GetMOneZeroThreeRequest();
+	    request.setId(123);
+	    request.setSifraValute("asdgasd");
+		GetMOneZeroThreeResponse response = wsclient.getBeer(request);
+		
+		
+		
+		
 		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");
 		
 		if(isAuthorized) {

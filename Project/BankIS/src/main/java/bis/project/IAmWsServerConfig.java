@@ -8,9 +8,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
+import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.EndpointInterceptor;
+import org.springframework.ws.server.endpoint.MethodEndpoint;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.KeyStoreCallbackHandler;
 import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
@@ -19,30 +23,33 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
+
 @EnableWs
 @Configuration
-public class WsServiceConfig extends WsConfigurerAdapter {
+public class IAmWsServerConfig extends WsConfigurerAdapter {
 	
-	//@Bean
+	 
+	@Bean
     public KeyStoreCallbackHandler securityCallbackHandler(){
         KeyStoreCallbackHandler callbackHandler = new KeyStoreCallbackHandler();
         callbackHandler.setPrivateKeyPassword("123456");
         return callbackHandler;
     }
 
-   // @Bean
+   //@Bean
     public Wss4jSecurityInterceptor securityInterceptor() throws Exception {
         Wss4jSecurityInterceptor securityInterceptor = new Wss4jSecurityInterceptor();
 
         // validate incoming request
-        securityInterceptor.setValidationActions("Timestamp Signature Encrypt");      
+        securityInterceptor.setValidationActions("Timestamp Signature");      
         securityInterceptor.setValidationSignatureCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setValidationDecryptionCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setValidationCallbackHandler(securityCallbackHandler());
 
         // encrypt the response
         securityInterceptor.setSecurementEncryptionUser("client-public");
-        securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}importNalogZaPlacanjeResponse");
+     //   securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}importNalogZaPlacanjeResponse");
+    //    securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}getMOneZeroThreeRequest");
         securityInterceptor.setSecurementEncryptionCrypto(getCryptoFactoryBean().getObject());
 
         // sign the response
@@ -51,6 +58,9 @@ public class WsServiceConfig extends WsConfigurerAdapter {
         securityInterceptor.setSecurementPassword("123456");
         securityInterceptor.setSecurementSignatureCrypto(getCryptoFactoryBean().getObject());
 
+     //   securityInterceptor.setValidateResponse(false);
+     //   securityInterceptor.setValidateRequest(false);
+        
         return securityInterceptor;
     }
 
@@ -94,7 +104,23 @@ public class WsServiceConfig extends WsConfigurerAdapter {
 		return new SimpleXsdSchema(new ClassPathResource("bankShema.xsd"));
 	}
 	
-	
-	
+	 @Bean
+	    public Jaxb2Marshaller getMarshaller(){
+	        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+	        marshaller.setContextPath("io.spring.guides.gs_producing_web_service");
+	        return marshaller;
+	    }
+	 
+	@Bean
+    public M103Client getM103Client() throws Exception {
+		M103Client beerClient = new M103Client();
+        beerClient.setMarshaller(getMarshaller());
+        beerClient.setUnmarshaller(getMarshaller());
+        beerClient.setDefaultUri("http://localhost:7779/ws");
+        ClientInterceptor[] interceptors = new ClientInterceptor[]{securityInterceptor()};
+        beerClient.setInterceptors(interceptors);
+        return beerClient;
+    }
 	
 }
+
