@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,9 +30,11 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<Bank>> getAllBanks(@RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<Set<Bank>> getAllBanks(@RequestHeader(value="Authorization") String basicAuth, 
+												 @CookieValue("jwt") String jwt) {
 		boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllBanks");
-		
+		System.out.println("jwt: " + jwt);
+		//System.out.println("csrf: " + csrfToken);
 		if(isAuthorized) {
 			Set<Bank> banks = bankServices.getAllBanks();
 			return new ResponseEntity<Set<Bank>>(banks, HttpStatus.OK);

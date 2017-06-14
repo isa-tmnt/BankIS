@@ -29,7 +29,7 @@ app.component('legalPersonDetails', {
 
         ];
 
-        $http.get(appConfig.apiUrl + 'legclients').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'legclients', appConfig.config).then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
@@ -37,7 +37,7 @@ app.component('legalPersonDetails', {
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
             var data = $.extend({}, $scope.editing);
-            $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
+            $http.post(appConfig.apiUrl + 'legclients', data, appConfig.config).then(function successCallback(response) {
                 var row = response.data;
                 if (row && response.status < 300) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -57,7 +57,7 @@ app.component('legalPersonDetails', {
         $scope.doEdit = function () {
             if ($scope.selected.id) {
                 var data = $.extend({}, $scope.editing);
-                $http.post(appConfig.apiUrl + 'legclients', data).then(function successCallback(response) {
+                $http.post(appConfig.apiUrl + 'legclients', data, appConfig.config).then(function successCallback(response) {
                     var row = response.data;
                     if (row && response.status < 300) {                      
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -80,7 +80,7 @@ app.component('legalPersonDetails', {
 
         $scope.doRemove = function () {
             if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'legclients/' + $scope.selected.id).then(function successCallback(response) {
+                $http.delete(appConfig.apiUrl + 'legclients/' + $scope.selected.id, appConfig.config).then(function successCallback(response) {
 
                     if (response.status < 300) {
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);

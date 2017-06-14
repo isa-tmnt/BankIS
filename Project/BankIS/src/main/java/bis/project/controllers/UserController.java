@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,8 +29,17 @@ public class UserController {
 	
 	@RequestMapping(value = "/api/users", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<UserDTO>> getAllUsers(@RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetAllUsers");
+	public ResponseEntity<Set<UserDTO>> getAllUsers(@RequestHeader(value="Authorization") String basicAuth,
+													@RequestHeader(value="CsrfToken") String csrfToken, 
+													@RequestHeader(value="AuthEmail") String authEmail, 
+													@CookieValue("jwt") String jwt) {
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetAllUsers");
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "GetAllUsers");
+		
+		/*System.out.println(csrfToken);
+		System.out.println(authEmail);
+		System.out.println(jwt);*/
 		
 		if(isAuthorized) {
 			Set<UserDTO> users = services.getAllUsers();

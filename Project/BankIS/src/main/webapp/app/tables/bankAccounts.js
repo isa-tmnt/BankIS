@@ -26,7 +26,7 @@ app.component('bankAccounts', {
             { label: "Client Details", code: "client", type: "text", isReference: true, openDialog: () => $scope.openDialog('client-details') },
         ];
 
-        $http.get(appConfig.apiUrl + 'accounts').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'accounts', appConfig.config).then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         }, function err(e) {
@@ -36,7 +36,7 @@ app.component('bankAccounts', {
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {       
             if ($scope.editing.id) $scope.editing.id = null;  
-            $http.post(appConfig.apiUrl + 'accounts', $scope.editing).then(function successCallback(response) {
+            $http.post(appConfig.apiUrl + 'accounts', $scope.editing, appConfig.config).then(function successCallback(response) {
                 var row = response.data;
                 if (row && response.status < 300) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -54,7 +54,7 @@ app.component('bankAccounts', {
 
         $scope.doEdit = function () {
             if ($scope.selected.id) {
-                $http.post(appConfig.apiUrl + 'accounts', $scope.editing).then(function successCallback(response) {
+                $http.post(appConfig.apiUrl + 'accounts', $scope.editing, appConfig.config).then(function successCallback(response) {
                     var row = response.data;
                     if (row && response.status < 300) {
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -77,7 +77,7 @@ app.component('bankAccounts', {
 
         $scope.doRemove = function () {
             if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'accounts/' + $scope.selected.id).then(function successCallback(response) {
+                $http.delete(appConfig.apiUrl + 'accounts/' + $scope.selected.id, appConfig.config).then(function successCallback(response) {
 
                     if (response.status < 300) {
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);

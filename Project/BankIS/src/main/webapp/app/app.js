@@ -89,5 +89,11 @@ app.run(function ($http) {
 
 
 var appConfig = {
-    apiUrl: "http://localhost:10011/api/"
+    apiUrl: "https://localhost:10011/api/",
+    config: { 
+    	headers: {
+    		"CsrfToken" : localStorage.getItem("X-CSRF-TOKEN"),
+    		"AuthEmail" : localStorage.getItem("basicAuthEmail")
+    	} 
+    }
 };

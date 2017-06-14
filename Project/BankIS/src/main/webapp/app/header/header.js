@@ -7,7 +7,7 @@ app.component('ourHeader', {
         $scope.logedUser = null;
              
         authService.onLogin(function(user){
-            console.log(user)
+            //console.log(user)
             $scope.logedUser = user;
         })
 
