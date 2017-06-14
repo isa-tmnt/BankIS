@@ -1,7 +1,6 @@
 package bis.project;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +8,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.config.annotation.EnableWs;
-import org.springframework.ws.config.annotation.WsConfigurerAdapter;
-import org.springframework.ws.server.EndpointInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.KeyStoreCallbackHandler;
 import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
@@ -40,10 +37,23 @@ public class IAmWsClientConfig{
    //     securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}getMOneZeroThreeRequest");
         securityInterceptor.setSecurementSignatureKeyIdentifier("DirectReference");
 
-        
+        //try------ IT WORKS, now response doesnt throw null pointer
+        securityInterceptor.setValidationActions("Signature");      
+        securityInterceptor.setValidationSignatureCrypto(getCryptoFactoryBean().getObject());
+        securityInterceptor.setValidationDecryptionCrypto(getCryptoFactoryBean().getObject());
+        securityInterceptor.setValidationCallbackHandler(securityCallbackHandler());
+       
+        //end try-----
       
         
         return securityInterceptor;
+    }
+    
+    @Bean //try, remove if not working-- IT WORKS, now response doesnt throw null pointer
+    public KeyStoreCallbackHandler securityCallbackHandler(){
+        KeyStoreCallbackHandler callbackHandler = new KeyStoreCallbackHandler();
+        callbackHandler.setPrivateKeyPassword("123456");
+        return callbackHandler;
     }
 
     //------------------------------------------ if i am client beans ----------------------------
@@ -66,6 +76,17 @@ public class IAmWsClientConfig{
     @Bean
     public M103Client getM103Client() throws Exception {
 		M103Client beerClient = new M103Client();
+        beerClient.setMarshaller(getMarshaller());
+        beerClient.setUnmarshaller(getMarshaller());
+        beerClient.setDefaultUri("http://localhost:7779/ws");
+        ClientInterceptor[] interceptors = new ClientInterceptor[]{securityInterceptor()};
+        beerClient.setInterceptors(interceptors);
+        return beerClient;
+    }
+    
+    @Bean
+    public M102Client getM102Client() throws Exception {
+		M102Client beerClient = new M102Client();
         beerClient.setMarshaller(getMarshaller());
         beerClient.setUnmarshaller(getMarshaller());
         beerClient.setDefaultUri("http://localhost:7779/ws");

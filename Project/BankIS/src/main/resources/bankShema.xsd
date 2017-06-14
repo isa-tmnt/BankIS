@@ -43,6 +43,25 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    
+    
+    <xs:complexType name="m102StavkaType">
+        <xs:sequence>
+        	<xs:element type="xs:string" name="idNalogaZaPlacanje"/>
+        	<xs:element type="xs:string" name="duznikNalogodavac"/>
+       	    <xs:element type="xs:string" name="svrhaPlacanja"/>
+            <xs:element type="xs:string" name="primalacPoverilac"/>
+            <xs:element type="xs:date" name="datumNaloga"/>
+            <xs:element type="xs:string" name="racunDuznika"/>
+            <xs:element type="xs:string" name="modelZaduzenja"/>
+            <xs:element type="xs:string" name="pozivNaBrojZaduzenja"/>
+            <xs:element type="xs:string" name="racunPoverioca"/>
+            <xs:element type="xs:string" name="modelOdobrenja"/>
+            <xs:element type="xs:string" name="pozivNaBrojOdobrenja"/>
+            <xs:element type="xs:string" name="iznos"/>
+            <xs:element type="xs:string" name="sifraValute"/>                          
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:element name="getM102Request">
         <xs:complexType>
@@ -56,11 +75,13 @@
                 <xs:element type="xs:string" name="sifraValute"/>
                 <xs:element type="xs:date" name="datum"/>
                 <xs:element type="xs:date" name="datumValute"/>
-                                
+			    <xs:element type="tns:m102StavkaType"  name="getM102Stavka" minOccurs="1" maxOccurs="unbounded" />		     	
+			        
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     
+     
     
     
     <xs:element name="importNalogZaPlacanjeRequest">

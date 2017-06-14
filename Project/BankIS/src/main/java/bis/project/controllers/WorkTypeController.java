@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import bis.project.M103Client;
 import bis.project.IAmWsClientConfig;
+import bis.project.M102Client;
+import bis.project.M103Client;
 import bis.project.model.WorkType;
 import bis.project.services.CredentialsServices;
 import bis.project.services.WorkTypeServices;
 import bis.project.validators.ValidationException;
 import bis.project.validators.WorkTypeValidator;
+import io.spring.guides.gs_producing_web_service.GetM102Request;
+import io.spring.guides.gs_producing_web_service.GetM102Response;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeResponse;
 
@@ -37,13 +40,22 @@ public class WorkTypeController {
 	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="Authorization") String basicAuth) {
 		
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
-	     M103Client wsclient = /*new BankOrderClient();*/ context.getBean(M103Client.class);
+	     M103Client wsclient =  context.getBean(M103Client.class);
 	    wsclient.setDefaultUri("http://localhost:7779/ws");
 	    GetMOneZeroThreeRequest request = new GetMOneZeroThreeRequest();
 	    request.setId(123);
 	    request.setSifraValute("asdgasd");
-		GetMOneZeroThreeResponse response = wsclient.getBeer(request);
+		GetMOneZeroThreeResponse response = wsclient.doM103Request(request);
 		
+		
+		context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+	     M102Client wsclient2 =  context.getBean(M102Client.class);
+	    wsclient2.setDefaultUri("http://localhost:7779/ws");
+	    GetM102Request request2 = new GetM102Request();
+	    request2.setId(123);
+	    request2.setSifraValute("asdgasd");
+		GetM102Response response2 = wsclient2.doM102Request(request2);
+	
 		
 		
 		

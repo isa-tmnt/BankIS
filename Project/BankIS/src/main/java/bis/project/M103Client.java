@@ -13,11 +13,11 @@ public class M103Client  extends WebServiceGatewaySupport{
 	 
 	public M103Client(){}
 	
-	public GetMOneZeroThreeResponse getBeer(GetMOneZeroThreeRequest request){
+	public GetMOneZeroThreeResponse doM103Request(GetMOneZeroThreeRequest request){
 	        Object response = getWebServiceTemplate()
 	                .marshalSendAndReceive(request);
 	        
 	        return (GetMOneZeroThreeResponse) response;
 
-	    }
+    }
 }

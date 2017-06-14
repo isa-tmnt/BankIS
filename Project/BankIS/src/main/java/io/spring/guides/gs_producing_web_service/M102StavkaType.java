@@ -11,39 +11,33 @@ package io.spring.guides.gs_producing_web_service;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for m102StavkaType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="m102StavkaType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="swiftBankeDuznika" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="obracunskiRacunBankeDuznika" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="swiftBankePoverioca" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="obracunskiRacunBankePoverioca" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="duznikNalogovdavac" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="idNalogaZaPlacanje" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="duznikNalogodavac" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="svrhaPlacanja" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="primalacPoverilac" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="datumNaloga" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="datumValute" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="racunDuznika" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="modelZaduzenja" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="modelZaduzenja" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="pozivNaBrojZaduzenja" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="racunPoverioca" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="modelOdobrenja" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="pozivNaBrojOdobrenja" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="iznos" type="{http://www.w3.org/2001/XMLSchema}double"/>
+ *         &lt;element name="iznos" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="sifraValute" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -54,17 +48,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "id",
-    "swiftBankeDuznika",
-    "obracunskiRacunBankeDuznika",
-    "swiftBankePoverioca",
-    "obracunskiRacunBankePoverioca",
-    "duznikNalogovdavac",
+@XmlType(name = "m102StavkaType", propOrder = {
+    "idNalogaZaPlacanje",
+    "duznikNalogodavac",
     "svrhaPlacanja",
     "primalacPoverilac",
     "datumNaloga",
-    "datumValute",
     "racunDuznika",
     "modelZaduzenja",
     "pozivNaBrojZaduzenja",
@@ -74,20 +63,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "iznos",
     "sifraValute"
 })
-@XmlRootElement(name = "getMOneZeroThreeRequest")
-public class GetMOneZeroThreeRequest {
+public class M102StavkaType {
 
-    protected int id;
     @XmlElement(required = true)
-    protected String swiftBankeDuznika;
+    protected String idNalogaZaPlacanje;
     @XmlElement(required = true)
-    protected String obracunskiRacunBankeDuznika;
-    @XmlElement(required = true)
-    protected String swiftBankePoverioca;
-    @XmlElement(required = true)
-    protected String obracunskiRacunBankePoverioca;
-    @XmlElement(required = true)
-    protected String duznikNalogovdavac;
+    protected String duznikNalogodavac;
     @XmlElement(required = true)
     protected String svrhaPlacanja;
     @XmlElement(required = true)
@@ -96,11 +77,9 @@ public class GetMOneZeroThreeRequest {
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar datumNaloga;
     @XmlElement(required = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
-    @XmlElement(required = true)
     protected String racunDuznika;
-    protected int modelZaduzenja;
+    @XmlElement(required = true)
+    protected String modelZaduzenja;
     @XmlElement(required = true)
     protected String pozivNaBrojZaduzenja;
     @XmlElement(required = true)
@@ -109,144 +88,57 @@ public class GetMOneZeroThreeRequest {
     protected String modelOdobrenja;
     @XmlElement(required = true)
     protected String pozivNaBrojOdobrenja;
-    protected double iznos;
+    @XmlElement(required = true)
+    protected String iznos;
     @XmlElement(required = true)
     protected String sifraValute;
 
     /**
-     * Gets the value of the id property.
-     * 
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     */
-    public void setId(int value) {
-        this.id = value;
-    }
-
-    /**
-     * Gets the value of the swiftBankeDuznika property.
+     * Gets the value of the idNalogaZaPlacanje property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getSwiftBankeDuznika() {
-        return swiftBankeDuznika;
+    public String getIdNalogaZaPlacanje() {
+        return idNalogaZaPlacanje;
     }
 
     /**
-     * Sets the value of the swiftBankeDuznika property.
+     * Sets the value of the idNalogaZaPlacanje property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setSwiftBankeDuznika(String value) {
-        this.swiftBankeDuznika = value;
+    public void setIdNalogaZaPlacanje(String value) {
+        this.idNalogaZaPlacanje = value;
     }
 
     /**
-     * Gets the value of the obracunskiRacunBankeDuznika property.
+     * Gets the value of the duznikNalogodavac property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getObracunskiRacunBankeDuznika() {
-        return obracunskiRacunBankeDuznika;
+    public String getDuznikNalogodavac() {
+        return duznikNalogodavac;
     }
 
     /**
-     * Sets the value of the obracunskiRacunBankeDuznika property.
+     * Sets the value of the duznikNalogodavac property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setObracunskiRacunBankeDuznika(String value) {
-        this.obracunskiRacunBankeDuznika = value;
-    }
-
-    /**
-     * Gets the value of the swiftBankePoverioca property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSwiftBankePoverioca() {
-        return swiftBankePoverioca;
-    }
-
-    /**
-     * Sets the value of the swiftBankePoverioca property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSwiftBankePoverioca(String value) {
-        this.swiftBankePoverioca = value;
-    }
-
-    /**
-     * Gets the value of the obracunskiRacunBankePoverioca property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getObracunskiRacunBankePoverioca() {
-        return obracunskiRacunBankePoverioca;
-    }
-
-    /**
-     * Sets the value of the obracunskiRacunBankePoverioca property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setObracunskiRacunBankePoverioca(String value) {
-        this.obracunskiRacunBankePoverioca = value;
-    }
-
-    /**
-     * Gets the value of the duznikNalogovdavac property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDuznikNalogovdavac() {
-        return duznikNalogovdavac;
-    }
-
-    /**
-     * Sets the value of the duznikNalogovdavac property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDuznikNalogovdavac(String value) {
-        this.duznikNalogovdavac = value;
+    public void setDuznikNalogodavac(String value) {
+        this.duznikNalogodavac = value;
     }
 
     /**
@@ -322,30 +214,6 @@ public class GetMOneZeroThreeRequest {
     }
 
     /**
-     * Gets the value of the datumValute property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getDatumValute() {
-        return datumValute;
-    }
-
-    /**
-     * Sets the value of the datumValute property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setDatumValute(XMLGregorianCalendar value) {
-        this.datumValute = value;
-    }
-
-    /**
      * Gets the value of the racunDuznika property.
      * 
      * @return
@@ -372,16 +240,24 @@ public class GetMOneZeroThreeRequest {
     /**
      * Gets the value of the modelZaduzenja property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getModelZaduzenja() {
+    public String getModelZaduzenja() {
         return modelZaduzenja;
     }
 
     /**
      * Sets the value of the modelZaduzenja property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setModelZaduzenja(int value) {
+    public void setModelZaduzenja(String value) {
         this.modelZaduzenja = value;
     }
 
@@ -484,16 +360,24 @@ public class GetMOneZeroThreeRequest {
     /**
      * Gets the value of the iznos property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public double getIznos() {
+    public String getIznos() {
         return iznos;
     }
 
     /**
      * Sets the value of the iznos property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setIznos(double value) {
+    public void setIznos(String value) {
         this.iznos = value;
     }
 
