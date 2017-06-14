@@ -20,9 +20,9 @@ app.component('users', {
             //{ label: "Id", code: "id", manatory: false, type: "text" },
             { label: "First Name", code: "firstName", manatory: false, type: "text" },
             { label: "Last Name", code: "lastName", manatory: false, type: "text" },
-            { label: "Email", code: "email", manatory: false, type: "text"}
+            { label: "Email", code: "email", manatory: false, type: "text"},
             //{ label: "Password", code: "password", manatory: false, type: "text" }, 
-            //{ label: "Bank", code: "bank", manatory: false, type: "text" }
+            { label: "Bank", code: "bank", type: "text", isReference: true, openDialog: () => $scope.openDialog('banks') }
         ];
 
         $http.get(appConfig.apiUrl + 'users', appConfig.config).then(function successCallback(response) {
@@ -81,18 +81,44 @@ app.component('users', {
 
                     if (response.status < 300) {
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-                        toastr.success('Removed successfuly.')
+                        toastr.success('Removed successfuly.');
                     }
 
                 }, function err(e) {
-                    toastr.error("Can't remove sorry.")
+                    toastr.error("Can't remove sorry.");
                 });
             } else {
-                toastr.info('Select row first.')
+                toastr.info('Select row first.');
             }
         }
         
         $scope.iamdialog = $attrs.iamdialog == 'true';
+        
+        $scope.openDialog = function (tagName, id) {
+            if (id) {
+                $scope.dialog = $compile(
+                    "<" + tagName + ' ' + "filterid='" + id + "'  iamdialog='true'></" + tagName + ">"
+                )($scope);
+            } else {
+                $scope.dialog = $compile(
+                    "<" + tagName + " iamdialog='true'></" + tagName + ">"
+                )($scope);
+            }
+
+            $element.append($scope.dialog);
+        }
+        
+        $scope.zoomSingleLine = function (code, row) {
+            if (code == 'bank') {
+                $scope.openDialog('banks', row[code].id);
+            }
+        };
+
+        $rootScope.$on('BANK_SELECTED', function (event, row) {
+            if (row['id'])
+                $scope.editing['bank'] = row;
+            if ($scope.dialog) $scope.dialog.remove();
+        });
 
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 

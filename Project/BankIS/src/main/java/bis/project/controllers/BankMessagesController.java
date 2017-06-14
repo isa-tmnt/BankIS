@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,8 +30,12 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<BankMessages>> getAllBankMessages(@RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetAllBankMessages");
+	public ResponseEntity<Set<BankMessages>> getAllBankMessages(@RequestHeader(value="CsrfToken") String csrfToken, 
+																@RequestHeader(value="AuthEmail") String authEmail, 
+																@CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "GetAllBankMessages");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetAllBankMessages");
 		
 		if(isAuthorized) {
 			Set<BankMessages> messages = services.getBankMessages();
@@ -42,8 +47,13 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<BankMessages> getBankMessage(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetBankMessage");
+	public ResponseEntity<BankMessages> getBankMessage(@PathVariable("id") Integer id, 
+													   @RequestHeader(value="CsrfToken") String csrfToken, 
+													   @RequestHeader(value="AuthEmail") String authEmail, 
+													   @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "GetBankMessage");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "GetBankMessage");
 		
 		if(isAuthorized) {
 			BankMessages message =  services.getBankMessage(id);
@@ -60,8 +70,13 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages", 
 					method = RequestMethod.POST)
-	public ResponseEntity<BankMessages> addBankMessage(@RequestBody BankMessages message, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "AddBankMessage");
+	public ResponseEntity<BankMessages> addBankMessage(@RequestBody BankMessages message, 
+													   @RequestHeader(value="CsrfToken") String csrfToken, 
+													   @RequestHeader(value="AuthEmail") String authEmail, 
+													   @CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "AddBankMessage");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "AddBankMessage");
 		
 		if(isAuthorized) {
 			BankMessagesValidator.Validate(message);
@@ -75,8 +90,14 @@ public class BankMessagesController {
 	//need to add check for this id
 	@RequestMapping(value = "/api/messages/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<BankMessages> updateBankMessage(@PathVariable("id") Integer id, @RequestBody BankMessages message, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "UpdateBankMessage");
+	public ResponseEntity<BankMessages> updateBankMessage(@PathVariable("id") Integer id, 
+														  @RequestBody BankMessages message, 
+														  @RequestHeader(value="CsrfToken") String csrfToken, 
+														  @RequestHeader(value="AuthEmail") String authEmail, 
+														  @CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "UpdateBankMessage");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "UpdateBankMessage");
 		
 		if(isAuthorized) {
 			BankMessagesValidator.Validate(message);
@@ -90,8 +111,13 @@ public class BankMessagesController {
 	
 	@RequestMapping(value = "/api/messages/{id}", 
 					method = RequestMethod.DELETE)
-	public ResponseEntity<BankMessages> deleteBankMessage(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "DeleteBankMessage");
+	public ResponseEntity<BankMessages> deleteBankMessage(@PathVariable("id") Integer id, 
+														  @RequestHeader(value="CsrfToken") String csrfToken, 
+														  @RequestHeader(value="AuthEmail") String authEmail, 
+														  @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "DeleteBankMessage");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "DeleteBankMessage");
 		
 		if(isAuthorized) {
 			services.deleteBankMessage(id);
