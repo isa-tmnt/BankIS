@@ -42,24 +42,6 @@ public class WorkTypeController {
 														 @RequestHeader(value="AuthEmail") String authEmail, 
 														 @CookieValue("jwt") String jwt) {
 		
-	/*	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
-	     M103Client wsclient =  context.getBean(M103Client.class);
-	    wsclient.setDefaultUri("http://localhost:7779/ws");
-	    GetMOneZeroThreeRequest request = new GetMOneZeroThreeRequest();
-	    request.setId(123);
-	    request.setSifraValute("asdgasd");
-		GetMOneZeroThreeResponse response = wsclient.doM103Request(request);
-	*/	
-		
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
-	     M102Client wsclient2 =  context.getBean(M102Client.class);
-	    wsclient2.setDefaultUri("http://localhost:7779/ws");
-	    GetM102Request request2 = new GetM102Request();
-	    request2.setId(123);
-	    request2.setSifraValute("asdgasd");
-		GetM102Response response2 = wsclient2.doM102Request(request2);
-	
-		
 		
 		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getAllWorkTypes");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");

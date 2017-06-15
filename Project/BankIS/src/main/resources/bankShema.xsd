@@ -58,7 +58,7 @@
             <xs:element type="xs:string" name="racunPoverioca"/>
             <xs:element type="xs:int" name="modelOdobrenja"/>
             <xs:element type="xs:string" name="pozivNaBrojOdobrenja"/>
-            <xs:element type="xs:string" name="iznos"/>
+            <xs:element type="xs:decimal" name="iznos"/>
             <xs:element type="xs:string" name="sifraValute"/>                          
         </xs:sequence>
     </xs:complexType>
