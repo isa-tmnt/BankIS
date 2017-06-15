@@ -17,14 +17,15 @@ app.component('users', {
         }
 
         $scope.header = [
-            { label: "Id", code: "id", manatory: false, type: "text" },
+            //{ label: "Id", code: "id", manatory: false, type: "text" },
             { label: "First Name", code: "firstName", manatory: false, type: "text" },
             { label: "Last Name", code: "lastName", manatory: false, type: "text" },
             { label: "Email", code: "email", manatory: false, type: "text"},
-            { label: "Password", code: "password", manatory: false, type: "text" }, 
+            //{ label: "Password", code: "password", manatory: false, type: "text" }, 
+            { label: "Bank", code: "bank", type: "text", isReference: true, openDialog: () => $scope.openDialog('banks') }
         ];
 
-        $http.get('/api/users.json').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'users', appConfig.config).then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
@@ -33,7 +34,7 @@ app.component('users', {
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
             var data = $.extend({}, $scope.editing);
-            $http.post(appConfig.apiUrl + 'users', data).then(function successCallback(response) {
+            $http.post(appConfig.apiUrl + 'users', data, appConfig.config).then(function successCallback(response) {
                 var row = response.data;
                 if (row && response.status < 300) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -53,7 +54,7 @@ app.component('users', {
         $scope.doEdit = function () {
             if ($scope.selected.id) {
                 var data = $.extend({}, $scope.editing);
-                $http.post(appConfig.apiUrl + 'users', data).then(function successCallback(response) {
+                $http.post(appConfig.apiUrl + 'users', data, appConfig.config).then(function successCallback(response) {
                     var row = response.data;
                     if (row && response.status < 300) {
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -76,24 +77,48 @@ app.component('users', {
 
         $scope.doRemove = function () {
             if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'users/' + $scope.selected.id).then(function successCallback(response) {
+                $http.delete(appConfig.apiUrl + 'users/' + $scope.selected.id, appConfig.config).then(function successCallback(response) {
 
                     if (response.status < 300) {
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-                        toastr.success('Removed successfuly.')
+                        toastr.success('Removed successfuly.');
                     }
 
                 }, function err(e) {
-                    toastr.error("Can't remove sorry.")
+                    toastr.error("Can't remove sorry.");
                 });
             } else {
-                toastr.info('Select row first.')
+                toastr.info('Select row first.');
             }
         }
-
-
-
+        
         $scope.iamdialog = $attrs.iamdialog == 'true';
+        
+        $scope.openDialog = function (tagName, id) {
+            if (id) {
+                $scope.dialog = $compile(
+                    "<" + tagName + ' ' + "filterid='" + id + "'  iamdialog='true'></" + tagName + ">"
+                )($scope);
+            } else {
+                $scope.dialog = $compile(
+                    "<" + tagName + " iamdialog='true'></" + tagName + ">"
+                )($scope);
+            }
+
+            $element.append($scope.dialog);
+        }
+        
+        $scope.zoomSingleLine = function (code, row) {
+            if (code == 'bank') {
+                $scope.openDialog('banks', row[code].id);
+            }
+        };
+
+        $rootScope.$on('BANK_SELECTED', function (event, row) {
+            if (row['id'])
+                $scope.editing['bank'] = row;
+            if ($scope.dialog) $scope.dialog.remove();
+        });
 
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 

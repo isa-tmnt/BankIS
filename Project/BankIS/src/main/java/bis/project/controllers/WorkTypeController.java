@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -37,7 +38,9 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="Authorization") String basicAuth) {
+	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="CsrfToken") String csrfToken, 
+														 @RequestHeader(value="AuthEmail") String authEmail, 
+														 @CookieValue("jwt") String jwt) {
 		
 	/*	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     M103Client wsclient =  context.getBean(M103Client.class);
@@ -58,8 +61,8 @@ public class WorkTypeController {
 	
 		
 		
-		
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getAllWorkTypes");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");
 		
 		if(isAuthorized) {
 			Set<WorkType> workTypes = services.getAllWorkTypes();
@@ -71,8 +74,13 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<WorkType> getWorkType(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getWorkType");
+	public ResponseEntity<WorkType> getWorkType(@PathVariable("id") Integer id, 
+												@RequestHeader(value="CsrfToken") String csrfToken, 
+												@RequestHeader(value="AuthEmail") String authEmail, 
+												@CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getWorkType");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getWorkType");
 		
 		if(isAuthorized) {
 			WorkType workType = services.getWorkType(id);
@@ -89,8 +97,13 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes", 
 					method = RequestMethod.POST)
-	public ResponseEntity<WorkType> addWorkType(@RequestBody WorkType workType, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "addWorkType");
+	public ResponseEntity<WorkType> addWorkType(@RequestBody WorkType workType, 
+												@RequestHeader(value="CsrfToken") String csrfToken, 
+												@RequestHeader(value="AuthEmail") String authEmail, 
+												@CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "addWorkType");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "addWorkType");
 		
 		if(isAuthorized) {
 			WorkTypeValidator.Validate(workType);
@@ -103,8 +116,14 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<WorkType> updateWorkType(@PathVariable("id") Integer id, @RequestBody WorkType workType, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateWorkType");
+	public ResponseEntity<WorkType> updateWorkType(@PathVariable("id") Integer id, 
+												   @RequestBody WorkType workType, 
+												   @RequestHeader(value="CsrfToken") String csrfToken, 
+												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "updateWorkType");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateWorkType");
 		
 		if(isAuthorized) {
 			WorkTypeValidator.Validate(workType);
@@ -118,8 +137,13 @@ public class WorkTypeController {
 	
 	@RequestMapping(value = "/api/worktypes/{id}", 
 					method = RequestMethod.DELETE)
-	public ResponseEntity<WorkType> deleteWorkType(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "deleteWorkType");
+	public ResponseEntity<WorkType> deleteWorkType(@PathVariable("id") Integer id, 
+												   @RequestHeader(value="CsrfToken") String csrfToken, 
+												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "deleteWorkType");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "deleteWorkType");
 		
 		if(isAuthorized) {
 			services.deleteWorkType(id);

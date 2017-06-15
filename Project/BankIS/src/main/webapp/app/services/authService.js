@@ -2,11 +2,13 @@ app.factory('authService', ['$http', function ($http) {
 
 
     var logedUser = null;
-    if (localStorage.getItem('basicAuth') != "null" && localStorage.getItem('basicAuth') != null){ //note that null is in "", because localStorage saves only stirngs i guess, idk, but its string "null" if no user pre-authenticated
+    if (localStorage.getItem('basicAuthEmail') != "null" && localStorage.getItem('basicAuthEmail') != null){ //note that null is in "", because localStorage saves only stirngs i guess, idk, but its string "null" if no user pre-authenticated
         logedUser = {
             email: localStorage.getItem("basicAuthEmail")
         }
-        $http.defaults.headers.common.Authorization = 'Basic ' + localStorage.getItem('basicAuth');
+        appConfig.config.headers.CsrfToken = localStorage.getItem("csrfToken");
+        appConfig.config.headers.AuthEmail = localStorage.getItem("basicAuthEmail");
+        //$http.defaults.headers.common.Authorization = 'Basic ' + localStorage.getItem('basicAuth');
     }
 
     var onLoginCallbacks = [];
@@ -38,24 +40,37 @@ app.factory('authService', ['$http', function ($http) {
                         return;
                     }
                     toastr.success('You are logged in.')
-                    var btoaED = btoa(email + ":" + password);
-                    localStorage.setItem("basicAuth", btoaED)
-                    localStorage.setItem("basicAuthEmail", email)
-                    $http.defaults.headers.common.Authorization = 'Basic ' + btoaED;
-                    logedUser = { email: email, password: password }
+                    //var btoaED = btoa(email + ":" + password);
+                    //localStorage.setItem("basicAuth", btoaED);
+                    localStorage.setItem("basicAuthEmail", email);
+                    //$http.defaults.headers.common.Authorization = 'Basic ' + btoaED;
+                    logedUser = { email: email, password: response.data.password }
                     raiseOnLoginCallbacks(logedUser);
                     location.href = "/#!/";
+                    
+                    //alert(response.headers('X-CSRF-TOKEN'));
+                    localStorage.setItem("csrfToken", response.headers('CsrfToken'));
+                    
+                    //alert(localStorage.getItem("X-CSRF-TOKEN"));
+                    appConfig.config.headers.CsrfToken = localStorage.getItem("csrfToken");
+                    appConfig.config.headers.AuthEmail = localStorage.getItem("basicAuthEmail");
+                    //alert(appConfig.config.headers.csrf);
                 }, function error() {
                     toastr.error('Invalid email/password.')
                 })
         },
 
         doLogout: function(){
-            localStorage.setItem("basicAuth", null)
-            localStorage.setItem("basicAuthEmail", null)
-            logedUser = null
-            $http.defaults.headers.common.Authorization = null;
-            raiseOnLogoutCallbacks();
+        	$http.get(appConfig.apiUrl + 'logout', appConfig.config).then(function successCallback(response) {
+        		//localStorage.setItem("basicAuth", null)
+                localStorage.setItem("basicAuthEmail", null)
+                localStorage.setItem("csrfToken", null);
+                logedUser = null
+                //$http.defaults.headers.common.Authorization = null;
+                appConfig.config.headers.CsrfToken = null;
+                appConfig.config.headers.AuthEmail = null;
+                raiseOnLogoutCallbacks();
+            });
         },
 
         onLogin: function (callback) {

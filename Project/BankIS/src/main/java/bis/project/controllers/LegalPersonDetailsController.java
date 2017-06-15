@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,8 +30,12 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<LegalPersonDetails>> getAllClients(@RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllClients");
+	public ResponseEntity<Set<LegalPersonDetails>> getAllClients(@RequestHeader(value="CsrfToken") String csrfToken, 
+																 @RequestHeader(value="AuthEmail") String authEmail, 
+																 @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getAllClients");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllClients");
 		
 		if(isAuthorized) {
 			Set<LegalPersonDetails> clients = services.getAllClients();
@@ -42,8 +47,13 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<LegalPersonDetails> getClient(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "getClient");
+	public ResponseEntity<LegalPersonDetails> getClient(@PathVariable("id") Integer id, 
+														@RequestHeader(value="CsrfToken") String csrfToken, 
+														@RequestHeader(value="AuthEmail") String authEmail, 
+														@CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getClient");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getClient");
 		
 		if(isAuthorized) {
 			LegalPersonDetails client = services.getClient(id);
@@ -60,8 +70,13 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients", 
 					method = RequestMethod.POST)
-	public ResponseEntity<LegalPersonDetails> addClient(@RequestBody LegalPersonDetails client, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "addClient");
+	public ResponseEntity<LegalPersonDetails> addClient(@RequestBody LegalPersonDetails client, 
+														@RequestHeader(value="CsrfToken") String csrfToken, 
+														@RequestHeader(value="AuthEmail") String authEmail, 
+														@CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "addClient");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "addClient");
 		
 		if(isAuthorized) {
 			LegalPersonDetailsValidator.Validate(client);
@@ -74,8 +89,14 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<LegalPersonDetails> updateClient(@PathVariable("id") Integer id, @RequestBody LegalPersonDetails client, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateClient");
+	public ResponseEntity<LegalPersonDetails> updateClient(@PathVariable("id") Integer id, 
+														   @RequestBody LegalPersonDetails client, 
+														   @RequestHeader(value="CsrfToken") String csrfToken, 
+														   @RequestHeader(value="AuthEmail") String authEmail, 
+														   @CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "updateClient");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateClient");
 		
 		if(isAuthorized) {
 			LegalPersonDetailsValidator.Validate(client);
@@ -89,8 +110,13 @@ public class LegalPersonDetailsController {
 	
 	@RequestMapping(value = "/api/legclients/{id}", 
 					method = RequestMethod.DELETE)
-	public ResponseEntity<LegalPersonDetails> deleteClient(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = cServices.isAuthorized(basicAuth, "deleteClient");
+	public ResponseEntity<LegalPersonDetails> deleteClient(@PathVariable("id") Integer id, 
+														   @RequestHeader(value="CsrfToken") String csrfToken, 
+														   @RequestHeader(value="AuthEmail") String authEmail, 
+														   @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "deleteClient");
+		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "deleteClient");
 		
 		if(isAuthorized) {
 			services.deleteClient(id);

@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,8 +30,12 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<Currency>> getAllCurrencies(@RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllCurrencies");
+	public ResponseEntity<Set<Currency>> getAllCurrencies(@RequestHeader(value="CsrfToken") String csrfToken, 
+													   	  @RequestHeader(value="AuthEmail") String authEmail, 
+													   	  @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "GetAllCurrencies");
+		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllCurrencies");
 		
 		if(isAuthorized) {
 			Set<Currency> currencies = currencyServices.getAllCurrency();
@@ -42,8 +47,13 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Currency> getCurrency(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = services.isAuthorized(basicAuth, "getCurrency");
+	public ResponseEntity<Currency> getCurrency(@PathVariable("id") Integer id, 
+												@RequestHeader(value="CsrfToken") String csrfToken, 
+												@RequestHeader(value="AuthEmail") String authEmail, 
+												@CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "getCurrency");
+		//boolean isAuthorized = services.isAuthorized(basicAuth, "getCurrency");
 		
 		if(isAuthorized) {
 			Currency currency = currencyServices.getCurrency(id);
@@ -60,8 +70,13 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies", 
 					method = RequestMethod.POST)
-	public ResponseEntity<Currency> addCurrency(@RequestBody Currency currency, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException {
-		boolean isAuthorized = services.isAuthorized(basicAuth, "AddCurrency");
+	public ResponseEntity<Currency> addCurrency(@RequestBody Currency currency, 
+												@RequestHeader(value="CsrfToken") String csrfToken, 
+												@RequestHeader(value="AuthEmail") String authEmail, 
+												@CookieValue("jwt") String jwt) throws ValidationException {
+		
+		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "AddCurrency");
+		//boolean isAuthorized = services.isAuthorized(basicAuth, "AddCurrency");
 		
 		if(isAuthorized) {
 			CurrencyValidator.Validate(currency);
@@ -74,8 +89,14 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") Integer id, @RequestBody Currency currency, @RequestHeader(value="Authorization") String basicAuth) throws ValidationException{
-		boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateCurrency");
+	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") Integer id, 
+												   @RequestBody Currency currency, 
+												   @RequestHeader(value="CsrfToken") String csrfToken, 
+												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @CookieValue("jwt") String jwt) throws ValidationException{
+		
+		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "UpdateCurrency");
+		//boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateCurrency");
 		
 		if(isAuthorized) {
 			CurrencyValidator.Validate(currency);
@@ -89,8 +110,13 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.DELETE)
-	public ResponseEntity<Currency> deleteCurrency(@PathVariable("id") Integer id, @RequestHeader(value="Authorization") String basicAuth) {
-		boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteCurrency");
+	public ResponseEntity<Currency> deleteCurrency(@PathVariable("id") Integer id, 
+												   @RequestHeader(value="CsrfToken") String csrfToken, 
+												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @CookieValue("jwt") String jwt) {
+		
+		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "DeleteCurrency");
+		//boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteCurrency");
 		
 		if(isAuthorized) {
 			currencyServices.deleteCurrency(id);

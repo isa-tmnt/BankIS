@@ -20,7 +20,7 @@ app.component('currensies', {
             { label: "Name", code: "name", manatory: false, type: "string" },
         ];
 
-        $http.get(appConfig.apiUrl + 'currencies').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'currencies', appConfig.config).then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
@@ -28,7 +28,7 @@ app.component('currensies', {
         $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
-            $http.post(appConfig.apiUrl + 'currencies', $scope.editing).then(function successCallback(response) {
+            $http.post(appConfig.apiUrl + 'currencies', $scope.editing, appConfig.config).then(function successCallback(response) {
                 var row = response.data;
                 if (row && response.status < 300) {
                     $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -46,7 +46,7 @@ app.component('currensies', {
 
         $scope.doEdit = function () {
             if ($scope.selected.id) {
-                $http.post(appConfig.apiUrl + 'currencies', $scope.editing).then(function successCallback(response) {
+                $http.post(appConfig.apiUrl + 'currencies', $scope.editing, appConfig.config).then(function successCallback(response) {
                     var row = response.data;
                     if (row && response.status < 300) {
                         $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
@@ -69,7 +69,7 @@ app.component('currensies', {
 
         $scope.doRemove = function () {
             if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'currencies/' + $scope.selected.id).then(function successCallback(response) {
+                $http.delete(appConfig.apiUrl + 'currencies/' + $scope.selected.id, appConfig.config).then(function successCallback(response) {
 
                     if (response.status < 300) {
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);

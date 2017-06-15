@@ -11,29 +11,43 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.security.Credentials;
+import bis.project.security.User;
 import bis.project.services.CredentialsServices;
 
 @RestController
 public class CredentialsController {
-	//@RequestHeader(value="Authorization") String basicAuth
-	//'Authorization': 'Basic ' + sessionStorage.getItem('basicAuth')
-	//'Authorization': 'Basic ' + btoa(email + ':' + password)
+	
 	@Autowired
 	private CredentialsServices services;
 	
 	@RequestMapping(value = "/api/login", 
 					method = RequestMethod.POST)
 	public ResponseEntity<Credentials> login(@RequestBody Credentials credentials) {
-		Credentials c = services.login(credentials);
+		User user = services.login(credentials);
 		//@CookieValue("cookie") String cookie
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set(HttpHeaders.SET_COOKIE, "cookie=cookieValue; HttpOnly");
-		responseHeaders.set("CSRF-TOKEN", UUID.randomUUID().toString());
 		
-		if(c != null) {
+		if(user != null) {
+			Credentials c = new Credentials(user.getEmail(), user.getPassword());
+			String csrfToken = UUID.randomUUID().toString();
+			String jwt = services.createJWT(user.getEmail(), csrfToken, user.getSalt());
+			
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.set(HttpHeaders.SET_COOKIE, "jwt=" + jwt + "; Secure; HttpOnly");
+			responseHeaders.set("CsrfToken", csrfToken);
+			
 			return new ResponseEntity<Credentials>(c, responseHeaders, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<Credentials>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "/api/logout", 
+					method = RequestMethod.GET)
+	public ResponseEntity<String> logout() {
+		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set(HttpHeaders.SET_COOKIE, "jwt=null; Secure; HttpOnly");
+		
+		return new ResponseEntity<String>("Logout", responseHeaders, HttpStatus.OK);
 	}
 }

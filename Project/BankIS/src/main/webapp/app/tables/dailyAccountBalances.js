@@ -24,7 +24,7 @@ app.component('dailyAccountBalances', {
             { label: "Bank Account", code: "account", manatory: false, type: "text", isReference: true, openDialog: () => $scope.openDialog('bank-accounts') },
         ];
 
-        $http.get(appConfig.apiUrl + 'dailyAccountBalances').then(function successCallback(response) {
+        $http.get(appConfig.apiUrl + 'dailyAccountBalances', appConfig.config).then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
         });
