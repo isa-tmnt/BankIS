@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="CreatedBankOrderId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="body" type="{http://spring.io/guides/gs-producing-web-service}getMT9X0Request"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "createdBankOrderId"
+    "body"
 })
-@XmlRootElement(name = "importNalogZaPlacanjeResponse")
-public class ImportNalogZaPlacanjeResponse {
+@XmlRootElement(name = "getMT900Request")
+public class GetMT900Request {
 
-    @XmlElement(name = "CreatedBankOrderId", required = true)
-    protected String createdBankOrderId;
+    @XmlElement(required = true)
+    protected GetMT9X0Request body;
 
     /**
-     * Gets the value of the createdBankOrderId property.
+     * Gets the value of the body property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link GetMT9X0Request }
      *     
      */
-    public String getCreatedBankOrderId() {
-        return createdBankOrderId;
+    public GetMT9X0Request getBody() {
+        return body;
     }
 
     /**
-     * Sets the value of the createdBankOrderId property.
+     * Sets the value of the body property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link GetMT9X0Request }
      *     
      */
-    public void setCreatedBankOrderId(String value) {
-        this.createdBankOrderId = value;
+    public void setBody(GetMT9X0Request value) {
+        this.body = value;
     }
 
 }

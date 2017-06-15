@@ -48,12 +48,12 @@ public class IAmWsServerConfig extends WsConfigurerAdapter {
 
         // encrypt the response
         securityInterceptor.setSecurementEncryptionUser("client-public");
-     //   securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}importNalogZaPlacanjeResponse");
+    //    securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}importNalogZaPlacanjeResponse");
     //    securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}getMOneZeroThreeRequest");
         securityInterceptor.setSecurementEncryptionCrypto(getCryptoFactoryBean().getObject());
 
         // sign the response
-        securityInterceptor.setSecurementActions("Signature Encrypt");
+        securityInterceptor.setSecurementActions("Signature");
         securityInterceptor.setSecurementUsername("server");
         securityInterceptor.setSecurementPassword("123456");
         securityInterceptor.setSecurementSignatureCrypto(getCryptoFactoryBean().getObject());

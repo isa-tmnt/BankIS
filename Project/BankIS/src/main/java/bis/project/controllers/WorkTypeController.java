@@ -39,16 +39,16 @@ public class WorkTypeController {
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="Authorization") String basicAuth) {
 		
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+	/*	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     M103Client wsclient =  context.getBean(M103Client.class);
 	    wsclient.setDefaultUri("http://localhost:7779/ws");
 	    GetMOneZeroThreeRequest request = new GetMOneZeroThreeRequest();
 	    request.setId(123);
 	    request.setSifraValute("asdgasd");
 		GetMOneZeroThreeResponse response = wsclient.doM103Request(request);
+	*/	
 		
-		
-		context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     M102Client wsclient2 =  context.getBean(M102Client.class);
 	    wsclient2.setDefaultUri("http://localhost:7779/ws");
 	    GetM102Request request2 = new GetM102Request();

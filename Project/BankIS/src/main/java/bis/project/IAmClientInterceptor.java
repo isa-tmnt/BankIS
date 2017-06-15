@@ -5,7 +5,7 @@ import org.springframework.ws.server.SmartEndpointInterceptor;
 import org.springframework.ws.server.endpoint.MethodEndpoint;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
-import bis.project.endpoints.ImportBankOrderEndpoint;
+import bis.project.endpoints.EndpointxD;
 
 public class IAmClientInterceptor extends Wss4jSecurityInterceptor implements SmartEndpointInterceptor {
 	
@@ -18,7 +18,7 @@ public class IAmClientInterceptor extends Wss4jSecurityInterceptor implements Sm
     public boolean shouldIntercept(MessageContext messageContext, Object endpoint) {
         if (endpoint instanceof MethodEndpoint) {
             MethodEndpoint methodEndpoint = (MethodEndpoint)endpoint;
-            boolean isSame = methodEndpoint.getMethod().getDeclaringClass() == ImportBankOrderEndpoint.class; 
+            boolean isSame = methodEndpoint.getMethod().getDeclaringClass() == EndpointxD.class; 
             return isSame;
         }
         return false;
