@@ -1,0 +1,162 @@
+<html>
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <form class="form-horizontal" method="post" action="nalogRequest">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>Slanje naloga</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="duznikNalogodavac">Duznik nalogodavac</label>
+                <div class="col-md-4">
+                    <input id="duznikNalogodavac" name="duznikNalogodavac" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="svrhaPlacanja">Svrha placanja</label>
+                <div class="col-md-4">
+                    <input id="svrhaPlacanja" name="svrhaPlacanja" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="primalacPoverilac">Primalac poverilac</label>
+                <div class="col-md-4">
+                    <input id="primalacPoverilac" name="primalacPoverilac" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="datumNaloga">Datum naloga</label>
+                <div class="col-md-4">
+                    <input id="datumNaloga" name="datumNaloga" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="datumValute">Datum valute</label>
+                <div class="col-md-4">
+                    <input id="datumValute" name="datumValute" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="racunDuznika">Racun duznika</label>
+                <div class="col-md-4">
+                    <input id="racunDuznika" name="racunDuznika" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="modelZaduzenja">Model zaduzenja</label>
+                <div class="col-md-4">
+                    <input id="modelZaduzenja" name="modelZaduzenja" type="number" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="pozivNaBrojZaduzenja">Poziv na broj zaduzenja</label>
+                <div class="col-md-4">
+                    <input id="pozivNaBrojZaduzenja" name="pozivNaBrojZaduzenja" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="racunPoverioca">Racun poverioca</label>
+                <div class="col-md-4">
+                    <input id="racunPoverioca" name="racunPoverioca" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="modelOdobrenja">Model odobrenja</label>
+                <div class="col-md-4">
+                    <input id="modelOdobrenja" name="modelOdobrenja" type="number" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="pozivNaBrojOdobrenja">Poziv na broj odobrenja</label>
+                <div class="col-md-4">
+                    <input id="pozivNaBrojOdobrenja" name="pozivNaBrojOdobrenja" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="oznakaValute">Oznaka valute</label>
+                <div class="col-md-4">
+                    <input id="oznakaValute" name="oznakaValute" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="iznos">Iznos</label>
+                <div class="col-md-4">
+                    <input id="iznos" name="iznos" type="number" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+
+            <!-- Prepended checkbox -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="hitno">Hitno</label>
+                <div class="col-md-4">
+                    <input id="hitno" name="hitno" type="checkbox" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">help</span>
+                </div>
+            </div>
+            
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="submit">Posalji</label>
+                <div class="col-md-4">
+                    <button id="submit" name="submit" class="btn btn-primary">Button</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</body>
+
+</html>

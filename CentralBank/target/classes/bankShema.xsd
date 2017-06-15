@@ -1,0 +1,218 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://spring.io/guides/gs-producing-web-service"
+           targetNamespace="http://spring.io/guides/gs-producing-web-service" elementFormDefault="qualified">
+
+    <xs:element name="getMOneZeroThreeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element> 
+
+    <xs:element name="getMOneZeroThreeRequest"> 
+        <xs:complexType>
+            <xs:sequence> 
+            	<xs:element type="xs:int" name="id"/> 
+            	<xs:element type="xs:string" name="swiftBankeDuznika"/>
+           	    <xs:element type="xs:string" name="obracunskiRacunBankeDuznika"/>
+                <xs:element type="xs:string" name="swiftBankePoverioca"/>
+                <xs:element type="xs:string" name="obracunskiRacunBankePoverioca"/>
+                <xs:element type="xs:string" name="duznikNalogovdavac"/>
+                <xs:element type="xs:string" name="svrhaPlacanja"/>
+                <xs:element type="xs:string" name="primalacPoverilac"/>
+                <xs:element type="xs:date" name="datumNaloga"/>
+                <xs:element type="xs:date" name="datumValute"/>
+                <xs:element type="xs:string" name="racunDuznika"/>
+                <xs:element type="xs:int"  name="modelZaduzenja"/>
+                <xs:element type="xs:string" name="pozivNaBrojZaduzenja"/>
+                <xs:element type="xs:string" name="racunPoverioca"/>
+                <xs:element type="xs:int" name="modelOdobrenja"/>
+                <xs:element type="xs:string" name="pozivNaBrojOdobrenja"/>
+                <xs:element type="xs:double" name="iznos"/>
+                <xs:element type="xs:string" name="sifraValute"/>
+                                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+
+    <xs:element name="getM102Response">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    
+    <xs:complexType name="m102StavkaType">
+        <xs:sequence>
+        	<xs:element type="xs:string" name="idNalogaZaPlacanje"/>
+        	<xs:element type="xs:string" name="duznikNalogodavac"/>
+       	    <xs:element type="xs:string" name="svrhaPlacanja"/>
+            <xs:element type="xs:string" name="primalacPoverilac"/>
+            <xs:element type="xs:date" name="datumNaloga"/>
+            <xs:element type="xs:string" name="racunDuznika"/>
+            <xs:element type="xs:int" name="modelZaduzenja"/>
+            <xs:element type="xs:string" name="pozivNaBrojZaduzenja"/>
+            <xs:element type="xs:string" name="racunPoverioca"/>
+            <xs:element type="xs:int" name="modelOdobrenja"/>
+            <xs:element type="xs:string" name="pozivNaBrojOdobrenja"/>
+            <xs:element type="xs:string" name="iznos"/>
+            <xs:element type="xs:string" name="sifraValute"/>                          
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getM102Request">   
+        <xs:complexType>
+            <xs:sequence>
+            	<xs:element type="xs:int" name="id"/>
+            	<xs:element type="xs:string" name="swiftBankeDuznika"/> 
+           	    <xs:element type="xs:string" name="obracunskiRacunBankeDuznika"/>
+                <xs:element type="xs:string" name="swiftBankePoverioca"/>
+                <xs:element type="xs:string" name="obracunskiRacunBankePoverioca"/>
+                <xs:element type="xs:double" name="ukupanIznos"/>
+                <xs:element type="xs:string" name="sifraValute"/>
+                <xs:element type="xs:date" name="datum"/>
+                <xs:element type="xs:date" name="datumValute"/>
+			    <xs:element type="tns:m102StavkaType"  name="getM102Stavka" minOccurs="1" maxOccurs="unbounded" />		       	
+			        
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+     
+    
+    
+    <xs:element name="importNalogZaPlacanjeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:double" name="amount"/>
+        		<xs:element type="xs:date" name="bankOrderDate"/>
+        		<xs:element type="xs:date" name="currensyDate"/>
+        		<xs:element type="xs:string" name="debtor"/>
+        		<xs:element type="xs:string" name="direction"/>
+        		<xs:element type="xs:string" name="firstAccount"/>
+        		<xs:element type="xs:int" name="firstModel"/>
+        		<xs:element type="xs:string" name="firstNumber"/>
+        		<xs:element type="xs:short" name="id"/>
+        		<xs:element type="xs:date" name="orderDate"/>
+        		<xs:element type="xs:string" name="purposeOfPayment"/>
+        		<xs:element type="xs:string" name="recipient"/>
+       		 	<xs:element type="xs:string" name="secondAccount"/>
+        		<xs:element type="xs:int" name="secondModel"/>
+        		<xs:element type="xs:string" name="secondNumber"/>
+        		<xs:element type="xs:boolean" name="urgently"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="importNalogZaPlacanjeResponse">
+        <xs:complexType>
+            <xs:sequence>
+            	<xs:element type="xs:string" name="CreatedBankOrderId"/>                            
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+    <xs:element name="izvodRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:string" name="brojRacuna"/>
+        		<xs:element type="xs:date" name="datum"/>
+                <xs:element type="xs:int" name="redniBrojPreseka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+   <xs:element name="izvodResponse">
+        <xs:complexType>
+            <xs:sequence>
+                  <xs:element type="tns:zaglavljePreseka" name="zaglavljeOdPreseka"/>
+                  <xs:element type="tns:stavkaPreseka" name="stavkePreseka" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+     <xs:complexType name="zaglavljePreseka">
+        <xs:sequence>
+            <xs:element type="xs:string" name="brojRacuna"/>
+    		<xs:element type="xs:date" name="datumNaloga"/>
+            <xs:element type="xs:int" name="brojPreseka"/>
+            <xs:element type="xs:decimal" name="prethodnoStanje"/>
+            <xs:element type="xs:decimal" name="brojPromenaUKorist"/>
+            <xs:element type="xs:decimal" name="ukupnoUKorist"/>
+            <xs:element type="xs:decimal" name="brojPromenaNaTeret"/>
+            <xs:element type="xs:decimal" name="ukupnoNaTeret"/>
+            <xs:element type="xs:decimal" name="novoStanje"/>
+        </xs:sequence>
+    </xs:complexType>
+
+     <xs:complexType name="stavkaPreseka">
+        <xs:sequence>
+            <xs:element type="xs:string" name="duznikNalogodavac"/>
+    		<xs:element type="xs:string" name="svrhaPlacanja"/>
+            <xs:element type="xs:string" name="primalacPoverilac"/>
+            <xs:element type="xs:date" name="datumNaloga"/>
+            <xs:element type="xs:date" name="datumValute"/>
+            <xs:element type="xs:string" name="racunDuznika"/>
+            <xs:element type="xs:int" name="modelZaduzenja"/>
+            <xs:element type="xs:string" name="pozivNaBrojZaduzenja"/>
+            <xs:element type="xs:string" name="racunPoverioca"/>
+            <xs:element type="xs:int" name="modelOdobrenja"/>
+            <xs:element type="xs:string" name="pozivNaBrojOdobrenja"/>
+            <xs:element type="xs:decimal" name="iznos"/>
+            <xs:element type="xs:string" name="smer"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+
+ <xs:element name="getMT9X0Response">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+ </xs:element>
+ 
+ 
+  
+        <xs:complexType name="getMT9X0Request">
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+                 <xs:element name="swifKod" type="xs:string"/>
+                 <xs:element name="obracunskiRacun" type="xs:string"/>
+                 <xs:element name="idPorukeNaloga" type="xs:string"/>
+                 <xs:element name="datumValute" type="xs:date"/>
+                 <xs:element name="iznos" type="xs:double"/>
+                 <xs:element name="sifraValute" type="xs:int"/>
+                
+            </xs:sequence> 
+        </xs:complexType>
+ 
+   
+   <xs:element name="getMT900Request">  
+        <xs:complexType>
+            <xs:sequence>
+                    <xs:element name="body" type="tns:getMT9X0Request"/>
+              </xs:sequence>
+        </xs:complexType>
+    </xs:element> 
+ 
+   <xs:element name="getMT910Request">  
+        <xs:complexType>
+            <xs:sequence>
+                    <xs:element name="body" type="tns:getMT9X0Request"/>
+              </xs:sequence>
+        </xs:complexType>
+    </xs:element> 
+   
+
+
+
+</xs:schema>
