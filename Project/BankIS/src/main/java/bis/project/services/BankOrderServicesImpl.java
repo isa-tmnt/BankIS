@@ -13,14 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
-import bis.project.IAmWsClientConfig;
-import bis.project.M103Client;
 import bis.project.model.BankAccount;
 import bis.project.model.BankOrder;
 import bis.project.model.DailyAccountBalance;
 import bis.project.repositories.BankAccountRepository;
 import bis.project.repositories.BankOrderRepository;
 import bis.project.repositories.DailyAccountBalanceRepository;
+import bis.project.ws.IAmWsClientConfig;
+import bis.project.ws.M103Client;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeResponse;
 

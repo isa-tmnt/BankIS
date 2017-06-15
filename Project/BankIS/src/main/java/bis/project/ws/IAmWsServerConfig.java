@@ -1,4 +1,4 @@
-package bis.project;
+package bis.project.ws;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,19 +41,18 @@ public class IAmWsServerConfig extends WsConfigurerAdapter {
         Wss4jSecurityInterceptor securityInterceptor = new Wss4jSecurityInterceptor();
 
         // validate incoming request
-        securityInterceptor.setValidationActions("Timestamp Signature");      
+        securityInterceptor.setValidationActions("Timestamp Signature Encrypt");      
         securityInterceptor.setValidationSignatureCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setValidationDecryptionCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setValidationCallbackHandler(securityCallbackHandler());
 
         // encrypt the response
         securityInterceptor.setSecurementEncryptionUser("client-public");
-    //    securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}importNalogZaPlacanjeResponse");
-    //    securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}getMOneZeroThreeRequest");
+        securityInterceptor.setSecurementEncryptionParts("{}{http://schemas.xmlsoap.org/soap/envelope/}Body");
         securityInterceptor.setSecurementEncryptionCrypto(getCryptoFactoryBean().getObject());
 
         // sign the response
-        securityInterceptor.setSecurementActions("Signature");
+        securityInterceptor.setSecurementActions("Signature Encrypt");
         securityInterceptor.setSecurementUsername("server");
         securityInterceptor.setSecurementPassword("123456");
         securityInterceptor.setSecurementSignatureCrypto(getCryptoFactoryBean().getObject());

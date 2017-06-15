@@ -9,6 +9,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import org.springframework.ws.soap.server.endpoint.annotation.SoapAction;
 
 import bis.project.model.BankOrder;
 import bis.project.repositories.DailyAccountBalanceRepository;
@@ -23,17 +24,13 @@ import io.spring.guides.gs_producing_web_service.IzvodResponse;
 
 @Endpoint
 public class EndpointxD {
-private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
 
-	private static int idPoruke;
-	
 	@Autowired
 	private BankOrderServices orderService;
 	
-	@Autowired
-	private DailyAccountBalanceRepository dailyRepo;
 	
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "importNalogZaPlacanjeRequest")
+	@PayloadRoot(namespace = "http://banka/importOrder", localPart = "importNalogZaPlacanjeRequest")
+	@SoapAction("http://banka/importOrder")
 	@ResponsePayload
 	public ImportNalogZaPlacanjeResponse importOrder(@RequestPayload ImportNalogZaPlacanjeRequest request) {
 		
@@ -68,7 +65,8 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 	}
 	
 	
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "izvodRequest")
+	@PayloadRoot(namespace = "http://banka/dajIzvode", localPart = "izvodRequest")
+	@SoapAction("http://banka/dajIzvode")
 	@ResponsePayload
 	public IzvodResponse izvodRequest(@RequestPayload IzvodRequest request) {
 		
@@ -77,7 +75,8 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		return response;
 	}
 	
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getMT900Request")
+	@PayloadRoot(namespace = "http://banka/mt900", localPart = "getMT900Request")
+	@SoapAction("http://banka/mt900")
 	@ResponsePayload
 	public GetMT9X0Response mt900(@RequestPayload GetMT900Request request) {
 		
@@ -86,7 +85,8 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		return response;
 	}
 	
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getMT910Request")
+	@PayloadRoot(namespace = "http://banka/mt910", localPart = "getMT910Request")
+	@SoapAction("http://banka/mt910")
 	@ResponsePayload
 	public GetMT9X0Response mt910(@RequestPayload GetMT910Request request) {
 		

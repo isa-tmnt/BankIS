@@ -1,4 +1,4 @@
-package bis.project;
+package bis.project.ws;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class IAmWsClientConfig{
         //-------------------------------------- if i am client ----------------------------------
         
         // set security actions
-        securityInterceptor.setSecurementActions("Timestamp Signature");
+        securityInterceptor.setSecurementActions("Timestamp Signature Encrypt");
 
         // sign the request
         securityInterceptor.setSecurementUsername("server");
@@ -34,11 +34,11 @@ public class IAmWsClientConfig{
         // encrypt the request
         securityInterceptor.setSecurementEncryptionUser("client-public");
         securityInterceptor.setSecurementEncryptionCrypto(getCryptoFactoryBean().getObject());
-   //     securityInterceptor.setSecurementEncryptionParts("{Content}{http://spring.io/guides/gs-producing-web-service}getMOneZeroThreeRequest");
+        securityInterceptor.setSecurementEncryptionParts("{}{http://schemas.xmlsoap.org/soap/envelope/}Body");
         securityInterceptor.setSecurementSignatureKeyIdentifier("DirectReference");
 
         //try------ IT WORKS, now response doesnt throw null pointer
-        securityInterceptor.setValidationActions("Signature");      
+        securityInterceptor.setValidationActions("Signature Encrypt");      
         securityInterceptor.setValidationSignatureCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setValidationDecryptionCrypto(getCryptoFactoryBean().getObject());
         securityInterceptor.setValidationCallbackHandler(securityCallbackHandler());

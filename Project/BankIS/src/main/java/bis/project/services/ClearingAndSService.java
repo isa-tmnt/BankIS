@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
-import bis.project.IAmWsClientConfig;
-import bis.project.M102Client;
 import bis.project.model.BankAccount;
 import bis.project.model.BankOrder;
 import bis.project.model.DailyAccountBalance;
 import bis.project.repositories.BankAccountRepository;
+import bis.project.ws.IAmWsClientConfig;
+import bis.project.ws.M102Client;
 import io.spring.guides.gs_producing_web_service.GetM102Request;
 import io.spring.guides.gs_producing_web_service.GetM102Response;
 import io.spring.guides.gs_producing_web_service.M102StavkaType;

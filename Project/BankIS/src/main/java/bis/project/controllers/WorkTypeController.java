@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import bis.project.IAmWsClientConfig;
-import bis.project.M102Client;
-import bis.project.M103Client;
 import bis.project.model.WorkType;
 import bis.project.services.CredentialsServices;
 import bis.project.services.WorkTypeServices;
 import bis.project.validators.ValidationException;
 import bis.project.validators.WorkTypeValidator;
+import bis.project.ws.IAmWsClientConfig;
+import bis.project.ws.M102Client;
+import bis.project.ws.M103Client;
 import io.spring.guides.gs_producing_web_service.GetM102Request;
 import io.spring.guides.gs_producing_web_service.GetM102Response;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
