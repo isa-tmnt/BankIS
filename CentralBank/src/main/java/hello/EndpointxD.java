@@ -1,6 +1,8 @@
 package hello;
 
 
+import java.util.Random;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -13,7 +15,6 @@ import io.spring.guides.gs_producing_web_service.GetM102Response;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
 import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeResponse;
 import io.spring.guides.gs_producing_web_service.GetMT900Request;
-import io.spring.guides.gs_producing_web_service.GetMT9X0Request;
 import io.spring.guides.gs_producing_web_service.GetMT9X0Response;
 
 @Endpoint
@@ -74,12 +75,9 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 	
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     MT900Client wsclient2 =  context.getBean(MT900Client.class);
-	    wsclient2.setDefaultUri("http://localhost:10011/ws");
+	    wsclient2.setDefaultUri("https://localhost:10011/ws");
 	    GetMT900Request request2 = new GetMT900Request();
-	    
-	    GetMT9X0Request req = new GetMT9X0Request();
-	    req.setId(534534);
-	    request2.setBody(req);
+	    request2.setId(Integer.toString(new Random().nextInt()));
 	    GetMT9X0Response response2 = wsclient2.doMT900Request(request2);			
 		
 	}

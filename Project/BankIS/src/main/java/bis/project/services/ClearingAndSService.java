@@ -1,5 +1,6 @@
 package bis.project.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 
@@ -44,13 +45,13 @@ public class ClearingAndSService {
         GetM102Request request = new GetM102Request();
         request.setDatum(null);
         request.setDatumValute(null);
-        request.setId(new Random().nextInt());
+        request.setId(Integer.toString(new Random().nextInt()));
         request.setObracunskiRacunBankeDuznika("TODO");
         request.setObracunskiRacunBankePoverioca("TODO");
         request.setSifraValute("");
         request.setSwiftBankeDuznika("TODO");
         request.setSwiftBankePoverioca("TODO");
-        request.setUkupanIznos(000000);
+        request.setUkupanIznos(new BigDecimal(000000));
         
         for(int i =0; i < list.size(); i++){
         	BankOrder order = list.get(i);
@@ -60,14 +61,14 @@ public class ClearingAndSService {
         	stavka.setDuznikNalogodavac(order.getDebtor());
         	stavka.setIdNalogaZaPlacanje("");
         	stavka.setIznos(order.getAmount());
-        	stavka.setModelOdobrenja(Integer.parseInt(order.getSecondModel()));
-        	stavka.setModelZaduzenja(Integer.parseInt(order.getFirstModel()));
+        	stavka.setModelOdobrenja(new BigDecimal(order.getSecondModel()));
+        	stavka.setModelZaduzenja(new BigDecimal(order.getFirstModel()));
         	stavka.setPozivNaBrojOdobrenja(order.getSecondNumber());
         	stavka.setPozivNaBrojZaduzenja(order.getFirstNumber());
         	stavka.setPrimalacPoverilac(order.getRecipient());
         	stavka.setRacunDuznika(order.getDebtor());
         	stavka.setRacunPoverioca(order.getSecondAccount());
-        	stavka.setSifraValute("random");
+        	stavka.setOznakaValute("random");
         	stavka.setSvrhaPlacanja(order.getPurposeOfPayment());
         	
             request.getGetM102Stavka().add(stavka);

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.SoapClientConfig;
 
 import client.BankOrderClient;
-import io.spring.guides.gs_producing_web_service.ImportNalogZaPlacanjeRequest;
 import io.spring.guides.gs_producing_web_service.ImportNalogZaPlacanjeResponse;
+import io.spring.guides.gs_producing_web_service.NalogZaPlacanje;
 
 
 @Controller
@@ -28,32 +29,30 @@ public class NalogController {
     public String greetingSubmit(@ModelAttribute NalogIzForme greeting) {
     	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SoapClientConfig.class);
 	    BankOrderClient wsclient = /*new BankOrderClient();*/ context.getBean(BankOrderClient.class);
-	    wsclient.setDefaultUri("http://localhost:10011/ws");
-	    ImportNalogZaPlacanjeRequest request = new ImportNalogZaPlacanjeRequest();
+	    wsclient.setDefaultUri("https://localhost:10011/ws");
+	    NalogZaPlacanje request = new NalogZaPlacanje();
 	    
-	    request.setAmount(greeting.getIznos());
+	    request.setIznos(new BigDecimal(greeting.getIznos()));
 	    Date date = new Date();
 	    try {
 	    	XMLGregorianCalendar now = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
-			request.setBankOrderDate(now);
-			request.setCurrensyDate(now);
-			request.setOrderDate(now);
+			request.setDatumNaloga(now);
+			request.setDatumValute(now);
 	    } catch (DatatypeConfigurationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	    
-	    request.setDebtor(greeting.getDuznikNalogodavac());
-	    request.setDirection("A");
-	    request.setFirstAccount(greeting.getRacunDuznika());
-	    request.setFirstModel(greeting.getModelZaduzenja());
-	    request.setFirstNumber(greeting.getPozivNaBrojZaduzenja());
-	    request.setPurposeOfPayment(greeting.getSvrhaPlacanja());
-	    request.setRecipient(greeting.getPrimalacPoverilac());
-	    request.setSecondAccount(greeting.getRacunPoverioca());
-	    request.setSecondModel(greeting.getModelOdobrenja());
-	    request.setSecondNumber(greeting.getPozivNaBrojOdobrenja());
-	    request.setUrgently(greeting.isHitno());
+	    request.setDuznikNalogodavac(greeting.getDuznikNalogodavac());
+	    request.setRacunDuznika(greeting.getRacunDuznika());
+	    request.setModelZaduzenja(new BigDecimal(greeting.getModelZaduzenja()));
+	    request.setPozivNaBrojZaduzenja(greeting.getPozivNaBrojZaduzenja());
+	    request.setSvrhaPlacanja(greeting.getSvrhaPlacanja());
+	    request.setPrimalacPoverilac(greeting.getPrimalacPoverilac());
+	    request.setRacunPoverioca(greeting.getRacunPoverioca());
+	    request.setModelOdobrenja(new BigDecimal(greeting.getModelOdobrenja()));
+	    request.setPozivNaBrojOdobrenja(greeting.getPozivNaBrojOdobrenja());
+	    request.setHitno(greeting.isHitno());
 	    
 	    
      	ImportNalogZaPlacanjeResponse resp = wsclient.getBeer(request);

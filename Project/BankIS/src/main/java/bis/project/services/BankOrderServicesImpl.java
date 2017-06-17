@@ -165,13 +165,13 @@ public class BankOrderServicesImpl implements BankOrderServices {
 	    wsclient.setDefaultUri("https://localhost:7779/ws");
 	    
 	    GetMOneZeroThreeRequest request = new GetMOneZeroThreeRequest();
-	    request.setId(new Random().nextInt());
+	    request.setId(Integer.toString(new Random().nextInt()));
 	    request.setDatumNaloga(null);
 	    request.setDatumValute(null);
-	    request.setDuznikNalogovdavac(bankOrder.getDebtor());
-	    request.setIznos(bankOrder.getAmount().doubleValue());
-	    request.setModelOdobrenja(Integer.parseInt(bankOrder.getSecondModel()));
-	    request.setModelZaduzenja(Integer.parseInt(bankOrder.getFirstModel()));
+	    request.setDuznikNalogodavac(bankOrder.getDebtor());
+	    request.setIznos(bankOrder.getAmount());
+	    request.setModelOdobrenja(new BigDecimal(bankOrder.getSecondModel()));
+	    request.setModelZaduzenja(new BigDecimal(bankOrder.getFirstModel()));
 	    request.setObracunskiRacunBankeDuznika(bankOrder.getDebtor());
 	    request.setObracunskiRacunBankePoverioca(bankOrder.getRecipient());
 	    request.setPozivNaBrojOdobrenja(bankOrder.getSecondAccount());
