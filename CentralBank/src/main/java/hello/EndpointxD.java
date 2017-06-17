@@ -1,7 +1,13 @@
 package hello;
 
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Random;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -33,8 +39,15 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		     public void run() {
 		    	try {
 					Thread.sleep(5 * 1000);
-					doMt900();
-				} catch (InterruptedException e) {
+					GregorianCalendar c = new GregorianCalendar();
+					c.setTime(new Date());
+					XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+					
+					request.setDatumNaloga(date2);
+					request.setDatumValute(date2);
+					sendMt103ToRecipient(request);
+				//	sendMt900ToRecipient(request); TODO 
+				} catch (InterruptedException | DatatypeConfigurationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	    	 
@@ -46,6 +59,17 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		return respone;
 	}
 	
+	protected void sendMt900ToRecipient(GetMOneZeroThreeRequest request) {
+		sendMt900ToRecipient();
+	}
+
+	protected void sendMt103ToRecipient(GetMOneZeroThreeRequest request) {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+		MT103Client wsclient2 =  context.getBean(MT103Client.class);
+	    wsclient2.setDefaultUri("https://localhost:10011/ws");
+	    GetMOneZeroThreeResponse response2 = wsclient2.doMT103Request(request);	
+	}
+
 	@PayloadRoot(namespace = "http://banka/m102", localPart = "getM102Request")
 	@SoapAction("http://banka/m102")
 	@ResponsePayload
@@ -55,7 +79,7 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		     public void run() {
 		    	try {
 					Thread.sleep(5 * 1000);
-					doMt900();
+					sendMt900ToRecipient();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -71,7 +95,7 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 	}
 	
 	
-	public void doMt900(){
+	public void sendMt900ToRecipient(){
 	
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     MT900Client wsclient2 =  context.getBean(MT900Client.class);

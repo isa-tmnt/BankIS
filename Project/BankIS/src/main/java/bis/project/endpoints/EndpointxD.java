@@ -13,6 +13,11 @@ import org.springframework.ws.soap.server.endpoint.annotation.SoapAction;
 
 import bis.project.model.BankOrder;
 import bis.project.services.BankOrderServices;
+import bis.project.validators.ValidationException;
+import io.spring.guides.gs_producing_web_service.GetM102Request;
+import io.spring.guides.gs_producing_web_service.GetM102Response;
+import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
+import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeResponse;
 import io.spring.guides.gs_producing_web_service.GetMT900Request;
 import io.spring.guides.gs_producing_web_service.GetMT910Request;
 import io.spring.guides.gs_producing_web_service.GetMT9X0Response;
@@ -31,7 +36,7 @@ public class EndpointxD {
 	@PayloadRoot(namespace = "http://banka/importOrder", localPart = "importNalogZaPlacanjeRequest")
 	@SoapAction("http://banka/importOrder")
 	@ResponsePayload
-	public ImportNalogZaPlacanjeResponse importOrder(@RequestPayload NalogZaPlacanje request) {
+	public ImportNalogZaPlacanjeResponse importOrder(@RequestPayload NalogZaPlacanje request) throws ValidationException {
 		
 		BankOrder order = new BankOrder();
 
@@ -70,6 +75,49 @@ public class EndpointxD {
 	public IzvodResponse izvodRequest(@RequestPayload IzvodRequest request) {
 		
 		IzvodResponse response = new IzvodResponse();
+		
+		return response;
+	}
+	
+	
+	@PayloadRoot(namespace = "http://banka/mt103", localPart = "getMT103Request")
+	@SoapAction("http://banka/mt103")
+	@ResponsePayload
+	public GetMOneZeroThreeResponse mt103(@RequestPayload GetMOneZeroThreeRequest request) throws ValidationException {
+		
+		
+		BankOrder order = new BankOrder();
+		
+		order.setAmount(request.getIznos());
+		order.setBankOrderDate(new Date());
+		order.setCurrencyDate(new Date());
+		order.setDebtor(request.getDuznikNalogodavac());
+		order.setDirection("A");
+		order.setFirstAccount(request.getRacunDuznika());
+		order.setFirstModel(String.valueOf(request.getModelZaduzenja()));
+		order.setFirstNumber(request.getPozivNaBrojZaduzenja());
+		order.setOrderDate(new Date());
+		order.setPurposeOfPayment(request.getSvrhaPlacanja());
+		order.setRecipient(request.getPrimalacPoverilac());
+		order.setSecondAccount(request.getRacunPoverioca());
+		order.setSecondModel(String.valueOf(request.getModelOdobrenja()));
+		order.setSecondNumber(request.getPozivNaBrojOdobrenja());
+
+		orderService.processMt103FromCentralBank(order);
+		
+		GetMOneZeroThreeResponse response = new GetMOneZeroThreeResponse();
+		
+		
+		return response;
+	}
+	
+
+	@PayloadRoot(namespace = "http://banka/mt102", localPart = "getMT102Request")
+	@SoapAction("http://banka/mt102")
+	@ResponsePayload
+	public GetM102Response mt102(@RequestPayload GetM102Request request) {
+		
+		GetM102Response response = new GetM102Response();
 		
 		return response;
 	}

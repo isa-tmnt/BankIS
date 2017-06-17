@@ -12,12 +12,11 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
-import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.EndpointInterceptor;
-import org.springframework.ws.server.endpoint.MethodEndpoint;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.KeyStoreCallbackHandler;
 import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
+import org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
@@ -62,6 +61,14 @@ public class IAmWsServerConfig extends WsConfigurerAdapter {
         
         return securityInterceptor;
     }
+    
+    public PayloadValidatingInterceptor getRestrictionsValidationInterceptor(){
+    	PayloadValidatingInterceptor interceptor = new PayloadValidatingInterceptor();
+    	interceptor.setValidateRequest(true);
+    	interceptor.setValidateResponse(true);
+    	interceptor.setXsdSchema(new SimpleXsdSchema(new ClassPathResource("bankShema.xsd")));
+    	return interceptor;
+    }
 
     @Bean
     public CryptoFactoryBean getCryptoFactoryBean() throws IOException {
@@ -75,6 +82,7 @@ public class IAmWsServerConfig extends WsConfigurerAdapter {
     public void addInterceptors(List<EndpointInterceptor> interceptors) {
         try {
             interceptors.add(securityInterceptor());
+            interceptors.add(getRestrictionsValidationInterceptor());
         } catch (Exception e) {
             throw new RuntimeException("could not initialize security interceptor");
         }

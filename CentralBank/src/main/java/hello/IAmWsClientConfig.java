@@ -211,6 +211,99 @@ public class IAmWsClientConfig{
         return client;
     }
 
+    @Bean
+    public MT103Client mt103Client(Jaxb2Marshaller marshaller) throws Exception {
+    	MT103Client client = new MT103Client();
+        client.setDefaultUri(this.url);
+        client.setMarshaller(getMarshaller());//marshaller);
+        client.setUnmarshaller(getMarshaller());
+
+        KeyStore ks = KeyStore.getInstance("JKS");
+        ks.load(keyStore.getInputStream(), keyStorePassword.toCharArray());
+
+        LOGGER.info("Loaded keystore: " + keyStore.getURI().toString());
+        try {
+            keyStore.getInputStream().close();
+        } catch (IOException e) {
+        }
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(ks, keyStorePassword.toCharArray());
+
+        KeyStore ts = KeyStore.getInstance("JKS");
+        ts.load(trustStore.getInputStream(), trustStorePassword.toCharArray());
+        LOGGER.info("Loaded trustStore: " + trustStore.getURI().toString());
+        try {
+            trustStore.getInputStream().close();
+        } catch(IOException e) {
+        }
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(ts);
+
+        HttpsUrlConnectionMessageSender messageSender = new HttpsUrlConnectionMessageSender();
+        messageSender.setKeyManagers(keyManagerFactory.getKeyManagers());
+        messageSender.setTrustManagers(trustManagerFactory.getTrustManagers());
+
+        // otherwise: java.security.cert.CertificateException: No name matching localhost found
+        messageSender.setHostnameVerifier((hostname, sslSession) -> {
+            if (hostname.equals("localhost")) {
+                return true;
+            }
+            return false;
+        });
+        
+        ClientInterceptor[] interceptors = new ClientInterceptor[]{securityInterceptor()};
+        client.setInterceptors(interceptors);
+
+        client.setMessageSender(messageSender);
+        return client;
+    }
+    
+    @Bean
+    public MT102Client mt102Client(Jaxb2Marshaller marshaller) throws Exception {
+    	MT102Client client = new MT102Client();
+        client.setDefaultUri(this.url);
+        client.setMarshaller(getMarshaller());//marshaller);
+        client.setUnmarshaller(getMarshaller());
+
+        KeyStore ks = KeyStore.getInstance("JKS");
+        ks.load(keyStore.getInputStream(), keyStorePassword.toCharArray());
+
+        LOGGER.info("Loaded keystore: " + keyStore.getURI().toString());
+        try {
+            keyStore.getInputStream().close();
+        } catch (IOException e) {
+        }
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(ks, keyStorePassword.toCharArray());
+
+        KeyStore ts = KeyStore.getInstance("JKS");
+        ts.load(trustStore.getInputStream(), trustStorePassword.toCharArray());
+        LOGGER.info("Loaded trustStore: " + trustStore.getURI().toString());
+        try {
+            trustStore.getInputStream().close();
+        } catch(IOException e) {
+        }
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(ts);
+
+        HttpsUrlConnectionMessageSender messageSender = new HttpsUrlConnectionMessageSender();
+        messageSender.setKeyManagers(keyManagerFactory.getKeyManagers());
+        messageSender.setTrustManagers(trustManagerFactory.getTrustManagers());
+
+        // otherwise: java.security.cert.CertificateException: No name matching localhost found
+        messageSender.setHostnameVerifier((hostname, sslSession) -> {
+            if (hostname.equals("localhost")) {
+                return true;
+            }
+            return false;
+        });
+        
+        ClientInterceptor[] interceptors = new ClientInterceptor[]{securityInterceptor()};
+        client.setInterceptors(interceptors);
+
+        client.setMessageSender(messageSender);
+        return client;
+    }
     
 
 }

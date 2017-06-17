@@ -1,5 +1,5 @@
-INSERT INTO bank(bank_code, billing_account, name, swift_code) VALUES (432, "123gh", "fddhg", "safasf")
-INSERT INTO bank(bank_code, billing_account, name, swift_code) VALUES (321, "321hg", "aaaasd", "sdfghf")
+INSERT INTO bank(bank_code, billing_account, name, swift_code) VALUES (432, "123gh", "fddhg", "safasf24")
+INSERT INTO bank(bank_code, billing_account, name, swift_code) VALUES (321, "321hg", "aaaasd", "sdfghf42")
 
 insert into USER(first_name, last_name, email, password, salt, bank_id) values ("Pera", "Peric", "ppera@gmail.com", "H2I8mOzGhxXKVRgtLyDRvE7hKyqkSjeZBlx2rP6BQ0Q=", "qO7WuIQgH7tNT+/eEpJ23sOkbHH2rfocccNxCrpn8UM=", 1)
 insert into USER(first_name, last_name, email, password, salt, bank_id) values ("Janko", "Jankovic", "jjanko@gmail.com", "gYxaSoG8bld7bEnwnAHrhZQXpv3yLV59oRiqVU0BaFs=", "prtDOK7ObPLI2addmMlIyYS8+z6V43FLr+oDK3aFIwo=", 1)
@@ -130,23 +130,8 @@ INSERT INTO `bisdb`.`client_details` (`client_type`, `address`, `email`, `first_
 INSERT INTO `bisdb`.`currency` (`currency_code`, `name`) VALUES ('432', 'fdgdg')
 
 
-INSERT INTO `bisdb`.`bank_account` (`account_number`, `end_date`, `start_date`, `status`, `bank_id`, `client_id`, `currency_id`) VALUES ('43243', '2000-08-08', '2000-08-08', '1', '1', '1', '1')
-
-
-INSERT INTO `bisdb`.`daily_account_balance` (`id`, `amount_charged`, `amount_in_favor`, `date`, `new_state`, `previous_state`, `account_id`) VALUES ('1', '435', '543', '2010-10-10', '5465', '543', '1')
-
-
-INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('123', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', '45', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', '25', '123', b'00000000', '1')
-INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('655', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', '65', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', '87', '123', b'00000000', '1')
-INSERT INTO `bisdb`.`bank_order` (`amount`, `bank_order_date`, `currency_date`, `debtor`, `direction`, `first_account`, `first_model`, `first_number`, `order_date`, `purpose_of_payment`, `recipient`, `second_account`, `second_model`, `second_number`, `urgently`, `daily_account_balance_id`) VALUES ('879', '2000-10-10', '2000-10-10', 'gsdfg', 'A', 'dsf', '55', '432', '2000-10-10', 'sgdfgsdg', 'dgsdg', 'dfg', '67', '123', b'00000000', '1')
-
-INSERT INTO `bisdb`.`bank_messages` (`description`, `message_code`) VALUES ('fdg', '123')
-
-
-INSERT INTO `bisdb`.`interbank_transfer` (`amount`, `transfer_date`, `bank_message_id`, `recipient_bank_id`, `sender_bank_id`) VALUES ('700', '2010-10-10', '1', '1', '2')
-
-
-INSERT INTO `bisdb`.`transfer_item` (`bank_order_id`, `transfer_id`) VALUES ('1', '1')
-INSERT INTO `bisdb`.`transfer_item` (`bank_order_id`, `transfer_id`) VALUES ('2', '1')
+INSERT INTO `bisdb`.`bank_account` (`account_number`, `end_date`, `start_date`, `status`, `bank_id`, `client_id`, `currency_id`) VALUES ('432123456789012399', '2000-08-08', '2000-08-08', '1', '1', '1', '1')
+INSERT INTO `bisdb`.`bank_account` (`account_number`, `end_date`, `start_date`, `status`, `bank_id`, `client_id`, `currency_id`) VALUES ('432987654321098799', '2000-08-08', '2000-08-08', '1', '1', '1', '1')
+INSERT INTO `bisdb`.`bank_account` (`account_number`, `end_date`, `start_date`, `status`, `bank_id`, `client_id`, `currency_id`) VALUES ('321557654321098799', '2000-08-08', '2000-08-08', '1', '2', '1', '1')
 
 

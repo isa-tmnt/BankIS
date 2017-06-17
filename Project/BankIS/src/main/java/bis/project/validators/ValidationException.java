@@ -38,4 +38,10 @@ public class ValidationException extends Exception {
 			throw new ValidationException(fieldLabel + " have to be between " + min + " and " + max + " or empty");
 
 	}
+	
+	public static void ThrowIfLengthDifferentThat(int length, String str, String fieldLabel)throws ValidationException{
+		if(str == null || str.length() != length)
+			throw new ValidationException(fieldLabel + " have to be between length " + length + ", not " + str.length());
+
+	}
 }

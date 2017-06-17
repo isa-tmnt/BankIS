@@ -3,6 +3,7 @@ package controllers;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -43,6 +44,7 @@ public class NalogController {
 			e1.printStackTrace();
 		}
 	    
+	    request.setId(Integer.toString(new Random().nextInt()));
 	    request.setDuznikNalogodavac(greeting.getDuznikNalogodavac());
 	    request.setRacunDuznika(greeting.getRacunDuznika());
 	    request.setModelZaduzenja(new BigDecimal(greeting.getModelZaduzenja()));
@@ -53,6 +55,7 @@ public class NalogController {
 	    request.setModelOdobrenja(new BigDecimal(greeting.getModelOdobrenja()));
 	    request.setPozivNaBrojOdobrenja(greeting.getPozivNaBrojOdobrenja());
 	    request.setHitno(greeting.isHitno());
+	    request.setOznakaValute(greeting.getOznakaValute());
 	    
 	    
      	ImportNalogZaPlacanjeResponse resp = wsclient.getBeer(request);

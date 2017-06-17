@@ -3,6 +3,7 @@ package bis.project.services;
 import java.util.Set;
 
 import bis.project.model.BankOrder;
+import bis.project.validators.ValidationException;
 
 public interface BankOrderServices {
 	
@@ -10,9 +11,11 @@ public interface BankOrderServices {
 	
 	public BankOrder getBankOrder(Integer id);
 	
-	public BankOrder addBankOrder(BankOrder bankOrder);
+	public BankOrder addBankOrder(BankOrder bankOrder) throws ValidationException;
 	
-	public BankOrder updateBankOrder(BankOrder bankOrder);
+	public BankOrder updateBankOrder(BankOrder bankOrder); //TODO remove this
 	
 	public void deleteBankOrder(Integer id);
+
+	public void processMt103FromCentralBank(BankOrder order) throws ValidationException;
 }
