@@ -77,7 +77,7 @@ public class ClearingAndSService {
         
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     M102Client wsclient2 =  context.getBean(M102Client.class);
-	    wsclient2.setDefaultUri("http://localhost:7779/ws");
+	    wsclient2.setDefaultUri("https://localhost:7779/ws");
 		GetM102Response response2 = wsclient2.doM102Request(request);
               
 	}

@@ -162,7 +162,7 @@ public class BankOrderServicesImpl implements BankOrderServices {
 	private void doRTGS(BankOrder bankOrder) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	    M103Client wsclient =  context.getBean(M103Client.class);
-	    wsclient.setDefaultUri("http://localhost:7779/ws");
+	    wsclient.setDefaultUri("https://localhost:7779/ws");
 	    
 	    GetMOneZeroThreeRequest request = new GetMOneZeroThreeRequest();
 	    request.setId(new Random().nextInt());
