@@ -26,11 +26,12 @@ app.component('userSettings', {
                 if(response.status == 200 || response.data.success)
                     toastr.success("changed successfuly")
                 else{
-                    console.log(response);
                     if(response && response.data && response.data.message)
                         toastr.info(response.data.message)
-                    else
+                    else{
                         toastr.error("unknown error :/ sry");
+                        console.log(response);
+                    }
                 }
             }, function errorCallback(e){
                 toastr.error(e);
