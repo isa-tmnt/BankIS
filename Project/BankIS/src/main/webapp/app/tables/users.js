@@ -1,7 +1,7 @@
 'use strict';
 
 app.component('users', {
-    templateUrl: 'app/commonTemplates/defaultTable.html',
+    templateUrl: 'app/commonTemplates/users.html',
     controller: ['$scope', '$http', '$attrs', '$rootScope', '$element', '$compile', function ClosingAccountsCtrl($scope, $http, $attrs, $rootScope, $element, $compile) {
 
         $scope.rows = [];
@@ -30,7 +30,7 @@ app.component('users', {
             $scope.rows = response.data;
         });
 
-        $scope.allowAdd = true; $scope.allowEdit = true; $scope.allowRemove = true;
+        $scope.allowAdd = true; $scope.allowEdit = false; $scope.allowRemove = true;
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
             var data = $.extend({}, $scope.editing);
@@ -51,30 +51,6 @@ app.component('users', {
             });
         }
 
-        $scope.doEdit = function () {
-            if ($scope.selected.id) {
-                var data = $.extend({}, $scope.editing);
-                $http.post(appConfig.apiUrl + 'users', data, appConfig.config).then(function successCallback(response) {
-                    var row = response.data;
-                    if (row && response.status < 300) {
-                        $scope.header.filter(h => h.type == "date").forEach(h => row[h.code] = new Date(row[h.code]));  //conver strings to dates where needed
-                        $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);
-                        $scope.rows.push(row);
-                        toastr.success('Edited successfuly.')
-                    }
-                }, function err(e) {
-                    console.log(e);
-                    if (e && e.data && e.data.cause)
-                        toastr.error(e.data.cause)
-                    else
-                        toastr.error("Can't edit sorry.")
-                });
-            } else {
-                toastr.info('Select row first.')
-            }
-
-        }
-
         $scope.doRemove = function () {
             if ($scope.selected.id) {
                 $http.delete(appConfig.apiUrl + 'users/' + $scope.selected.id, appConfig.config).then(function successCallback(response) {
@@ -91,7 +67,8 @@ app.component('users', {
                 toastr.info('Select row first.');
             }
         }
-        
+
+      
         $scope.iamdialog = $attrs.iamdialog == 'true';
         
         $scope.openDialog = function (tagName, id) {

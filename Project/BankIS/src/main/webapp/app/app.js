@@ -12,13 +12,13 @@ var app = angular.module('myApp', [
                     return request;
                 },
 
-                'responseError': function (response,b) {
+                'responseError': function (response, b) {
                     if (response.status == 403 || response.status == 401) { //forbiden or unauthorized
                         //  location.href = "/#!/login";
                         toastr.info("No permission for this action, TODO for developers, user shouldnt see this action available");
                     }
                     if (response.status == 400) {
-                        if(response.data.cause)
+                        if (response.data.cause)
                             toastr.info(response.data.cause);
                     }
                     if (response.status >= 500) {
@@ -61,6 +61,8 @@ var app = angular.module('myApp', [
             template: "<work-types></work-types>",
         }).when("/users", {
             template: "<users></users>",
+        }).when("/userSettings", {
+            template: "<user-settings></user-settings>",
         }).when("/", {
             template: "<welcome-page></welcome-page>",
         });
@@ -90,10 +92,10 @@ app.run(function ($http) {
 
 var appConfig = {
     apiUrl: "https://localhost:10011/api/",
-    config: { 
-    	headers: {
-    		"CsrfToken" : localStorage.getItem("X-CSRF-TOKEN"),
-    		"AuthEmail" : localStorage.getItem("basicAuthEmail")
-    	} 
+    config: {
+        headers: {
+            "CsrfToken": localStorage.getItem("X-CSRF-TOKEN"),
+            "AuthEmail": localStorage.getItem("basicAuthEmail")
+        }
     }
 };

@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <p class="text-center">Use the form below to change your password. Your password cannot be the same as your username.</p>
+        <div id="passwordForm">
+            <input type="password" ng-model="oldPassword" class="input-lg form-control" name="odlPass" id="odlPass" placeholder="Old Password" autocomplete="off">
+            <div ng-show="showValidatons" class="row">
+                <div  ng-show="wrongOldPassword" class="col-sm-6">
+                    <span id="wrongPass" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> That's not your old password<br>
+                </div>
+            </div>
+            <input type="password"  ng-model="newPassword" class="input-lg form-control" name="password1" id="password1" placeholder="New Password" autocomplete="off">
+            <div ng-show="showValidatons" class="row">
+                <div ng-show="chars8long = (!newPassword || newPassword.length < 8)" class="col-sm-6">
+                    <span  id="8char" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> 8 Characters Long<br>
+                </div>
+                <div ng-show="oneUppercase = (!hasUpperCase(newPassword))" class="col-sm-6">
+                    <span  id="ucase" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> One Uppercase Letter
+                </div>
+                <div ng-show="oneLowercase = (!hasLowerCase(newPassword))" class="col-sm-6">
+                    <span  id="lcase" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> One Lowercase Letter<br>
+                </div>
+                <div ng-show="oneNumber = (!hasNumber(newPassword))" class="col-sm-6">
+                    <span  id="num" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> One Number
+                </div>
+            </div>
+            <input type="password"  ng-model="repeatedPassword" class="input-lg form-control" name="password2" id="password2" placeholder="Repeat Password" autocomplete="off">
+            <div ng-show="showValidatons" class="row">
+                <div ng-show="passwordsMatch = (newPassword != repeatedPassword)" class="col-sm-12">
+                    <span  id="pwmatch" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> Passwords Match
+                </div>
+            </div>
+            <input ng-disabled="chars8long || oneLowercase || oneUppercase || oneNumber || passwordsMatch" ng-click="changePassword()" type="button" class="col-xs-12 btn btn-primary btn-load btn-lg" data-loading-text="Changing Password..." value="Change Password">
+        </div>
+    </div>
+    <!--/col-sm-6-->
+</div>
+<!--/row-->
