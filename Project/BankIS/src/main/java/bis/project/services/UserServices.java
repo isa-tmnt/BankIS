@@ -2,19 +2,21 @@ package bis.project.services;
 
 import java.util.Set;
 
+import bis.project.security.PasswordDTO;
 import bis.project.security.UserDTO;
+import bis.project.security.UserResponse;
 
 public interface UserServices {
 	
-	public Set<UserDTO> getAllUsers();
+	public Set<UserResponse> getAllUsers();
 	
-	public UserDTO getUser(Integer id);
+	//public UserResponse getUser(Integer id);
 	
-	public UserDTO getUserByEmail(String email);
+	public UserResponse getUserByEmail(String email);
 	
-	public UserDTO addUser(UserDTO userDTO);
+	public UserResponse addUser(UserDTO userDTO);
 	
-	public UserDTO updateUser(String email, UserDTO userDTO);
+	public UserResponse updateUser(String email, PasswordDTO dto);
 	
 	public void deleteUser(String email);
 }

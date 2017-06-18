@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import bis.project.security.PasswordDTO;
 import bis.project.security.UserDTO;
+import bis.project.security.UserResponse;
 import bis.project.services.CredentialsServices;
 import bis.project.services.UserServices;
 import bis.project.validators.ValidationException;
@@ -29,19 +31,19 @@ public class UserController {
 	
 	@RequestMapping(value = "/api/users", 
 					method = RequestMethod.GET)
-	public ResponseEntity<Set<UserDTO>> getAllUsers(@RequestHeader(value="CsrfToken") String csrfToken, 
-													@RequestHeader(value="AuthEmail") String authEmail, 
-													@CookieValue("jwt") String jwt) {
+	public ResponseEntity<Set<UserResponse>> getAllUsers(@RequestHeader(value="CsrfToken") String csrfToken, 
+														 @RequestHeader(value="AuthEmail") String authEmail, 
+														 @CookieValue("jwt") String jwt) {
 		
 		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "GetAllUsers");
 		
 		if(isAuthorized) {
-			Set<UserDTO> users = services.getAllUsers();
+			Set<UserResponse> users = services.getAllUsers();
 			
-			return new ResponseEntity<Set<UserDTO>>(users, HttpStatus.OK);
+			return new ResponseEntity<Set<UserResponse>>(users, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<Set<UserDTO>>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<Set<UserResponse>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	/*@RequestMapping(value = "/api/users/get/{id}", 
@@ -53,7 +55,7 @@ public class UserController {
 	@RequestMapping(value = "/api/users/{email}", 
 					method = RequestMethod.GET)
 	//api/users/example@gmail.com.
-	public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") String email, 
+	public ResponseEntity<UserResponse> getUserByEmail(@PathVariable("email") String email, 
 												  @RequestHeader(value="CsrfToken") String csrfToken, 
 												  @RequestHeader(value="AuthEmail") String authEmail, 
 												  @CookieValue("jwt") String jwt) {
@@ -62,87 +64,86 @@ public class UserController {
 		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "GetUserByEmail");
 		
 		if(isAuthorized) {
-			UserDTO user = services.getUserByEmail(email);
+			UserResponse user = services.getUserByEmail(email);
 			
 			if(user == null) {
-				return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<UserResponse>(HttpStatus.NOT_FOUND);
 			}
 			
-			return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+			return new ResponseEntity<UserResponse>(user, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<UserDTO>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<UserResponse>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/users", 
 					method = RequestMethod.POST)
-	public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO user, 
-										   @RequestHeader(value="CsrfToken") String csrfToken, 
-										   @RequestHeader(value="AuthEmail") String authEmail, 
-										   @CookieValue("jwt") String jwt) throws ValidationException {
+	public ResponseEntity<UserResponse> addUser(@RequestBody UserDTO user, 
+										   		@RequestHeader(value="CsrfToken") String csrfToken, 
+										   		@RequestHeader(value="AuthEmail") String authEmail, 
+										   		@CookieValue("jwt") String jwt) throws ValidationException {
 		
 		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "AddUser");
 		
 		if(isAuthorized) {
 			//UserValidator.Validate(user);
-			UserDTO newUser = services.addUser(user);
+			UserResponse newUser = services.addUser(user);
 			
 			if(newUser == null) {
-				return new ResponseEntity<UserDTO>(HttpStatus.UNPROCESSABLE_ENTITY);
+				return new ResponseEntity<UserResponse>(HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 			
-			return new ResponseEntity<UserDTO>(newUser, HttpStatus.OK);
+			return new ResponseEntity<UserResponse>(newUser, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<UserDTO>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<UserResponse>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/users/{email}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<UserDTO> updateUser(@PathVariable("email") String email, 
-											  @RequestBody UserDTO user, 
-											  @RequestHeader(value="CsrfToken") String csrfToken, 
-											  @RequestHeader(value="AuthEmail") String authEmail, 
-											  @CookieValue("jwt") String jwt) throws ValidationException {
+	public ResponseEntity<UserResponse> updateUser(@PathVariable("email") String email, @RequestBody PasswordDTO dto, 
+											  	   @RequestHeader(value="CsrfToken") String csrfToken, 
+											  	   @RequestHeader(value="AuthEmail") String authEmail, 
+											  	   @CookieValue("jwt") String jwt) throws ValidationException {
 		
 		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "UpdateUser");
 		
 		if(isAuthorized) {
 			//UserValidator.Validate(user);
-			UserDTO udto = services.getUserByEmail(email);
+			UserResponse udto = services.getUserByEmail(email);
 			
 			if(udto == null) {
-				return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND); 
+				return new ResponseEntity<UserResponse>(HttpStatus.NOT_FOUND); 
 			}
 			
-			UserDTO updatedUser = services.updateUser(email, user);
+			UserResponse updatedUser = services.updateUser(email, dto);
 			
-			return new ResponseEntity<UserDTO>(updatedUser, HttpStatus.OK);
+			return new ResponseEntity<UserResponse>(updatedUser, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<UserDTO>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<UserResponse>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/users/{email}", 
 					method = RequestMethod.DELETE)
-	public ResponseEntity<UserDTO> deleteUser(@PathVariable("email") String email, 
-											  @RequestHeader(value="CsrfToken") String csrfToken, 
-											  @RequestHeader(value="AuthEmail") String authEmail, 
-											  @CookieValue("jwt") String jwt) {
+	public ResponseEntity<UserResponse> deleteUser(@PathVariable("email") String email, 
+											  	   @RequestHeader(value="CsrfToken") String csrfToken, 
+											  	   @RequestHeader(value="AuthEmail") String authEmail, 
+											  	   @CookieValue("jwt") String jwt) {
 		
 		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "DeleteUser");
 		
 		if(isAuthorized) {
-			UserDTO udto = services.getUserByEmail(email);
+			UserResponse udto = services.getUserByEmail(email);
 			
 			if(udto == null) {
-				return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND); 
+				return new ResponseEntity<UserResponse>(HttpStatus.NOT_FOUND); 
 			}
 			
 			services.deleteUser(email);
-			return new ResponseEntity<UserDTO>(HttpStatus.OK);
+			return new ResponseEntity<UserResponse>(HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<UserDTO>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<UserResponse>(HttpStatus.UNAUTHORIZED);
 	}
 }

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
 import bis.project.repositories.UserRepository;
+import bis.project.security.PasswordDTO;
 import bis.project.security.User;
 import bis.project.security.UserDTO;
+import bis.project.security.UserResponse;
 
 @Service
 public class UserServicesImpl implements UserServices {
@@ -22,11 +24,11 @@ public class UserServicesImpl implements UserServices {
 	private CredentialsServices services;
 	
 	@Override
-	public Set<UserDTO> getAllUsers() {
-		Set<UserDTO> users = new HashSet<UserDTO>();
+	public Set<UserResponse> getAllUsers() {
+		Set<UserResponse> users = new HashSet<UserResponse>();
 		for(User user : repository.findAll()) {
-			UserDTO userDTO = new UserDTO(user.getFirstName(), user.getLastName(), 
-		      		  		  user.getEmail(), user.getPassword(), user.getBank());
+			UserResponse userDTO = new UserResponse(user.getFirstName(), user.getLastName(), 
+		      		  		  user.getEmail(), user.getBank());
 			userDTO.setRoles(user.getRoles());
 			
 			users.add(userDTO);
@@ -35,7 +37,7 @@ public class UserServicesImpl implements UserServices {
 		return users;
 	}
 
-	@Override
+	/*@Override
 	public UserDTO getUser(Integer id) {
 		User user = repository.findOne(id);
 		
@@ -48,15 +50,15 @@ public class UserServicesImpl implements UserServices {
 		}
 		
 		return null;
-	}
+	}*/
 
 	@Override
-	public UserDTO getUserByEmail(String email) {
+	public UserResponse getUserByEmail(String email) {
 		User user = repository.findByEmail(email);
 		
 		if(user != null) {
-			UserDTO userDTO = new UserDTO(user.getFirstName(), user.getLastName(), 
-						      user.getEmail(), user.getPassword(), user.getBank());
+			UserResponse userDTO = new UserResponse(user.getFirstName(), user.getLastName(), 
+						      user.getEmail(), user.getBank());
 			userDTO.setRoles(user.getRoles());
 			
 			return userDTO;
@@ -66,7 +68,7 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-	public UserDTO addUser(UserDTO userDTO) {
+	public UserResponse addUser(UserDTO userDTO) {
 		User u = repository.findByEmail(userDTO.getEmail());
 		
 		if(u != null) return null;
@@ -94,44 +96,41 @@ public class UserServicesImpl implements UserServices {
 		
 		if(newUser != null) {
 			userDTO.setPassword(newUser.getPassword());
-			return userDTO;
+			UserResponse response = new UserResponse(newUser.getFirstName(), newUser.getLastName(), 
+													 newUser.getEmail(), newUser.getBank());
+			response.setRoles(newUser.getRoles());
+			
+			return response;
 		}
 		
 		return null;
 	}
 
 	@Override
-	public UserDTO updateUser(String email, UserDTO userDTO) {
+	public UserResponse updateUser(String email, PasswordDTO dto) {
 		User existingUser = repository.findByEmail(email);
 		
 		if(existingUser != null) {
-			User user = new User();
-			user.setId(existingUser.getId());
-			user.setFirstName(userDTO.getFirstName());
-			user.setLastName(userDTO.getLastName());
-			user.setEmail(userDTO.getEmail());
-			user.setBank(userDTO.getBank());
-			user.setRoles(userDTO.getRoles());
-			user.setSalt(existingUser.getSalt());
-			
-			byte[] salt = Base64Utils.decodeFromString(user.getSalt());
+			byte[] salt = Base64Utils.decodeFromString(existingUser.getSalt());
 			byte[] expectedHash = Base64Utils.decodeFromString(existingUser.getPassword());
 			
-			if(services.isExpectedPassword(userDTO.getPassword().toCharArray(), salt, expectedHash)) {
-				user.setPassword(existingUser.getPassword());
-			} else {
-				byte[] hashPassword = services.hashPassword(userDTO.getPassword().toCharArray(), salt);
-				String password = Base64Utils.encodeToString(hashPassword);
-				user.setPassword(password);
-			}
-			
-			User newUser = repository.save(user);
-			
-			if(newUser != null) {
-				userDTO.setPassword(newUser.getPassword());
-				return userDTO;
-			} else  {
-				return null;
+			if(services.isExpectedPassword(dto.getOldPassword().toCharArray(), salt, expectedHash)) {
+				if(dto.getNewPassword().equals(dto.getRepeatedPassword())) {
+					byte[] newHashPassword = services.hashPassword(dto.getNewPassword().toCharArray(), salt);
+					String newPassword = Base64Utils.encodeToString(newHashPassword);
+					
+					existingUser.setPassword(newPassword);
+					User updatedUser = repository.save(existingUser);
+					
+					if(updatedUser != null) {
+						UserResponse response = new UserResponse(updatedUser.getFirstName(), updatedUser.getLastName(), 
+								updatedUser.getEmail(), updatedUser.getBank());
+						response.setRoles(updatedUser.getRoles());
+						
+						return response;
+					}
+				}
+				
 			}
 		}
 		
