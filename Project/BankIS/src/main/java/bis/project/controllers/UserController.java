@@ -99,9 +99,9 @@ public class UserController {
 		return new ResponseEntity<UserResponse>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@RequestMapping(value = "/api/users/{email}", 
+	@RequestMapping(value = "/api/users", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<UserResponse> updateUser(@PathVariable("email") String email, @RequestBody PasswordDTO dto, 
+	public ResponseEntity<UserResponse> updateUser(@RequestBody PasswordDTO dto, 
 											  	   @RequestHeader(value="CsrfToken") String csrfToken, 
 											  	   @RequestHeader(value="AuthEmail") String authEmail, 
 											  	   @CookieValue("jwt") String jwt) throws ValidationException {
@@ -110,13 +110,13 @@ public class UserController {
 		
 		if(isAuthorized) {
 			//UserValidator.Validate(user);
-			UserResponse udto = services.getUserByEmail(email);
+			UserResponse udto = services.getUserByEmail(authEmail);
 			
 			if(udto == null) {
 				return new ResponseEntity<UserResponse>(HttpStatus.NOT_FOUND); 
 			}
 			
-			UserResponse updatedUser = services.updateUser(email, dto);
+			UserResponse updatedUser = services.updateUser(authEmail, dto);
 			
 			return new ResponseEntity<UserResponse>(updatedUser, HttpStatus.OK);
 		}
