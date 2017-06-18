@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import bis.project.dtos.UpdateUserResponse;
 import bis.project.security.PasswordDTO;
 import bis.project.security.UserDTO;
 import bis.project.security.UserResponse;
@@ -101,7 +102,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/api/users", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<UserResponse> updateUser(@RequestBody PasswordDTO dto, 
+	public ResponseEntity<UpdateUserResponse> updateUser(@RequestBody PasswordDTO dto, 
 											  	   @RequestHeader(value="CsrfToken") String csrfToken, 
 											  	   @RequestHeader(value="AuthEmail") String authEmail, 
 											  	   @CookieValue("jwt") String jwt) throws ValidationException {
@@ -113,15 +114,23 @@ public class UserController {
 			UserResponse udto = services.getUserByEmail(authEmail);
 			
 			if(udto == null) {
-				return new ResponseEntity<UserResponse>(HttpStatus.NOT_FOUND); 
+				UpdateUserResponse response = new UpdateUserResponse();
+				response.setSuccess(false);
+				response.setMessage("we can't find user with given email");
+				return new ResponseEntity<UpdateUserResponse>(HttpStatus.NOT_FOUND); 
 			}
 			
 			UserResponse updatedUser = services.updateUser(authEmail, dto);
-			
-			return new ResponseEntity<UserResponse>(updatedUser, HttpStatus.OK);
+			if(updatedUser == null){
+				UpdateUserResponse response = new UpdateUserResponse();
+				response.setSuccess(false);
+				response.setMessage("old password is not correct");
+				return new ResponseEntity<UpdateUserResponse>(response, HttpStatus.CONFLICT);
+			}
+			return new ResponseEntity<UpdateUserResponse>(HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<UserResponse>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<UpdateUserResponse>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@RequestMapping(value = "/api/users/{email}", 

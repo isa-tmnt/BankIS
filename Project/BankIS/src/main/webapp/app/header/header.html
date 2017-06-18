@@ -20,7 +20,7 @@
     <a class="navbar-brand"  href="#!/bankOrders" >Bank orders</a>
     <a class="navbar-brand"  href="#!/workTypes" >Work types</a>
     <a class="navbar-brand"  href="#!/users" >Users</a>
-    <a class="navbar-brand" href="#!/userSettings">U Settings</a>
+    <a class="navbar-brand" href="#!/userSettings" ng-if="logedUser">U Settings</a>
     <a class="navbar-brand"  href="#!/login" ng-if="!logedUser" >Login</a>
     <a class="navbar-brand"  href="#!/login" ng-if="logedUser" ng-click="doLogout()" >Logout</a>
   </div>

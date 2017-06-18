@@ -2,7 +2,7 @@
 
 app.component('userSettings', {
     templateUrl: 'app/userSettings/userSettings.html',
-    controller: ['$scope', 'authService', function LoginController($scope, authService) {
+    controller: ['$scope', 'authService','$http', function LoginController($scope, authService, $http) {
         $scope.showValidatons = true;
 
      /*   $scope.wrongOldPassword = true;
@@ -13,10 +13,31 @@ app.component('userSettings', {
         $scope.passwordsMatch = true;*/
         $scope.oldPassword = "";
         $scope.newPassword = "";
-        $scope.repatedPassword = ""
+        $scope.repeatedPassword = ""
+
+        $scope.logedUser = null;
+
+        authService.onLogin(user => $scope.logedUser = user);
 
         $scope.changePassword = function(){
             $scope.showValidatons = !$scope.showValidatons;
+            var data = { oldPassword: $scope.oldPassword, newPassword: $scope.newPassword, repeatedPassword: $scope.repeatedPassword}
+            $http.put(appConfig.apiUrl + 'users', data, appConfig.config).then(function successCallback(response) {
+                if(response.status == 200 || response.data.success)
+                    toastr.success("changed successfuly")
+                else{
+                    console.log(response);
+                    if(response && response.data && response.data.message)
+                        toastr.info(response.data.message)
+                    else
+                        toastr.error("unknown error :/ sry");
+                }
+            }, function errorCallback(e){
+                toastr.error(e);
+                console.log(e);
+            });
+
+            
         }
 
         $scope.hasLowerCase = function(str) {
