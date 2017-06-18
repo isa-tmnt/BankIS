@@ -1,0 +1,464 @@
+<html ng-app="CAApp">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="library/jquery-3.1.0.min.js"></script>
+    <script src="library/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="library/css/bootstrap.min.css" />
+    <script src="angular.js"></script>
+    <link href="bower_components/toastr/toastr.css" rel="stylesheet"/>
+    <script src="bower_components/toastr/toastr.js"></script>
+    <link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js"></script>
+    <title>Certificate Generator App</title>
+</head>
+<body ng-controller="CACtrl as ctrl">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href>Certificate Generator App</a>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li ng-class="{ active: ctrl.isSet(1) }">
+                    <a href ng-click="ctrl.setTab(1)">Home</a>
+                </li>
+                <li ng-class="{ active: ctrl.isSet(2) }">
+                    <a href ng-click="ctrl.setTab(2)">KeyStoreGenerator</a>
+                </li>
+                <li ng-class="{ active: ctrl.isSet(3) }">
+                    <a href ng-click="ctrl.setTab(3)">CAGenerator</a>
+                </li>
+                <li ng-class="{ active: ctrl.isSet(4) }">
+                    <a href ng-click="ctrl.setTab(4)">GetCertificate</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <button ng-click="ctrl.setTab(5)" ng-show="true" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+                <button ng-show="true" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Logout</button>
+                <span>&nbsp;&nbsp;</span>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <div ng-show="ctrl.isSet(1)">
+                    <h3>This is Certificate Generator's main page.</h3>
+                </div>
+                <div ng-show="ctrl.isSet(2)">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <h3>KeyStoreGenerator</h3>
+                        <div class="well">
+                            <div class="row">
+                                <div class="form-group has-feedback">
+                                    <label>Alias:</label>
+                                    <input ng-model="ctrl.ksAlias" type="text" class="form-control input-sm" placeholder="Alias" tabindex="1" />
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                    <label>Password:</label>
+                                    <input ng-model="ctrl.ksPassword" type="password" class="form-control input-sm" placeholder="Password" tabindex="2" />
+                                </div>
+
+                                <div class="col-sm-offset-4">
+                                    <button ng-click="ctrl.genKS()" class="btn btn-primary navbar-btn" tabindex="3">Generate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+                <div ng-show="ctrl.isSet(3)">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <h3>CAGenerator</h3>
+                        <div class="well">
+                            <div class="row">
+                                
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Alias:</label>
+                                            <input ng-model="ctrl.alias" type="text" class="form-control input-sm" placeholder="Alias" tabindex="1" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Private Key Alias:</label>
+                                            <input ng-model="ctrl.keyAlias" type="text" class="form-control input-sm" placeholder="Private Key Alias" tabindex="2" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Surname</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.surname" type="text" class="form-control input-sm" placeholder="Surname" tabindex="3" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Given Name:</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.givenname" type="text" class="form-control input-sm" placeholder="Given Name" tabindex="4" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>CommonName (CN):</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.cn" type="text" class="form-control input-sm" placeholder="CommonName (CN)" tabindex="5" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Organization Unit (OU):</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.ou" type="text" class="form-control input-sm" placeholder="Organization Unit (OU)" tabindex="6" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Organization Name (O):</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.o" type="text" class="form-control input-sm" placeholder="Organization Name (O)" tabindex="7" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Country (C):</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.c" type="text" class="form-control input-sm" placeholder="Country" tabindex="8" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                    <label>Email (E):</label>
+                                    <span></span>
+                                    <input ng-model="ctrl.email" type="email" class="form-control input-sm" placeholder="Email" tabindex="9" />
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Start Date:</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.start" type="date" class="form-control input-sm" tabindex="10" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>End Date:</label>
+                                            <span></span>
+                                            <input ng-model="ctrl.end" type="date" class="form-control input-sm" tabindex="11" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>CA:</label>
+                                            <input ng-model="ctrl.ca" type="checkbox" class="form-control input-sm" tabindex="12" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Self-signed:</label>
+                                            <input ng-model="ctrl.ss" type="checkbox" class="form-control input-sm" tabindex="13" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-show="!ctrl.ss" class="form-group has-feedback">
+                                    <label>Issuer:</label>
+                                    <span></span>
+                                    <input ng-model="ctrl.issuer" type="text" class="form-control input-sm" placeholder="Issuer" tabindex="14" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 ng-show="!ctrl.ss">Issuer KeyStore</h3>
+                        <div ng-show="!ctrl.ss" class="well">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Alias:</label>
+                                            <input ng-model="ctrl.isksal" type="text" class="form-control input-sm" placeholder="Alias" tabindex="15" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Password:</label>
+                                            <input ng-model="ctrl.iskspw" type="password" class="form-control input-sm" placeholder="Password" tabindex="16" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>KeyStore</h3>
+                        <div class="well">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Alias:</label>
+                                            <input ng-model="ctrl.ksal" type="text" class="form-control input-sm" placeholder="Alias" tabindex="17" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Password:</label>
+                                            <input ng-model="ctrl.kspw" type="password" class="form-control input-sm" placeholder="Password" tabindex="18" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-offset-5">
+                                        <button ng-click="ctrl.genCA()" type="button" class="btn btn-primary navbar-btn" tabindex="19">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div ng-show="ctrl.isSet(4)">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <h3>GetCertificate</h3>
+                        <div class="well">
+                            <div class="row">
+                                <div class="form-group has-feedback">
+                                    <label>Alias:</label>
+                                    <input ng-model="ctrl.getA" type="text" class="form-control input-sm" placeholder="Alias" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>KeyStore</h3>
+                        <div class="well">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Alias:</label>
+                                            <input ng-model="ctrl.getKSA" type="text" class="form-control input-sm" placeholder="Alias" />
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <label>Password:</label>
+                                            <input ng-model="ctrl.getKSP" type="password" class="form-control input-sm" placeholder="Password" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <button ng-click="ctrl.getCA()" type="button" class="btn btn-primary">Find CA</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <button ng-click="ctrl.exportCA()" type="button" class="btn btn-primary pull-right">Export CA</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="ctrl.found" class="well">
+                            <div class="row">
+                                <h4>Subject</h4>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>CommonName (CN): {{ctrl.dataCA.subject.commonName}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Surname: {{ctrl.dataCA.subject.surname}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>GivenName: {{ctrl.dataCA.subject.givenName}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>OrganizationUnit (OU): {{ctrl.dataCA.subject.organizationUnit}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>OrganizationName (O): {{ctrl.dataCA.subject.organizationName}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Country (C): {{ctrl.dataCA.subject.country}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Email (E): {{ctrl.dataCA.subject.email}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4>Issuer</h4>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>CommonName (CN): {{ctrl.dataCA.issuer.commonName}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Surname: {{ctrl.dataCA.issuer.surname}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>GivenName: {{ctrl.dataCA.issuer.givenName}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>OrganizationUnit (OU): {{ctrl.dataCA.issuer.organizationUnit}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>OrganizationName (O): {{ctrl.dataCA.issuer.organizationName}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Country (C): {{ctrl.dataCA.issuer.country}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Email (E): {{ctrl.dataCA.issuer.email}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Version: {{ctrl.dataCA.version}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Valid From: {{ctrl.validFrom}}</span>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <div class="form-group has-feedback">
+                                            <span>Valid To: {{ctrl.validTo}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div ng-show="ctrl.isSet(5)">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <h3>Login Page</h3>
+                        <div class="well">
+                            <div class="row">
+                                <div class="form-group has-feedback">
+                                    <label>Email:</label>
+                                    <input type="text" class="form-control input-sm" maxlength="60" placeholder="Email" />
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                    <label>Password:</label>
+                                    <input type="password" class="form-control input-sm" maxlength="18" placeholder="Password" />
+                                </div>
+
+                                <div class="col-sm-offset-4">
+                                    <span>&nbsp;&nbsp;</span>
+                                    <button class="btn btn-primary navbar-btn">&nbsp;Sign in&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</body>
+</html>
