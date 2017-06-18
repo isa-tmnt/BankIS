@@ -13,6 +13,7 @@ import org.springframework.ws.soap.server.endpoint.annotation.SoapAction;
 
 import bis.project.model.BankOrder;
 import bis.project.services.BankOrderServices;
+import bis.project.services.ClearingAndSService;
 import bis.project.validators.ValidationException;
 import io.spring.guides.gs_producing_web_service.GetM102Request;
 import io.spring.guides.gs_producing_web_service.GetM102Response;
@@ -31,6 +32,9 @@ public class EndpointxD {
 
 	@Autowired
 	private BankOrderServices orderService;
+	
+	@Autowired
+	private ClearingAndSService clearingService;
 	
 	
 	@PayloadRoot(namespace = "http://banka/importOrder", localPart = "importNalogZaPlacanjeRequest")
@@ -115,9 +119,12 @@ public class EndpointxD {
 	@PayloadRoot(namespace = "http://banka/mt102", localPart = "getMT102Request")
 	@SoapAction("http://banka/mt102")
 	@ResponsePayload
-	public GetM102Response mt102(@RequestPayload GetM102Request request) {
+	public GetM102Response mt102(@RequestPayload GetM102Request request) throws ValidationException {
 		
 		GetM102Response response = new GetM102Response();
+		response.setId(123);
+		
+		clearingService.messageFromCentralBank(request);
 		
 		return response;
 	}

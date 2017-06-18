@@ -25,8 +25,8 @@ public class BankOrder {	//Analitika izvoda
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(nullable=false)
+	@Column(nullable = false, columnDefinition="DATETIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date bankOrderDate;		//datum analitike
 	
 	@Column(nullable=false, length=1)

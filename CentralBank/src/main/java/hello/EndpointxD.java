@@ -38,16 +38,11 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		new Thread(new Runnable() {
 		     public void run() {
 		    	try {
-					Thread.sleep(5 * 1000);
-					GregorianCalendar c = new GregorianCalendar();
-					c.setTime(new Date());
-					XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-					
-					request.setDatumNaloga(date2);
-					request.setDatumValute(date2);
+					Thread.sleep(1 * 1000);
+
 					sendMt103ToRecipient(request);
-				//	sendMt900ToRecipient(request); TODO 
-				} catch (InterruptedException | DatatypeConfigurationException e) {
+					sendMt900ToRecipient(request);
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	    	 
@@ -59,16 +54,32 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		return respone;
 	}
 	
-	protected void sendMt900ToRecipient(GetMOneZeroThreeRequest request) {
-		sendMt900ToRecipient();
-	}
-
+	
 	protected void sendMt103ToRecipient(GetMOneZeroThreeRequest request) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 		MT103Client wsclient2 =  context.getBean(MT103Client.class);
-	    wsclient2.setDefaultUri("https://localhost:10011/ws");
-	    GetMOneZeroThreeResponse response2 = wsclient2.doMT103Request(request);	
+		wsclient2.setDefaultUri("https://localhost:10011/ws");
+		GetMOneZeroThreeResponse response2 = wsclient2.doMT103Request(request);	
 	}
+	
+	protected void sendMt900ToRecipient(GetMOneZeroThreeRequest request) {
+		GetMT900Request requestToBank = new GetMT900Request();
+		requestToBank.setDatumValute(request.getDatumValute());
+		requestToBank.setId("000" + Integer.toString(new Random().nextInt()));
+		requestToBank.setIdPorukeNaloga(request.getId());
+		requestToBank.setIznos(request.getIznos());
+		requestToBank.setObracunskiRacun(request.getObracunskiRacunBankeDuznika());
+		requestToBank.setSifraValute(request.getSifraValute());
+		requestToBank.setSwifKod(request.getSwiftBankeDuznika());
+		
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+	     MT900Client wsclient2 =  context.getBean(MT900Client.class);
+	    wsclient2.setDefaultUri("https://localhost:10011/ws");
+	    
+	    
+	    GetMT9X0Response response2 = wsclient2.doMT900Request(requestToBank);					
+	}
+
 
 	@PayloadRoot(namespace = "http://banka/m102", localPart = "getM102Request")
 	@SoapAction("http://banka/m102")
@@ -78,8 +89,9 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		new Thread(new Runnable() {
 		     public void run() {
 		    	try {
-					Thread.sleep(5 * 1000);
-					sendMt900ToRecipient();
+					Thread.sleep(1 * 1000);
+					sendMt102ToRecipient(request);
+					sendMt900ToRecipient(request);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -92,17 +104,32 @@ private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producin
 		GetM102Response response = new GetM102Response();
 			response.setId(12312);
 		return response;
+	}	
+
+	
+	protected void sendMt102ToRecipient(GetM102Request request) {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
+		MT102Client wsclient2 =  context.getBean(MT102Client.class);
+		wsclient2.setDefaultUri("https://localhost:10011/ws");
+		GetM102Response response2 = wsclient2.doMT102Request(request);	
 	}
-	
-	
-	public void sendMt900ToRecipient(){
-	
+
+	public void sendMt900ToRecipient(GetM102Request request){
+		GetMT900Request requestToBank = new GetMT900Request();
+		requestToBank.setDatumValute(request.getDatumValute());
+		requestToBank.setId("000" + Integer.toString(new Random().nextInt()));
+		requestToBank.setIdPorukeNaloga(request.getId());
+		requestToBank.setIznos(request.getUkupanIznos());
+		requestToBank.setObracunskiRacun(request.getObracunskiRacunBankeDuznika());
+		requestToBank.setSifraValute(request.getSifraValute());
+		requestToBank.setSwifKod(request.getSwiftBankeDuznika());
+		
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IAmWsClientConfig.class);
 	     MT900Client wsclient2 =  context.getBean(MT900Client.class);
 	    wsclient2.setDefaultUri("https://localhost:10011/ws");
-	    GetMT900Request request2 = new GetMT900Request();
-	    request2.setId(Integer.toString(new Random().nextInt()));
-	    GetMT9X0Response response2 = wsclient2.doMT900Request(request2);			
+	    
+	    
+	    GetMT9X0Response response2 = wsclient2.doMT900Request(requestToBank);				
 		
 	}
 	
