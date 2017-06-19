@@ -10,6 +10,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,11 @@ public class CommonBankOperations {
 		Session session = sessionFactory.openSession();
         session.beginTransaction();
               
-		String query = "SELECT * FROM bisdb.bank_account where account_number = '" + account+ "'";
+		String query = "SELECT * FROM bisdb.bank_account where account_number = :acc";
 
-        List<BankAccount> list = session.createSQLQuery(query).addEntity(BankAccount.class).list();
+        SQLQuery sqlQuery = session.createSQLQuery(query).addEntity(BankAccount.class);
+        sqlQuery.setParameter("acc", account);
+		List<BankAccount> list = 	sqlQuery.list();
         
         session.close();
         
@@ -59,9 +62,12 @@ public class CommonBankOperations {
 		Session session = sessionFactory.openSession();
         session.beginTransaction();
               
-		String query = "select * from daily_account_balance where date = '" + getTodayMySqlString() + "' and account_id = " + bankAccount.getId() + "";
+		String query = "select * from daily_account_balance where date = :today and account_id = :accId";
 
-        List<DailyAccountBalance> list = session.createSQLQuery(query).addEntity(DailyAccountBalance.class).list();
+        List<DailyAccountBalance> list = session.createSQLQuery(query).addEntity(DailyAccountBalance.class)
+        		.setDate("today", new Date())
+        		.setInteger("accId", bankAccount.getId())
+        		.list();
         if(list.isEmpty()){
 			DailyAccountBalance dd = new DailyAccountBalance();
 	    	dd.setAccount(bankAccount);
@@ -71,8 +77,11 @@ public class CommonBankOperations {
 	    	dd.setNewState(new BigDecimal(0));
 	    	dd.setPreviousState(new BigDecimal(0));
 	    	
-	    	String q = "SELECT * FROM bisdb.daily_account_balance where account_id ='" + bankAccount.getId() + "' and date = '" +getYesterdayMySqlString()+ "' order by id asc";
-	    	List<DailyAccountBalance> list2 = session.createSQLQuery(query).addEntity(DailyAccountBalance.class).list();
+	    	String q = "SELECT * FROM bisdb.daily_account_balance where account_id = :accId and date = :yesterday order by id asc";
+	    	List<DailyAccountBalance> list2 = session.createSQLQuery(q).addEntity(DailyAccountBalance.class)
+	    			.setInteger("accId", bankAccount.getId())
+	    			.setDate("yesterday", getYesterday())
+	    			.list();
 	    	if(!list2.isEmpty()){
 	    		DailyAccountBalance  previousBalance = list2.get(0);
 	    		dd.setPreviousState(previousBalance.getNewState());
@@ -103,6 +112,14 @@ public class CommonBankOperations {
              new java.text.SimpleDateFormat("yyyy-MM-dd");
      
         return sdf.format(dt);  
+	}
+	public Date getYesterday(){
+		java.util.Date dt = new java.util.Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime ( dt ); // convert your date to Calendar object
+		int daysToDecrement = -1;
+		cal.add(Calendar.DATE, daysToDecrement);
+		return cal.getTime();
 	}
 	
 	public XMLGregorianCalendar today(){
@@ -167,8 +184,10 @@ public class CommonBankOperations {
 		Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-		String getDebtorAccountQuery = "SELECT * FROM bisdb.bank_account where account_number = " + bankOrder.getFirstAccount(); 
-    	BankAccount accDebtor = (BankAccount) session.createSQLQuery(getDebtorAccountQuery).addEntity(BankAccount.class).uniqueResult();
+		String getDebtorAccountQuery = "SELECT * FROM bisdb.bank_account where account_number = :debtorAcc"; 
+    	BankAccount accDebtor = (BankAccount) session.createSQLQuery(getDebtorAccountQuery).addEntity(BankAccount.class)
+    			.setParameter("debtorAcc", bankOrder.getFirstAccount())
+    			.uniqueResult();
     	
     	session.close();
     	
@@ -183,8 +202,10 @@ public class CommonBankOperations {
 		Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-		String getRecipientAccountQuery = "SELECT * FROM bisdb.bank_account where account_number = " + bankOrder.getSecondAccount(); 
-    	BankAccount acc = (BankAccount) session.createSQLQuery(getRecipientAccountQuery).addEntity(BankAccount.class).uniqueResult();
+		String getRecipientAccountQuery = "SELECT * FROM bisdb.bank_account where account_number = :secondAcc"; 
+    	BankAccount acc = (BankAccount) session.createSQLQuery(getRecipientAccountQuery).addEntity(BankAccount.class)
+    			.setParameter("secondAcc", bankOrder.getSecondAccount())
+    			.uniqueResult();
     	
     	session.close();
     	
@@ -203,9 +224,11 @@ public class CommonBankOperations {
 		Session session = sessionFactory.openSession();
         session.beginTransaction();
         
-        String query = "SELECT * FROM bisdb.bank where bank_code = " + bankCode;
+        String query = "SELECT * FROM bisdb.bank where bank_code = :code";
 
-        List<Bank> list = session.createSQLQuery(query).addEntity(Bank.class).list();
+        List<Bank> list = session.createSQLQuery(query).addEntity(Bank.class)
+        		.setParameter("code", bankCode)
+        		.list();
      
         if(list.isEmpty()){
         	session.close();        		

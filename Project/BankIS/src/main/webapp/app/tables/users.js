@@ -30,7 +30,6 @@ app.component('users', {
 
         $http.get(appConfig.apiUrl + 'roles', appConfig.config).then(function successCallback(response) {
             $scope.allRoles = response.data;
-            console.log(response.data);
         });
 
         $scope.roleClickkk = function(role){
@@ -76,7 +75,6 @@ app.component('users', {
             if ($scope.editing.id) $scope.editing.id = null;
             var data = $.extend({}, $scope.editing);
             data.password = $('#passwordThing').val();//$scope.pass; scope.pass is bugging :/ sad sad
-            console.log(data);
             $http.post(appConfig.apiUrl + 'users', data, appConfig.config).then(function successCallback(response) {
                 var row = response.data;
                 if (row && response.status < 300) {
