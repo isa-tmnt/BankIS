@@ -20,4 +20,4 @@ public class MT102Client  extends WebServiceGatewaySupport{
 	        return (GetM102Response) response;
 
     }
-}
+} 
