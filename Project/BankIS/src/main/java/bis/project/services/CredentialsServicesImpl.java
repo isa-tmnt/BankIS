@@ -60,10 +60,10 @@ public class CredentialsServicesImpl implements CredentialsServices {
 	@Override
 	public boolean isJWTAuthorized(String jwt, String csrfToken, String authEmail, Integer bankId, String permission) {
 		
-		if(jwt.equals("null")) return false;
-		else if(csrfToken.equals("null")) return false;
-		else if(authEmail.equals("null")) return false;
-		else if(bankId == null) return false;
+		if(jwt.equals("null") || jwt == null || jwt == "") return false;
+		else if(csrfToken.equals("null") || csrfToken == null || csrfToken == "") return false;
+		else if(authEmail.equals("null") || authEmail == null || authEmail == "") return false;
+		else if(bankId == null || bankId == 0) return false;
 		
 		User user = repository.findByEmail(authEmail);
 		

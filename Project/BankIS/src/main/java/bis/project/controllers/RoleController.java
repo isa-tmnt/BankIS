@@ -33,7 +33,8 @@ public class RoleController {
 								 				 @RequestHeader(value="BankId") Integer bankId, 
 								 				 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllRoles");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllRoles");
 		
 		if(isAuthorized) {
 			Set<Role> roles = services.getAllRoles();
@@ -52,7 +53,8 @@ public class RoleController {
 										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getRole");
 		
 		if(isAuthorized) {
 			Role role = services.getRole(id);
@@ -75,7 +77,8 @@ public class RoleController {
 										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addRole");
 		
 		if(isAuthorized) {
 			Role body = services.addRole(role);
@@ -94,7 +97,8 @@ public class RoleController {
 						   				   @RequestHeader(value="BankId") Integer bankId, 
 						   				   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updateRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updateRole");
 		
 		if(isAuthorized) {
 			role.setId(id);
@@ -114,7 +118,8 @@ public class RoleController {
 						   				   @RequestHeader(value="BankId") Integer bankId, 
 						   				   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deleteRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deleteRole");
 		
 		if(isAuthorized) {
 			Role role = services.getRole(id);

@@ -35,7 +35,8 @@ public class BankController {
 												 @RequestHeader(value="BankId") Integer bankId, 
 												 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllBanks");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllBanks");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllBanks");
 		
 		if(isAuthorized) {
@@ -54,7 +55,8 @@ public class BankController {
 										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetBank");
 		
 		if(isAuthorized) {
@@ -78,7 +80,8 @@ public class BankController {
 										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "AddBank");
 		
 		if(isAuthorized) {
@@ -98,7 +101,8 @@ public class BankController {
 										   @RequestHeader(value="BankId") Integer bankId, 
 										   @CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateBank");
 		
 		if(isAuthorized) {
@@ -119,7 +123,8 @@ public class BankController {
 										   @RequestHeader(value="BankId") Integer bankId, 
 										   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteBank");
 		
 		if(isAuthorized) {

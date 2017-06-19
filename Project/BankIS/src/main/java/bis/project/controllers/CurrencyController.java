@@ -34,8 +34,8 @@ public class CurrencyController {
 													   	  @RequestHeader(value="AuthEmail") String authEmail, 
 													   	  @RequestHeader(value="BankId") Integer bankId, 
 													   	  @CookieValue("jwt") String jwt) {
-		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllCurrencies");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllCurrencies");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllCurrencies");
 		
 		if(isAuthorized) {
@@ -54,7 +54,8 @@ public class CurrencyController {
 												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "getCurrency");
 		
 		if(isAuthorized) {
@@ -78,7 +79,8 @@ public class CurrencyController {
 												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "AddCurrency");
 		
 		if(isAuthorized) {
@@ -98,7 +100,8 @@ public class CurrencyController {
 												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) throws ValidationException{
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateCurrency");
 		
 		if(isAuthorized) {
@@ -119,7 +122,8 @@ public class CurrencyController {
 												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteCurrency");
 		
 		if(isAuthorized) {

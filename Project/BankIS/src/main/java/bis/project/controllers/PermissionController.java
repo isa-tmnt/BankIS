@@ -33,7 +33,8 @@ public class PermissionController {
 															 @RequestHeader(value="BankId") Integer bankId, 
 															 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllPermissions");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllPermissions");
 		
 		if(isAuthorized) {
 			Set<Permission> permissions = services.getAllPermissions();
@@ -52,7 +53,8 @@ public class PermissionController {
 													@RequestHeader(value="BankId") Integer bankId, 
 													@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getPermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getPermission");
 		
 		if(isAuthorized) {
 			Permission body = services.getPermission(id);
@@ -75,7 +77,8 @@ public class PermissionController {
 													@RequestHeader(value="BankId") Integer bankId, 
 													@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addPermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addPermission");
 		
 		if(isAuthorized) {
 			Permission body = services.addPermission(permission);
@@ -94,7 +97,8 @@ public class PermissionController {
 													   @RequestHeader(value="BankId") Integer bankId, 
 													   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updatePermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updatePermission");
 		
 		if(isAuthorized) {
 			permission.setId(id);
@@ -114,7 +118,8 @@ public class PermissionController {
 													   @RequestHeader(value="BankId") Integer bankId, 
 													   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deletePermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deletePermission");
 		
 		if(isAuthorized) {
 			Permission permission = services.getPermission(id);

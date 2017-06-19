@@ -37,7 +37,8 @@ public class UserController {
 														 @RequestHeader(value="BankId") Integer bankId, 
 														 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllUsers");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllUsers");
 		
 		if(isAuthorized) {
 			Set<UserResponse> users = services.getAllUsers(bankId);
@@ -62,7 +63,8 @@ public class UserController {
 												  @RequestHeader(value="BankId") Integer bankId, 
 												  @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetUserByEmail");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetUserByEmail");
 		
 		if(isAuthorized) {
 			UserResponse user = services.getUserByEmail(email, bankId);
@@ -85,7 +87,8 @@ public class UserController {
 										   		@RequestHeader(value="BankId") Integer bankId, 
 										   		@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddUser");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddUser");
 		
 		if(isAuthorized) {
 			//UserValidator.Validate(user);
@@ -109,7 +112,8 @@ public class UserController {
 											  	   @RequestHeader(value="BankId") Integer bankId, 
 											  	   @CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateUser");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateUser");
 		
 		if(isAuthorized) {
 			//UserValidator.Validate(user);
@@ -143,7 +147,8 @@ public class UserController {
 											  	   @RequestHeader(value="BankId") Integer bankId, 
 											  	   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteUser");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteUser");
 		
 		if(isAuthorized) {
 			UserResponse udto = services.getUserByEmail(email, bankId);

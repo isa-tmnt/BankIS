@@ -69,12 +69,12 @@ app.factory('authService', ['$http', function ($http) {
         		//localStorage.setItem("basicAuth", null)
                 localStorage.setItem("basicAuthEmail", null)
                 localStorage.setItem("csrfToken", null);
-                localStorage.setItem("bankId", null);
-                logedUser = null
+                localStorage.setItem("bankId", 0);
+                logedUser = null;
                 //$http.defaults.headers.common.Authorization = null;
                 appConfig.config.headers.CsrfToken = null;
                 appConfig.config.headers.AuthEmail = null;
-                appConfig.config.headers.BankId = null;
+                appConfig.config.headers.BankId = 0;
                 raiseOnLogoutCallbacks();
             });
         },

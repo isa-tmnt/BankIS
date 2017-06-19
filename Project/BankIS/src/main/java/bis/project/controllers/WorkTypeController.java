@@ -36,7 +36,8 @@ public class WorkTypeController {
 														 @CookieValue("jwt") String jwt) {
 		
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllWorkTypes");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllWorkTypes");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");
 		
 		if(isAuthorized) {
@@ -55,7 +56,8 @@ public class WorkTypeController {
 												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getWorkType");
 		
 		if(isAuthorized) {
@@ -79,7 +81,8 @@ public class WorkTypeController {
 												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "addWorkType");
 		
 		if(isAuthorized) {
@@ -100,7 +103,8 @@ public class WorkTypeController {
 												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updateWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updateWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateWorkType");
 		
 		if(isAuthorized) {
@@ -121,7 +125,8 @@ public class WorkTypeController {
 												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deleteWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deleteWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "deleteWorkType");
 		
 		if(isAuthorized) {
