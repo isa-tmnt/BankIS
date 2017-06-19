@@ -38,6 +38,19 @@ public class Log {
 	@Column(length=100)
 	private String logerUser;
 	
+	@Column(length=50)
+	private String ip;
+	
+	public String getIp() {
+		return ip;
+	}
+
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+
 	public Log(){}
 	
 	

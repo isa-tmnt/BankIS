@@ -32,15 +32,21 @@ public class RestInterceptor extends HandlerInterceptorAdapter {
 		}else{
 			logMessage = "Not logged user requested gets response to " + request.getMethod() + " " + request.getRequestURI() + " with status" + response.getStatus();
 		}
-    	
+    
         Log log = new Log();
 	    log.setLogerUser(email);
 	    log.setExceptionMessage(exception != null? exception.getMessage() : "");
 	    log.setMethodType(request.getMethod());
 	    log.setResponseStatus(response.getStatus());
 	    log.setRequestPath(request.getRequestURI());
-	    log.setTime(new Date());	 	 
-    	
+	    log.setTime(new Date());	
+	   
+	    
+	    String ipAddress = request.getHeader("X-FORWARDED-FOR");  
+	       if (ipAddress == null)  
+	    	   ipAddress = request.getRemoteAddr();
+         log.setIp(ipAddress);
+	         
     	logger.info(logMessage);
     	logRepository.save(log);
     	

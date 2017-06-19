@@ -67,6 +67,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 	    log.setAbout("DataIntegrityViolationException thrown");	 	    
 	    log.setTime(new Date());
 	    
+
 	    logRepository.save(log);
 	    
         return new SqlViolation("Data is possiably linked to other data, so we can't permit this action"); 
