@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bis.project.security.Credentials;
 import bis.project.security.User;
+import bis.project.security.UserResponse;
 import bis.project.services.CredentialsServices;
 
 @RestController
@@ -22,23 +23,23 @@ public class CredentialsController {
 	
 	@RequestMapping(value = "/api/login", 
 					method = RequestMethod.POST)
-	public ResponseEntity<Credentials> login(@RequestBody Credentials credentials) {
+	public ResponseEntity<UserResponse> login(@RequestBody Credentials credentials) {
 		User user = services.login(credentials);
-		//@CookieValue("cookie") String cookie
 		
 		if(user != null) {
-			Credentials c = new Credentials(user.getEmail(), user.getPassword());
+			UserResponse response = new UserResponse(user.getFirstName(), user.getLastName(), user.getEmail(), user.getBank());
+			
 			String csrfToken = UUID.randomUUID().toString();
-			String jwt = services.createJWT(user.getEmail(), csrfToken, user.getSalt());
+			String jwt = services.createJWT(user.getEmail(), csrfToken, user.getBank().getId(), user.getSalt());
 			
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set(HttpHeaders.SET_COOKIE, "jwt=" + jwt + "; Secure; HttpOnly");
 			responseHeaders.set("CsrfToken", csrfToken);
 			
-			return new ResponseEntity<Credentials>(c, responseHeaders, HttpStatus.OK);
+			return new ResponseEntity<UserResponse>(response, responseHeaders, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<Credentials>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<UserResponse>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value = "/api/logout", 

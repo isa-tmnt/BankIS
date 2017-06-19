@@ -6,29 +6,36 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bis.project.model.Bank;
 import bis.project.model.BankAccount;
 import bis.project.repositories.BankAccountRepository;
+import bis.project.repositories.BankRepository;
 
 @Service
 public class BankAccountServicesImpl implements BankAccountServices {
 	
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
+	
+	@Autowired
+	private BankRepository repository;
 
 	@Override
-	public Set<BankAccount> getAllBankAccounts() {
+	public Set<BankAccount> getAllBankAccounts(Integer bankId) {
 		Set<BankAccount> accounts = new HashSet<BankAccount>();
 		for(BankAccount account : bankAccountRepository.findAll()) {
-			accounts.add(account);
+			if(account.getBank().getId() == bankId) {
+				accounts.add(account);
+			}
 		}
 		return accounts;
 	}
 
 	@Override
-	public BankAccount getBankAccount(Integer id) {
+	public BankAccount getBankAccount(Integer id, Integer bankId) {
 		BankAccount account = bankAccountRepository.findOne(id);
 		
-		if(account != null) {
+		if(account != null && account.getBank().getId() == bankId) {
 			return account;
 		}
 		
@@ -36,20 +43,34 @@ public class BankAccountServicesImpl implements BankAccountServices {
 	}
 
 	@Override
-	public BankAccount addBankAccount(BankAccount account) {
-		return bankAccountRepository.save(account);
+	public BankAccount addBankAccount(BankAccount account, Integer bankId) {
+		Bank bank = repository.findOne(bankId);
+		
+		if(bank != null) {
+			account.setBank(bank);
+			return bankAccountRepository.save(account);
+		}
+		
+		return null;
 	}
 
 	@Override
-	public BankAccount updateBankAccount(BankAccount account) {
-		return bankAccountRepository.save(account);
+	public BankAccount updateBankAccount(BankAccount account, Integer bankId) {
+		Bank bank = repository.findOne(bankId);
+		
+		if(bank != null) {
+			account.setBank(bank);
+			return bankAccountRepository.save(account);
+		}
+		
+		return null;
 	}
 
 	@Override
-	public void deleteBankAccount(Integer id) {
+	public void deleteBankAccount(Integer id, Integer bankId) {
 		BankAccount account = bankAccountRepository.findOne(id);
 		
-		if(account != null) {
+		if(account != null && account.getBank().getId() == bankId) {
 			bankAccountRepository.delete(id);
 		}
 	}
