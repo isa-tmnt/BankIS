@@ -63,6 +63,8 @@ var app = angular.module('myApp', [
             template: "<users></users>",
         }).when("/userSettings", {
             template: "<user-settings></user-settings>",
+        }).when("/roles", {
+            template: "<roles></roles>",
         }).when("/", {
             template: "<welcome-page></welcome-page>",
         });

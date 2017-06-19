@@ -2,8 +2,9 @@
 
 app.component('users', {
     templateUrl: 'app/commonTemplates/users.html',
-    controller: ['$scope', '$http', '$attrs', '$rootScope', '$element', '$compile', function ClosingAccountsCtrl($scope, $http, $attrs, $rootScope, $element, $compile) {
+    controller: ['$scope', '$http', '$attrs', '$rootScope', '$element', '$compile', function CtrlIndeed($scope, $http, $attrs, $rootScope, $element, $compile) {
 
+        $scope.pass = "";
         $scope.rows = [];
         $scope.selected = {};
         $scope.editing = {};
@@ -22,9 +23,49 @@ app.component('users', {
             { label: "Last Name", code: "lastName", manatory: false, type: "text" },
             { label: "Email", code: "email", manatory: false, type: "text"},
             //{ label: "Password", code: "password", manatory: false, type: "text" }, 
-            { label: "Bank", code: "bank", type: "text", isReference: true, openDialog: () => $scope.openDialog('banks') }
+            { label: "Bank", code: "bank", type: "text", isReference: true, openDialog: () => $scope.openDialog('banks') },
         ];
 
+        $scope.allRoles = [];
+
+        $http.get(appConfig.apiUrl + 'roles', appConfig.config).then(function successCallback(response) {
+            $scope.allRoles = response.data;
+            console.log(response.data);
+        });
+
+        $scope.roleClickkk = function(role){
+            if (!$scope.editing) $scope.editing = {};
+            if (!$scope.editing.roles) $scope.editing.roles = [];
+
+
+                var hasRole = false;
+                var index;
+                for (var indx in $scope.editing.roles) {                 
+                    if (role.name == $scope.editing.roles[indx].name){
+                        hasRole = true;
+                        index = indx;
+                    }
+                }
+
+                if(hasRole){
+                    $scope.editing.roles.splice(index,1);
+                }else{
+                    $scope.editing.roles.push(role);
+                }
+
+        }
+
+        $scope.isRoleChoosen = function(role){
+            if(!role) return;
+            if($scope.editing && $scope.editing.roles){
+                for(var indx in $scope.editing.roles){
+                    if(role.name == $scope.editing.roles[indx].name)
+                        return true;
+                }
+                return false;
+            }
+        }
+      
         $http.get(appConfig.apiUrl + 'users', appConfig.config).then(function successCallback(response) {
             $scope.header.filter(h => h.type == "date").forEach(h => response.data.forEach(row => row[h.code] = new Date(row[h.code])));  //conver strings to dates where needed
             $scope.rows = response.data;
@@ -34,6 +75,8 @@ app.component('users', {
         $scope.doAdd = function () {
             if ($scope.editing.id) $scope.editing.id = null;
             var data = $.extend({}, $scope.editing);
+            data.password = $('#passwordThing').val();//$scope.pass; scope.pass is bugging :/ sad sad
+            console.log(data);
             $http.post(appConfig.apiUrl + 'users', data, appConfig.config).then(function successCallback(response) {
                 var row = response.data;
                 if (row && response.status < 300) {
@@ -41,6 +84,8 @@ app.component('users', {
                     $scope.rows.push(row);
 
                     toastr.success('Added successfuly.')
+                }else{
+                    toastr.info('Email registred already.')
                 }
             }, function err(e) {
                 console.log(e);
@@ -52,8 +97,8 @@ app.component('users', {
         }
 
         $scope.doRemove = function () {
-            if ($scope.selected.id) {
-                $http.delete(appConfig.apiUrl + 'users/' + $scope.selected.id, appConfig.config).then(function successCallback(response) {
+            if ($scope.selected.email) {
+                $http.delete(appConfig.apiUrl + 'users/' + encodeURIComponent($scope.selected.email) + ".", appConfig.config).then(function successCallback(response) {
 
                     if (response.status < 300) {
                         $scope.rows.splice($scope.rows.indexOf($scope.selected), 1);

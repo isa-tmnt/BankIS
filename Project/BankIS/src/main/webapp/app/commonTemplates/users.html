@@ -13,8 +13,9 @@
             <tbody>
                 <tr ng-class="row == selected? 'selectedRow' : ''" ng-click="setSelected(row)" ng-if="showRow(row) && $index >= minShow && $index < maxShow"
                     ng-repeat="row in rows  | orderBy:('-' + ordering) track by $index">
-                    <td ng-show="head.code != 'id'" ng-repeat="head in header"></span>
-                         <span ng-if="!head.isReference">
+                    <td ng-show="head.code != 'id'" ng-repeat="head in header">
+                        </span>
+                        <span ng-if="!head.isReference">
                              {{row[head.code] | ifDateFormatFilter}}
                          </span>
                         <span ng-if="head.isReference">
@@ -39,7 +40,17 @@
         </div>
         <div class="col-md-3">
             <label>Password</label>
-            <input type="password" class="form-control" ng-model="password">            
+            <input type="text" id="passwordThing" class="form-control" ng-model="pass">
+        </div>
+        <div class="col-md-3">
+            <label></label>
+           <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Roles
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li ng-click="roleClickkk(role)" ng-repeat="role in allRoles"><span ng-show="isRoleChoosen(role)">✔</span><span ng-show="!isRoleChoosen(role)">✘</span>&nbsp;&nbsp;{{role.name}}</li>
+                </ul>
+            </div>
         </div>
     </div>
 
