@@ -30,9 +30,11 @@ public class RoleController {
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<Role>> getAllRoles(@RequestHeader(value="CsrfToken") String csrfToken, 
 								 				 @RequestHeader(value="AuthEmail") String authEmail, 
+								 				 @RequestHeader(value="BankId") Integer bankId, 
 								 				 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getAllRoles");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllRoles");
 		
 		if(isAuthorized) {
 			Set<Role> roles = services.getAllRoles();
@@ -48,9 +50,11 @@ public class RoleController {
 	public ResponseEntity<Role> getRole(@PathVariable("id") Integer id, 
 										@RequestHeader(value="CsrfToken") String csrfToken, 
 										@RequestHeader(value="AuthEmail") String authEmail, 
+										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getRole");
 		
 		if(isAuthorized) {
 			Role role = services.getRole(id);
@@ -70,9 +74,11 @@ public class RoleController {
 	public ResponseEntity<Role> addRole(@RequestBody Role role, 
 										@RequestHeader(value="CsrfToken") String csrfToken, 
 										@RequestHeader(value="AuthEmail") String authEmail, 
+										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "addRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addRole");
 		
 		if(isAuthorized) {
 			Role body = services.addRole(role);
@@ -88,9 +94,11 @@ public class RoleController {
 	public ResponseEntity<Role> updateRole(@PathVariable("id") Integer id, @RequestBody Role role, 
 						   				   @RequestHeader(value="CsrfToken") String csrfToken, 
 						   				   @RequestHeader(value="AuthEmail") String authEmail, 
+						   				   @RequestHeader(value="BankId") Integer bankId, 
 						   				   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "updateRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updateRole");
 		
 		if(isAuthorized) {
 			role.setId(id);
@@ -107,9 +115,11 @@ public class RoleController {
 	public ResponseEntity<Role> deleteRole(@PathVariable("id") Integer id, 
 						   				   @RequestHeader(value="CsrfToken") String csrfToken, 
 						   				   @RequestHeader(value="AuthEmail") String authEmail, 
+						   				   @RequestHeader(value="BankId") Integer bankId, 
 						   				   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "deleteRole");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deleteRole");
 		
 		if(isAuthorized) {
 			Role role = services.getRole(id);

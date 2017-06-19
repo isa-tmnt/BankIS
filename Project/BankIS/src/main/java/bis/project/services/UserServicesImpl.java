@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
+import bis.project.model.Bank;
+import bis.project.repositories.BankRepository;
 import bis.project.repositories.UserRepository;
 import bis.project.security.PasswordDTO;
 import bis.project.security.User;
@@ -23,15 +25,20 @@ public class UserServicesImpl implements UserServices {
 	@Autowired
 	private CredentialsServices services;
 	
+	@Autowired
+	private BankRepository bRepository;
+	
 	@Override
-	public Set<UserResponse> getAllUsers() {
+	public Set<UserResponse> getAllUsers(Integer bankId) {
 		Set<UserResponse> users = new HashSet<UserResponse>();
 		for(User user : repository.findAll()) {
-			UserResponse userDTO = new UserResponse(user.getFirstName(), user.getLastName(), 
-		      		  		  user.getEmail(), user.getBank());
-			userDTO.setRoles(user.getRoles());
-			
-			users.add(userDTO);
+			if(user.getBank().getId() == bankId) {
+				UserResponse userDTO = new UserResponse(user.getFirstName(), user.getLastName(), 
+			      		  		  user.getEmail(), user.getBank());
+				userDTO.setRoles(user.getRoles());
+				
+				users.add(userDTO);
+			}
 		}
 		
 		return users;
@@ -53,10 +60,10 @@ public class UserServicesImpl implements UserServices {
 	}*/
 
 	@Override
-	public UserResponse getUserByEmail(String email) {
+	public UserResponse getUserByEmail(String email, Integer bankId) {
 		User user = repository.findByEmail(email);
 		
-		if(user != null) {
+		if(user != null && user.getBank().getId() == bankId) {
 			UserResponse userDTO = new UserResponse(user.getFirstName(), user.getLastName(), 
 						      user.getEmail(), user.getBank());
 			userDTO.setRoles(user.getRoles());
@@ -68,16 +75,20 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-	public UserResponse addUser(UserDTO userDTO) {
+	public UserResponse addUser(UserDTO userDTO, Integer bankId) {
 		User u = repository.findByEmail(userDTO.getEmail());
 		
 		if(u != null) return null;
+		
+		Bank bank = bRepository.findOne(bankId);
+		
+		if(bank == null) return null;
 		
 		User user = new User();
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setEmail(userDTO.getEmail());
-		user.setBank(userDTO.getBank());
+		user.setBank(bank);
 		user.setRoles(userDTO.getRoles());
 		
 		SecureRandom random = new SecureRandom();
@@ -138,10 +149,10 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-	public void deleteUser(String email) {
+	public void deleteUser(String email, Integer bankId) {
 		User user = repository.findByEmail(email);
 		
-		if(user != null) {
+		if(user != null && user.getBank().getId() == bankId) {
 			repository.delete(user.getId());
 		}
 	}

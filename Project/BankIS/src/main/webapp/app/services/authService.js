@@ -8,6 +8,7 @@ app.factory('authService', ['$http', function ($http) {
         }
         appConfig.config.headers.CsrfToken = localStorage.getItem("csrfToken");
         appConfig.config.headers.AuthEmail = localStorage.getItem("basicAuthEmail");
+        appConfig.config.headers.BankId = localStorage.getItem("bankId");
         //$http.defaults.headers.common.Authorization = 'Basic ' + localStorage.getItem('basicAuth');
     }
 
@@ -44,16 +45,19 @@ app.factory('authService', ['$http', function ($http) {
                     //localStorage.setItem("basicAuth", btoaED);
                     localStorage.setItem("basicAuthEmail", email);
                     //$http.defaults.headers.common.Authorization = 'Basic ' + btoaED;
-                    logedUser = { email: email, password: response.data.password }
+                    logedUser = { email: email }
                     raiseOnLoginCallbacks(logedUser);
                     location.href = "/#!/";
                     
                     //alert(response.headers('X-CSRF-TOKEN'));
                     localStorage.setItem("csrfToken", response.headers('CsrfToken'));
+                    //alert(response.data.bank.id);
+                    localStorage.setItem("bankId", response.data.bank.id);
                     
                     //alert(localStorage.getItem("X-CSRF-TOKEN"));
                     appConfig.config.headers.CsrfToken = localStorage.getItem("csrfToken");
                     appConfig.config.headers.AuthEmail = localStorage.getItem("basicAuthEmail");
+                    appConfig.config.headers.BankId = localStorage.getItem("bankId");
                     //alert(appConfig.config.headers.csrf);
                 }, function error() {
                     toastr.error('Invalid email/password.')
@@ -65,10 +69,12 @@ app.factory('authService', ['$http', function ($http) {
         		//localStorage.setItem("basicAuth", null)
                 localStorage.setItem("basicAuthEmail", null)
                 localStorage.setItem("csrfToken", null);
-                logedUser = null
+                localStorage.setItem("bankId", 0);
+                logedUser = null;
                 //$http.defaults.headers.common.Authorization = null;
                 appConfig.config.headers.CsrfToken = null;
                 appConfig.config.headers.AuthEmail = null;
+                appConfig.config.headers.BankId = 0;
                 raiseOnLogoutCallbacks();
             });
         },

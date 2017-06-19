@@ -58,11 +58,12 @@ public class CredentialsServicesImpl implements CredentialsServices {
 	}
 	
 	@Override
-	public boolean isJWTAuthorized(String jwt, String csrfToken, String authEmail, String permission) {
+	public boolean isJWTAuthorized(String jwt, String csrfToken, String authEmail, Integer bankId, String permission) {
 		
-		if(jwt.equals("null")) return false;
-		else if(csrfToken.equals("null")) return false;
-		else if(authEmail.equals("null")) return false;
+		if(jwt.equals("null") || jwt == null || jwt == "") return false;
+		else if(csrfToken.equals("null") || csrfToken == null || csrfToken == "") return false;
+		else if(authEmail.equals("null") || authEmail == null || authEmail == "") return false;
+		else if(bankId == null || bankId == 0) return false;
 		
 		User user = repository.findByEmail(authEmail);
 		
@@ -70,7 +71,7 @@ public class CredentialsServicesImpl implements CredentialsServices {
 			try {
 				Claims claims = this.parseJWT(jwt, user.getSalt());
 				
-				if(!claims.getSubject().equals(authEmail) || !claims.get("CSRF-TOKEN").equals(csrfToken)) {
+				if(!claims.getSubject().equals(authEmail) || !claims.get("CSRF-TOKEN").equals(csrfToken) || (claims.get("BANK-ID") != bankId)) {
 					return false;
 				}
 				
@@ -164,7 +165,7 @@ public class CredentialsServicesImpl implements CredentialsServices {
 	}
 	
 	@Override
-	public String createJWT(String subject, String csrfToken, String secret) {
+	public String createJWT(String subject, String csrfToken, Integer bankId, String secret) {
 		
 		String id = UUID.randomUUID().toString();
 		
@@ -190,6 +191,7 @@ public class CredentialsServicesImpl implements CredentialsServices {
 	                                .setSubject(subject)
 	                                .setIssuer(ISSUER)
 	                                .claim("CSRF-TOKEN", csrfToken)
+	                                .claim("BANK-ID", bankId)
 	                                .setExpiration(exp)
 	                                .signWith(signatureAlgorithm, signingKey);
 	 

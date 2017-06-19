@@ -30,9 +30,11 @@ public class PermissionController {
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<Permission>> getAllPermissions(@RequestHeader(value="CsrfToken") String csrfToken, 
 															 @RequestHeader(value="AuthEmail") String authEmail, 
+															 @RequestHeader(value="BankId") Integer bankId, 
 															 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getAllPermissions");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllPermissions");
 		
 		if(isAuthorized) {
 			Set<Permission> permissions = services.getAllPermissions();
@@ -48,9 +50,11 @@ public class PermissionController {
 	public ResponseEntity<Permission> getPermission(@PathVariable("id") Integer id, 
 													@RequestHeader(value="CsrfToken") String csrfToken, 
 													@RequestHeader(value="AuthEmail") String authEmail, 
+													@RequestHeader(value="BankId") Integer bankId, 
 													@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getPermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getPermission");
 		
 		if(isAuthorized) {
 			Permission body = services.getPermission(id);
@@ -70,9 +74,11 @@ public class PermissionController {
 	public ResponseEntity<Permission> addPermission(@RequestBody Permission permission, 
 													@RequestHeader(value="CsrfToken") String csrfToken, 
 													@RequestHeader(value="AuthEmail") String authEmail, 
+													@RequestHeader(value="BankId") Integer bankId, 
 													@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "addPermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addPermission");
 		
 		if(isAuthorized) {
 			Permission body = services.addPermission(permission);
@@ -88,9 +94,11 @@ public class PermissionController {
 	public ResponseEntity<Permission> updatePermission(@PathVariable("id") Integer id, @RequestBody Permission permission, 
 													   @RequestHeader(value="CsrfToken") String csrfToken, 
 													   @RequestHeader(value="AuthEmail") String authEmail, 
+													   @RequestHeader(value="BankId") Integer bankId, 
 													   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "updatePermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updatePermission");
 		
 		if(isAuthorized) {
 			permission.setId(id);
@@ -107,9 +115,11 @@ public class PermissionController {
 	public ResponseEntity<Permission> deletePermission(@PathVariable("id") Integer id, 
 													   @RequestHeader(value="CsrfToken") String csrfToken, 
 													   @RequestHeader(value="AuthEmail") String authEmail, 
+													   @RequestHeader(value="BankId") Integer bankId, 
 													   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "deletePermission");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deletePermission");
 		
 		if(isAuthorized) {
 			Permission permission = services.getPermission(id);

@@ -3,7 +3,6 @@ package bis.project.controllers;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -19,13 +18,6 @@ import bis.project.services.CredentialsServices;
 import bis.project.services.WorkTypeServices;
 import bis.project.validators.ValidationException;
 import bis.project.validators.WorkTypeValidator;
-import bis.project.ws.IAmWsClientConfig;
-import bis.project.ws.M102Client;
-import bis.project.ws.M103Client;
-import io.spring.guides.gs_producing_web_service.GetM102Request;
-import io.spring.guides.gs_producing_web_service.GetM102Response;
-import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeRequest;
-import io.spring.guides.gs_producing_web_service.GetMOneZeroThreeResponse;
 
 @RestController
 public class WorkTypeController {
@@ -40,10 +32,12 @@ public class WorkTypeController {
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<WorkType>> getAllWorkTypes(@RequestHeader(value="CsrfToken") String csrfToken, 
 														 @RequestHeader(value="AuthEmail") String authEmail, 
+														 @RequestHeader(value="BankId") Integer bankId, 
 														 @CookieValue("jwt") String jwt) {
 		
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getAllWorkTypes");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getAllWorkTypes");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getAllWorkTypes");
 		
 		if(isAuthorized) {
@@ -59,9 +53,11 @@ public class WorkTypeController {
 	public ResponseEntity<WorkType> getWorkType(@PathVariable("id") Integer id, 
 												@RequestHeader(value="CsrfToken") String csrfToken, 
 												@RequestHeader(value="AuthEmail") String authEmail, 
+												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "getWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "getWorkType");
 		
 		if(isAuthorized) {
@@ -82,9 +78,11 @@ public class WorkTypeController {
 	public ResponseEntity<WorkType> addWorkType(@RequestBody WorkType workType, 
 												@RequestHeader(value="CsrfToken") String csrfToken, 
 												@RequestHeader(value="AuthEmail") String authEmail, 
+												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "addWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "addWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "addWorkType");
 		
 		if(isAuthorized) {
@@ -102,9 +100,11 @@ public class WorkTypeController {
 												   @RequestBody WorkType workType, 
 												   @RequestHeader(value="CsrfToken") String csrfToken, 
 												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "updateWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "updateWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "updateWorkType");
 		
 		if(isAuthorized) {
@@ -122,9 +122,11 @@ public class WorkTypeController {
 	public ResponseEntity<WorkType> deleteWorkType(@PathVariable("id") Integer id, 
 												   @RequestHeader(value="CsrfToken") String csrfToken, 
 												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, "deleteWorkType");
+		boolean isAuthorized = false;
+		isAuthorized = cServices.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "deleteWorkType");
 		//boolean isAuthorized = cServices.isAuthorized(basicAuth, "deleteWorkType");
 		
 		if(isAuthorized) {

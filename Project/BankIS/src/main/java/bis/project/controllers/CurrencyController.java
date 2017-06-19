@@ -32,9 +32,10 @@ public class CurrencyController {
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<Currency>> getAllCurrencies(@RequestHeader(value="CsrfToken") String csrfToken, 
 													   	  @RequestHeader(value="AuthEmail") String authEmail, 
+													   	  @RequestHeader(value="BankId") Integer bankId, 
 													   	  @CookieValue("jwt") String jwt) {
-		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "GetAllCurrencies");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllCurrencies");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllCurrencies");
 		
 		if(isAuthorized) {
@@ -50,9 +51,11 @@ public class CurrencyController {
 	public ResponseEntity<Currency> getCurrency(@PathVariable("id") Integer id, 
 												@RequestHeader(value="CsrfToken") String csrfToken, 
 												@RequestHeader(value="AuthEmail") String authEmail, 
+												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "getCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "getCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "getCurrency");
 		
 		if(isAuthorized) {
@@ -73,9 +76,11 @@ public class CurrencyController {
 	public ResponseEntity<Currency> addCurrency(@RequestBody Currency currency, 
 												@RequestHeader(value="CsrfToken") String csrfToken, 
 												@RequestHeader(value="AuthEmail") String authEmail, 
+												@RequestHeader(value="BankId") Integer bankId, 
 												@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "AddCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "AddCurrency");
 		
 		if(isAuthorized) {
@@ -89,13 +94,14 @@ public class CurrencyController {
 	
 	@RequestMapping(value = "/api/currencies/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") Integer id, 
-												   @RequestBody Currency currency, 
+	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") Integer id, @RequestBody Currency currency, 
 												   @RequestHeader(value="CsrfToken") String csrfToken, 
 												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) throws ValidationException{
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "UpdateCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateCurrency");
 		
 		if(isAuthorized) {
@@ -113,9 +119,11 @@ public class CurrencyController {
 	public ResponseEntity<Currency> deleteCurrency(@PathVariable("id") Integer id, 
 												   @RequestHeader(value="CsrfToken") String csrfToken, 
 												   @RequestHeader(value="AuthEmail") String authEmail, 
+												   @RequestHeader(value="BankId") Integer bankId, 
 												   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "DeleteCurrency");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteCurrency");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteCurrency");
 		
 		if(isAuthorized) {

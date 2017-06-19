@@ -14,9 +14,9 @@ public interface CredentialsServices {
 	
 	public boolean isExpectedPassword(char[] password, byte[] salt, byte[] expectedHash);
 	
-	public String createJWT(String subject, String csrfToken, String secret);
+	public String createJWT(String subject, String csrfToken, Integer bankId, String secret);
 	
 	public Claims parseJWT(String jwt, String secret);
 	
-	public boolean isJWTAuthorized(String jwt, String csrfToken, String authEmail, String permission);
+	public boolean isJWTAuthorized(String jwt, String csrfToken, String authEmail, Integer bankId, String permission);
 }

@@ -32,9 +32,11 @@ public class BankController {
 					method = RequestMethod.GET)
 	public ResponseEntity<Set<Bank>> getAllBanks(@RequestHeader(value="CsrfToken") String csrfToken, 
 												 @RequestHeader(value="AuthEmail") String authEmail, 
+												 @RequestHeader(value="BankId") Integer bankId, 
 												 @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "GetAllBanks");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetAllBanks");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetAllBanks");
 		
 		if(isAuthorized) {
@@ -50,9 +52,11 @@ public class BankController {
 	public ResponseEntity<Bank> getBank(@PathVariable("id") Integer id, 
 										@RequestHeader(value="CsrfToken") String csrfToken, 
 										@RequestHeader(value="AuthEmail") String authEmail, 
+										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "GetBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "GetBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "GetBank");
 		
 		if(isAuthorized) {
@@ -73,9 +77,11 @@ public class BankController {
 	public ResponseEntity<Bank> addBank(@RequestBody Bank bank, 
 										@RequestHeader(value="CsrfToken") String csrfToken, 
 										@RequestHeader(value="AuthEmail") String authEmail, 
+										@RequestHeader(value="BankId") Integer bankId, 
 										@CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "AddBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "AddBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "AddBank");
 		
 		if(isAuthorized) {
@@ -89,13 +95,14 @@ public class BankController {
 	
 	@RequestMapping(value = "/api/banks/{id}", 
 					method = RequestMethod.PUT)
-	public ResponseEntity<Bank> updateBank(@PathVariable("id") Integer id, 
-										   @RequestBody Bank bank, 
+	public ResponseEntity<Bank> updateBank(@PathVariable("id") Integer id, @RequestBody Bank bank, 
 										   @RequestHeader(value="CsrfToken") String csrfToken, 
 										   @RequestHeader(value="AuthEmail") String authEmail, 
+										   @RequestHeader(value="BankId") Integer bankId, 
 										   @CookieValue("jwt") String jwt) throws ValidationException {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "UpdateBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "UpdateBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "UpdateBank");
 		
 		if(isAuthorized) {
@@ -113,9 +120,11 @@ public class BankController {
 	public ResponseEntity<Bank> deleteBank(@PathVariable("id") Integer id, 
 										   @RequestHeader(value="CsrfToken") String csrfToken, 
 										   @RequestHeader(value="AuthEmail") String authEmail, 
+										   @RequestHeader(value="BankId") Integer bankId, 
 										   @CookieValue("jwt") String jwt) {
 		
-		boolean isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, "DeleteBank");
+		boolean isAuthorized = false;
+		isAuthorized = services.isJWTAuthorized(jwt, csrfToken, authEmail, bankId, "DeleteBank");
 		//boolean isAuthorized = services.isAuthorized(basicAuth, "DeleteBank");
 		
 		if(isAuthorized) {

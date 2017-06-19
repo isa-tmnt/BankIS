@@ -97,7 +97,8 @@ var appConfig = {
     config: {
         headers: {
             "CsrfToken": localStorage.getItem("X-CSRF-TOKEN"),
-            "AuthEmail": localStorage.getItem("basicAuthEmail")
+            "AuthEmail": localStorage.getItem("basicAuthEmail"),
+            "BankId": localStorage.getItem("bankId")
         }
     }
 };
