@@ -37,8 +37,13 @@ app.factory('authService', ['$http', function ($http) {
             $http.post(appConfig.apiUrl + 'login', { email: email, password: password }).then(
                 function successCallback(response) {
                     if (response.status >= 400 && response.status < 500){
-                        toastr.error('Invalid email/password.')
-                        return;
+                        if(response.status == 423){
+                            toastr.info('3 times failure, wait 5 mins for next try')
+                            return;
+                        }else{
+                            toastr.error('Invalid email/password.')
+                            return;
+                        }
                     }
                     toastr.success('You are logged in.')
                     //var btoaED = btoa(email + ":" + password);
