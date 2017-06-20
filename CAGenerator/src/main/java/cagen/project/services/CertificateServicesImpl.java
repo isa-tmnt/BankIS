@@ -17,9 +17,11 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -28,6 +30,8 @@ import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -42,6 +46,7 @@ import cagen.project.model.CertificateDTO;
 import cagen.project.model.CertificateResponse;
 import cagen.project.model.CAData;
 import cagen.project.model.KeyStoreDTO;
+import cagen.project.validations.CertificateValidation;
 
 @Service
 public class CertificateServicesImpl implements CertificateServices {
@@ -55,15 +60,16 @@ public class CertificateServicesImpl implements CertificateServices {
 	
 	@Override
 	public CertificateDTO genCertificate(CertificateDTO dto) {
+		boolean isValid = CertificateValidation.validate(dto);
+		
+		if(!isValid) return null;
+		
 		//"./files/" + dto.getKeyStore().getAlias() + ".jks"
 		String keyStorePath = "./files/" + dto.getKeyStore().getAlias() + ".jks";
 		char[] keyStorePassword = dto.getKeyStore().getPassword().toCharArray();
 		
 		String issuerKeyStorePath = "./files/" + dto.getIssuerKeyStore().getAlias() + ".jks";
 		char[] issuerKeyStorePassword = dto.getIssuerKeyStore().getPassword().toCharArray();
-		
-		System.out.println(issuerKeyStorePath);
-		System.out.println(issuerKeyStorePassword);
 		
 		try {
 			if(keyStore == null) {
@@ -89,6 +95,15 @@ public class CertificateServicesImpl implements CertificateServices {
 			X500Name name = builder.build();
 			BigInteger serial = new BigInteger(20, new SecureRandom());
 			
+			long nowMillis = System.currentTimeMillis();
+		    Date now = new Date(nowMillis);
+		    
+		    Calendar expDate = Calendar.getInstance();
+			expDate.set(Calendar.YEAR, expDate.get(Calendar.YEAR) + 1);
+			
+			long ttlMillis = expDate.getTimeInMillis();
+			Date exp = new Date(ttlMillis);
+			
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA"); 
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 			keyGen.initialize(2048, random);
@@ -103,7 +118,7 @@ public class CertificateServicesImpl implements CertificateServices {
 			X509v3CertificateBuilder certGen;
 			
 			if(dto.isSelfSigned()) {
-				certGen = new JcaX509v3CertificateBuilder(name, serial, dto.getStartDate(), dto.getEndDate(), name, pair.getPublic());
+				certGen = new JcaX509v3CertificateBuilder(name, serial, now, exp, name, pair.getPublic());
 			} else {
 				issuerKeyStore.load(new FileInputStream(issuerKeyStorePath), issuerKeyStorePassword);
 				
@@ -119,10 +134,13 @@ public class CertificateServicesImpl implements CertificateServices {
 				
 				X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) issuerCertificate).getIssuer();
 				
-				certGen = new JcaX509v3CertificateBuilder(issuerName, new BigInteger("1"), dto.getStartDate(), dto.getEndDate(), name, pair.getPublic());
+				certGen = new JcaX509v3CertificateBuilder(issuerName, serial, now, exp, name, pair.getPublic());
 				certGen.addExtension(Extension.authorityKeyIdentifier, true, new AuthorityKeyIdentifier(issuerCertificate.getEncoded()));
 			}
 			
+			GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.rfc822Name, "localhost"));
+			
+			certGen.addExtension(Extension.subjectAlternativeName, true, new DEROctetString(subjectAltName));
 			certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(dto.isCa()));
 			
 			X509CertificateHolder certHolder = certGen.build(contentSigner);
@@ -253,6 +271,12 @@ public class CertificateServicesImpl implements CertificateServices {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		return null;
+	}
+	
+	@Override
+	public CertificateResponse genCertificateRequest(CAData caData) {
 		
 		return null;
 	}
