@@ -1,7 +1,5 @@
 package cagen.project.model;
 
-import java.util.Date;
-
 public class CertificateDTO {
 	
 	private String alias;
@@ -15,9 +13,6 @@ public class CertificateDTO {
 	private String email;				//E
 	private String issuer;
 	
-	private Date startDate;
-	private Date endDate;
-	
 	private boolean ca;
 	private boolean selfSigned;
 	
@@ -28,7 +23,7 @@ public class CertificateDTO {
 
 	public CertificateDTO(String alias, String keyAlias, String commonName, String surname, String givenName,
 			String organizationUnit, String organizationName, String country, String email, String issuer,
-			Date startDate, Date endDate, boolean ca, boolean selfSigned, KeyStoreDTO issuerKeyStore,
+			boolean ca, boolean selfSigned, KeyStoreDTO issuerKeyStore,
 			KeyStoreDTO keyStore) {
 		super();
 		this.alias = alias;
@@ -41,8 +36,6 @@ public class CertificateDTO {
 		this.country = country;
 		this.email = email;
 		this.issuer = issuer;
-		this.startDate = startDate;
-		this.endDate = endDate;
 		this.ca = ca;
 		this.selfSigned = selfSigned;
 		this.issuerKeyStore = issuerKeyStore;
@@ -127,22 +120,6 @@ public class CertificateDTO {
 
 	public void setIssuer(String issuer) {
 		this.issuer = issuer;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	public boolean isCa() {

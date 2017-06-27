@@ -8,8 +8,6 @@
     <script src="angular.js"></script>
     <link href="bower_components/toastr/toastr.css" rel="stylesheet"/>
     <script src="bower_components/toastr/toastr.js"></script>
-    <link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
-    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <script src="app.js"></script>
     <title>Certificate Generator App</title>
@@ -35,8 +33,8 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <button ng-click="ctrl.setTab(5)" ng-show="true" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-log-in"></span> Login</button>
-                <button ng-show="true" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Logout</button>
+                <button ng-click="ctrl.setTab(5)" ng-hide="ctrl.isLogedIn" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+                <button ng-click="ctrl.logout()" ng-show="ctrl.isLogedIn" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Logout</button>
                 <span>&nbsp;&nbsp;</span>
             </ul>
         </div>
@@ -154,24 +152,6 @@
                                     <label>Email (E):</label>
                                     <span></span>
                                     <input ng-model="ctrl.email" type="email" class="form-control input-sm" placeholder="Email" tabindex="9" />
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                        <div class="form-group has-feedback">
-                                            <label>Start Date:</label>
-                                            <span></span>
-                                            <input ng-model="ctrl.start" type="date" class="form-control input-sm" tabindex="10" />
-                                        </div>
-                                    </div>
-                                
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                        <div class="form-group has-feedback">
-                                            <label>End Date:</label>
-                                            <span></span>
-                                            <input ng-model="ctrl.end" type="date" class="form-control input-sm" tabindex="11" />
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -439,17 +419,17 @@
                             <div class="row">
                                 <div class="form-group has-feedback">
                                     <label>Email:</label>
-                                    <input type="text" class="form-control input-sm" maxlength="60" placeholder="Email" />
+                                    <input ng-model="ctrl.uemail" type="text" class="form-control input-sm" maxlength="60" placeholder="Email" />
                                 </div>
 
                                 <div class="form-group has-feedback">
                                     <label>Password:</label>
-                                    <input type="password" class="form-control input-sm" maxlength="18" placeholder="Password" />
+                                    <input ng-model="ctrl.password" type="password" class="form-control input-sm" maxlength="18" placeholder="Password" />
                                 </div>
 
                                 <div class="col-sm-offset-4">
                                     <span>&nbsp;&nbsp;</span>
-                                    <button class="btn btn-primary navbar-btn">&nbsp;Sign in&nbsp;</button>
+                                    <button ng-click="ctrl.login()" class="btn btn-primary navbar-btn">&nbsp;Sign in&nbsp;</button>
                                 </div>
                             </div>
                         </div>
