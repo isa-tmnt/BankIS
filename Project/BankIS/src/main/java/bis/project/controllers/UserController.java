@@ -92,7 +92,7 @@ public class UserController {
 		
 		if(isAuthorized) {
 			//UserValidator.Validate(user);
-			UserResponse newUser = services.addUser(user, bankId);
+			UserResponse newUser = services.addUser(user, user.getBank().getId());
 			
 			if(newUser == null) {
 				return new ResponseEntity<UserResponse>(HttpStatus.UNPROCESSABLE_ENTITY);

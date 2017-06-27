@@ -5,6 +5,7 @@ insert into USER(first_name, last_name, email, password, salt, bank_id) values (
 insert into USER(first_name, last_name, email, password, salt, bank_id) values ("Janko", "Jankovic", "jjanko@gmail.com", "gYxaSoG8bld7bEnwnAHrhZQXpv3yLV59oRiqVU0BaFs=", "prtDOK7ObPLI2addmMlIyYS8+z6V43FLr+oDK3aFIwo=", 1)
 insert into USER(first_name, last_name, email, password, salt, bank_id) values ("Marko", "Markovic", "mmarko@gmail.com", "DoZv1FN6McykvGv8RJgYMyqqTint16gir1XIxKNWzQ4=", "LMtDnpvaxCr9fYkbFmqKyn/cAllaZkeuUKDPjympv9U=", 1)
 insert into USER(first_name, last_name, email, password, salt, bank_id) values ("Jovan", "Jovanovic", "jjovan@gmail.com", "Qjmt21mSW6PfyhbM8iTE98L+83vzSLM77cWy9LDBVJE=", "4q7kBPh+PbRMjN/Dw62x2fpFhyXRssMdSTmI/BYZcAU=", 1)
+insert into USER(first_name, last_name, email, password, salt, bank_id) values ("Druga", "Druga", "drugaBanka@gmail.com", "DoZv1FN6McykvGv8RJgYMyqqTint16gir1XIxKNWzQ4=", "LMtDnpvaxCr9fYkbFmqKyn/cAllaZkeuUKDPjympv9U=", 2)
 
 insert into ROLE(name) values ("Admin")
 insert into ROLE(name) values ("Bank Manager")
@@ -60,6 +61,10 @@ insert into USERS_ROLES(user_id, role_id) values (1, 2)
 insert into USERS_ROLES(user_id, role_id) values (2, 3)
 insert into USERS_ROLES(user_id, role_id) values (3, 2)
 insert into USERS_ROLES(user_id, role_id) values (4, 3)
+
+-- za drugog@gmail.com
+insert into USERS_ROLES(user_id, role_id) values (5, 1)
+insert into USERS_ROLES(user_id, role_id) values (5, 2)
 
 -- ADMIN (BANK, WORKTYPE, USER, ROLE(GET))
 insert into ROLES_PERMISSIONS(role_id, permission_id) values (1, 1)

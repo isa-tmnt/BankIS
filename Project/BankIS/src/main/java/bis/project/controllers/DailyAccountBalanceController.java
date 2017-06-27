@@ -1,6 +1,7 @@
 package bis.project.controllers;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,11 @@ public class DailyAccountBalanceController {
 	
 	@RequestMapping(value = "/api/dailyAccountBalances", 
 					method = RequestMethod.GET)
-	public Set<DailyAccountBalance> getAllDailyAccountBalances() {
+	public Set<DailyAccountBalance> getAllDailyAccountBalances(@RequestHeader(value="BankId") Integer bankId) {
 		Set<DailyAccountBalance> dds = dabServices.getAllDailyAccountBalances();
+		if(bankId != null){
+			dds = dds.stream().filter(x -> x.getAccount().getBank().getId().equals(bankId)).collect(Collectors.toSet());
+		}
 		return dds;
 	}
 	
