@@ -2,7 +2,7 @@
 
 app.component('interbankTransfers', {
     templateUrl: 'app/commonTemplates/defaultTable.html',
-    controller: ['$scope', '$http', '$attrs', '$rootScope', '$compile', '$element', function InterbankTrCtrl($scope, $http, $attrs, $rootScope, $compile, $element) {
+    controller: ['$scope', '$http', '$attrs', '$rootScope', '$compile', '$element', '$routeParams', function InterbankTrCtrl($scope, $http, $attrs, $rootScope, $compile, $element, $routeParams) {
 
         $scope.rows = [];
         $scope.selected = {};
@@ -131,19 +131,34 @@ app.component('interbankTransfers', {
 
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 
+
+        $scope.nexts = [
+            { label: "Transfer Items", link: "/#!/transferItems", filterProperty: "interbankTransfer" },
+        ];
+
         $scope.filters = {};
         $scope.filterId = $attrs.filterid;
+        if ($routeParams.filterId) {
+            $scope.filters[$routeParams.filterProperty] = $routeParams.filterId;
+        }
 
         $scope.showRow = function (row) {
             if ($scope.filterId && $scope.filterId.toString() != row['id'].toString())  //if zoom on one entity
                 return false;
             for (var code in $scope.filters) {
-
-                if (row[code] && $scope.filters[code] && row[code].toString().indexOf($scope.filters[code].toString()) < 0)
-                    return false;
+                if (row[code] && $scope.filters[code]) {
+                    if (typeof row[code] == 'object') {
+                        if (row[code]['id'].toString().indexOf($scope.filters[code].toString()) < 0) {
+                            return false;
+                        }
+                    } else if (row[code].toString().indexOf($scope.filters[code].toString()) < 0) {
+                        return false;
+                    }
+                }
             }
             return true;
         }
+
         $scope.ordering = 'id';
         $scope.setOrdering = function (ordering) {
             if ($scope.ordering == ordering)

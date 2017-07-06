@@ -7,7 +7,7 @@
                     <th ng-show="head.code != 'id'" ng-click="setOrdering(head.code);" ng-repeat="head in header">{{head.label}} <span class="glyphicon glyphicon-chevron-right"></span></th>
                 </tr>
                 <tr>
-                    <th ng-show="head.code != 'id'" ng-if="!filterId" ng-repeat="head in header;"><input class="form-control" type="text" ng-model="filters[head.code]" placeholder="search {{head.label}}"></th>
+                    <th ng-show="head.code != 'id' && iamdialog != true"  ng-repeat="head in header;"><input class="form-control" type="text" ng-model="filters[head.code]" placeholder="search {{head.label}}"></th>
                 </tr>
             </thead>
             <tbody>
@@ -43,5 +43,9 @@
         <button ng-if="allowAdd" class="btn btn-success" ng-click="doAdd()">Add New</button>
         <button ng-if="allowEdit" class="btn btn-primary" ng-click="doEdit()">Save Edit</button>
         <button ng-if="allowRemove" class="btn btn-warning" ng-click="doRemove()">Remove Selected</button>
+    </div>
+
+    <div style="margin-top:10px;" class="col-md-6">
+        <a style="margin-left:3px;" ng-repeat="next in nexts" ng-disabled="!selected || !selected['id']" href="{{next.link + '/' + selected.id + '/' + next.filterProperty}}"  class="btn btn-info">Next {{next.label}}</a>
     </div>
 </div>

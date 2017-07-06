@@ -2,7 +2,7 @@
 
 app.component('bankAccounts', {
     templateUrl: 'app/commonTemplates/defaultTable.html',
-    controller: ['$scope', '$http', '$attrs', '$timeout', '$rootScope', '$element', '$compile', function BankAccoutnsCtrl($scope, $http, $attrs, $timeout, $rootScope, $element, $compile) {
+    controller: ['$scope', '$http', '$attrs', '$timeout', '$rootScope', '$element', '$compile', '$routeParams', function BankAccoutnsCtrl($scope, $http, $attrs, $timeout, $rootScope, $element, $compile, $routeParams) {
         var ctrl = this;
         $scope.rows = [];
         $scope.selected = {};
@@ -13,7 +13,6 @@ app.component('bankAccounts', {
             $scope.selected = row;
             $scope.editing = $.extend({}, row);
         }
-
 
         $scope.header = [
             { label: "Id", code: "id", type: "text" },
@@ -96,6 +95,10 @@ app.component('bankAccounts', {
 
         //-------------------------------------> zoom <--------------------------------------------------------------------------
 
+        $scope.nexts = [
+            { label: "Daily Account Balances", link: "/#!/dailyAccountBalances", filterProperty: "account" },
+            { label: "Closing Accounts", link: "/#!/closingAccounts", filterProperty: "account" },
+        ];
 
         $scope.openDialog = function (tagName, id) {
             if (id) {
@@ -145,15 +148,23 @@ app.component('bankAccounts', {
 
         $scope.filters = {};
         $scope.filterId = $attrs.filterid;
-        console.log($scope.filterId)
+        if ($routeParams.filterId){
+            $scope.filters[$routeParams.filterProperty] = $routeParams.filterId;
+        }
 
         $scope.showRow = function (row) {
             if ($scope.filterId && $scope.filterId.toString() != row['id'].toString())  //if zoom on one entity
                 return false;
             for (var code in $scope.filters) {
-
-                if (row[code] && $scope.filters[code] && row[code].toString().indexOf($scope.filters[code].toString()) < 0)
-                    return false;
+                if (row[code] && $scope.filters[code]){
+                    if(typeof row[code] == 'object'){
+                        if (row[code]['id'].toString().indexOf($scope.filters[code].toString()) < 0){
+                            return false;
+                        }
+                    }else  if (row[code].toString().indexOf($scope.filters[code].toString()) < 0){
+                        return false;
+                    }
+                }
             }
             return true;
         }

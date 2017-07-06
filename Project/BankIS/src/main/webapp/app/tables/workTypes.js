@@ -2,7 +2,7 @@
 
 app.component('workTypes', {
     templateUrl: 'app/commonTemplates/defaultTable.html',
-    controller: ['$scope', '$http', '$attrs', '$rootScope', function WorkTypeCtrl($scope, $http, $attrs, $rootScope) {
+    controller: ['$scope', '$http', '$attrs', '$rootScope', '$routeParams', function WorkTypeCtrl($scope, $http, $attrs, $rootScope, $routeParams) {
 
         $scope.rows = [];
         $scope.selected = {};
@@ -87,19 +87,35 @@ app.component('workTypes', {
 
         //-------------------------------------> filtering, ordering, pagination <----------------------------------------------
 
+
+        $scope.nexts = [
+            { label: "Legal Person Details", link: "/#!/legalPersonDetails", filterProperty: "workType" },
+        ];
+
         $scope.filters = {};
         $scope.filterId = $attrs.filterid;
+        if ($routeParams.filterId) {
+            $scope.filters[$routeParams.filterProperty] = $routeParams.filterId;
+        }
+
 
         $scope.showRow = function (row) {
             if ($scope.filterId && $scope.filterId.toString() != row['id'].toString())  //if zoom on one entity
                 return false;
             for (var code in $scope.filters) {
-
-                if (row[code] && $scope.filters[code] && row[code].toString().indexOf($scope.filters[code].toString()) < 0)
-                    return false;
+                if (row[code] && $scope.filters[code]) {
+                    if (typeof row[code] == 'object') {
+                        if (row[code]['id'].toString().indexOf($scope.filters[code].toString()) < 0) {
+                            return false;
+                        }
+                    } else if (row[code].toString().indexOf($scope.filters[code].toString()) < 0) {
+                        return false;
+                    }
+                }
             }
             return true;
         }
+
         $scope.ordering = 'id';
         $scope.setOrdering = function (ordering) {
             if ($scope.ordering == ordering)

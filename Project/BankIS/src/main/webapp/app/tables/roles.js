@@ -100,6 +100,9 @@ app.component('roles', {
 
         $scope.filters = {};
         $scope.filterId = $attrs.filterid;
+        if ($routeParams.filterId) {
+            $scope.filters[$routeParams.filterProperty] = $routeParams.filterId;
+        }
 
         $scope.showRow = function (row) {
             if ($scope.filterId && $scope.filterId.toString() != row['id'].toString())  //if zoom on one entity
