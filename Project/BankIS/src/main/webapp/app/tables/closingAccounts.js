@@ -2,7 +2,7 @@
 
 app.component('closingAccounts', {
     templateUrl: 'app/commonTemplates/defaultTable.html',
-    controller: ['$scope', '$http', '$attrs', '$rootScope', '$element', '$compile', '$routeParams', function ClosingAccountsCtrl($scope, $http, $attrs, $rootScope, $element, $compile, $routeParams) {
+    controller: ['$scope', '$http', '$attrs', '$rootScope', '$element', '$compile', '$routeParams', '$timeout', function ClosingAccountsCtrl($scope, $http, $attrs, $rootScope, $element, $compile, $routeParams, $timeout) {
 
         $scope.rows = [];
         $scope.selected = {};
@@ -128,6 +128,7 @@ app.component('closingAccounts', {
             $scope.minShow = $index * $scope.pageRows;
             $scope.maxShow = ($index + 1) * $scope.pageRows;
         }
+
 
     }]
 });
